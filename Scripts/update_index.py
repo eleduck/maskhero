@@ -80,13 +80,13 @@ if __name__ == '__main__':
 
   for country in countries:
     country_requirements = collect_requirements(country)
-    #logging.info(country_requirements)
+    logging.info(country_requirements)
     country_summary = update_country_index(country, country_requirements)
-    logging.info(country_summary)
+    #logging.info(country_summary)
     append_world_index((country_summary))
-    logging.info(world_summary)
+    #logging.info(world_summary)
     world_requirments.extend(country_requirements)
     #logging.info(world_requirments)
     update_readme(country, country_summary)
   update_readme('World', world_summary)
-  logging.info(readme_str['readme'])
+  #logging.info(readme_str['readme'])
