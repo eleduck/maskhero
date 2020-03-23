@@ -47,10 +47,25 @@ def append_world_index(requirements):
     world_summary['masks_requested'] += v['masks_requested']
     world_summary['masks_delivered'] += v['masks_delivered']
 
+def update_readme(country, summary):
+  if not summary or country not in summary and country != 'World':
+    return
+  if country == 'World':
+    item = summary
+  else:
+    item = summary[country]
+  base_str = '|{country}|{applicants}|{beneficiaries}|{masks_requested}|{masks_delivered}|\n'
+
+  readme_str['readme'] += base_str.format(country=country, applicants=item['applicants'], beneficiaries=item['beneficiaries'], masks_requested=item['masks_requested'], masks_delivered=item['masks_delivered'])
+  os.system("cp Scripts/README_tpl.md README.md")
+  with open('README.md', 'a+') as load_file:
+    load_file.write(readme_str['readme'])
+
+
 if __name__ == '__main__':
   logging.basicConfig(level=logging.INFO)
 
-  countries = ["Canada"]
+  countries = ["Canada", "American"]
 
   world_summary = {
     "name": "World",
@@ -61,12 +76,17 @@ if __name__ == '__main__':
   }
   world_requirments = []
 
+  readme_str = {'readme': ''}
+
   for country in countries:
     country_requirements = collect_requirements(country)
-    logging.info(country_requirements)
+    #logging.info(country_requirements)
     country_summary = update_country_index(country, country_requirements)
     logging.info(country_summary)
     append_world_index((country_summary))
     logging.info(world_summary)
     world_requirments.extend(country_requirements)
-    logging.info(world_requirments)
+    #logging.info(world_requirments)
+    update_readme(country, country_summary)
+  update_readme('World', world_summary)
+  logging.info(readme_str['readme'])
