@@ -19,7 +19,29 @@ def collect_requirements(country):
 
   return res
 
+def update_index_with_filename(file, data):
+  structs = {
+    "type": "FeatureCollection",
+    "features": [
+    ]
+  }
+  try:
+    logging.info(len(data))
+    for item in data:
+      struct = item[country][0]
+      structs['features'].append(struct)
+      world_features.append(struct)
+    with open(file, 'w+') as load_file:
+      load_file.write(json.dumps(structs))
+  except Exception as e:
+    logging.error(e)
+    return
+
 def update_country_index(country, requirements):
+  # 1.update index.geojson
+  file = os.path.join(country, 'index.geojson')
+  update_index_with_filename(file, requirements)
+  # 2.数据合并
   res = {}
   country_request = {
     'applicants': 0,
@@ -39,8 +61,19 @@ def update_country_index(country, requirements):
   return res
 
 def append_world_index(requirements):
-  if not requirements or requirements == {}:
+  # 1.update World/index.geojson
+  structs = {
+    "type": "FeatureCollection",
+    "features": world_features
+  }
+  try:
+    with open('World/index.geojson', 'w+') as load_file:
+      load_file.write(json.dumps(structs))
+  except Exception as e:
+    logging.error(e)
     return
+
+  # 2.合并统计
   for k, v in requirements.items():
     world_summary['applicants'] += v['applicants']
     world_summary['beneficiaries'] += v['beneficiaries']
@@ -76,17 +109,19 @@ if __name__ == '__main__':
   }
   world_requirments = []
 
+  world_features = []
+
   readme_str = {'readme': ''}
 
   for country in countries:
     country_requirements = collect_requirements(country)
-    logging.info(country_requirements)
+    logging.info('country_requirements: %s' % country_requirements)
     country_summary = update_country_index(country, country_requirements)
-    #logging.info(country_summary)
+    logging.info('country_summary %s' % country_summary)
     append_world_index((country_summary))
     #logging.info(world_summary)
     world_requirments.extend(country_requirements)
-    #logging.info(world_requirments)
+    logging.info('world_requirments: %s' % world_requirments)
     update_readme(country, country_summary)
   update_readme('World', world_summary)
   #logging.info(readme_str['readme'])
