@@ -5,9 +5,10 @@
       "type": "Feature",
       "properties": {
         "姓名": "邱建",
-        "需要口罩数量": 20, 
+        "需求数量": 20,
         "留言": "无论如何，请不要太在意",
-        "icon": "../Assets/mask-pending.png"
+        "marker-color": "#F3AE1A",
+        "marker-symbol": "hospital"
       },
       "geometry": {
         "type": "Point",
