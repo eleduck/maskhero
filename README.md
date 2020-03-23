@@ -23,7 +23,6 @@
 
 ## 参与活动的组织
 
-## 引用
+## 致谢
 
-- [Mask 图标](https://www.flaticon.com/free-icon/medical-mask_1535376)
-
+- [ElaWorkshop/awesome-cn-cafe](https://github.com/ElaWorkshop/awesome-cn-cafe)
