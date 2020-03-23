@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "国家": "新加坡",
+        "省": "A省",
+        "市": "B市",
+        "申请人": "波派",
+        "需要援助人数": 1,
+        "需求数量": 20,
+        "收到数量": 20,
+        "备注": "无论如何，请不要太在意",
+        "反馈": "",
+        "marker-color": "#F3AE1A",
+        "marker-symbol": "hospital"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.85579681396, 1.2930999994278]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "国家": "新加坡",
+        "省": "A省",
+        "市": "C市",
+        "申请人": "波派",
+        "需要援助人数": 1,
+        "需求数量": 60,
+        "收到数量": 0,
+        "备注": "无论如何，请不要太在意",
+        "反馈": "",
+        "marker-color": "#F3AE1A",
+        "marker-symbol": "hospital"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.85579681396, 1.2940999994278]
+      }
+    }
+  ]
+}
