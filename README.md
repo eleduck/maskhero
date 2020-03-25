@@ -1,68 +1,53 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 项目配置
 
-## Available Scripts
+1. 下载代码进入目录并切换到 develop 分支
 
-In the project directory, you can run:
+   ```shell
+   git clone git@github.com:eleduck/maskhero.git
+   cd maskhero
+   git checkout develop
+   ```
 
-### `yarn start`
+2. 安装 NPM 包
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+   ```shell
+   yarn install // 或 npm install
+   ```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+3. 设置环境变量
 
-### `yarn test`
+   ```shell
+   cp .env.example .env.local
+   ```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   或 @管理员 要对应环境变量文件
 
-### `yarn build`
+4. 启动项目
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```
+   yarn start // 或 npm run start
+   ```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+   访问 http://localhost:3000/ 即可访问网站
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. 构建生产环境版本
 
-### `yarn eject`
+   ```
+   yarn build // 或 npm run build
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## TODO:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- [ ] 适配新的 API 格式
+- [ ] 各种类别的 Form token 移动到环境变量中
+- [ ] 移动端页面适配
+- [ ] 更新捐款数字和援助海外城市为真实数据
+- [ ] 援助图记部分更换为真实数据
+- [ ] 志愿者部分更换为真实数据
+- [ ] 赞助商更换为为真实数据
+- [ ] BUG: 数据中其他国家字段 API 返回数据格式为“其他-澳大利亚”，无法显示在地图上
+- [ ] 图片等静态资源压缩优化
+- [ ] 省市级数据的区域高亮及数据显示
+- [ ] 页面顶部捐助信息的分割竖线
+- [ ] 援助图片单击放大效果
+- [ ] 援助信息随机逻辑及数量限制
