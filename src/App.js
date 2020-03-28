@@ -24,18 +24,25 @@ import axios from "axios";
 
 am4core.useTheme(am4themes_animated);
 
-const API_KEY = process.env.REACT_APP_JINSHUJU_API_KEY;
-const API_SECRET = process.env.REACT_APP_JINSHUJU_API_SECRET;
+const {
+  REACT_APP_JINSHUJU_API_KEY,
+  REACT_APP_JINSHUJU_API_SECRET,
+  REACT_APP_DOMESTIC_TOKEN,
+  REACT_APP_FOREIGN_TOKEN,
+  REACT_APP_VOLUNTEER_TOKEN,
+  REACT_APP_DONATOR_TOKEN,
+  REACT_APP_SPONSER_TOKEN
+} = process.env;
 const API_BASE = "https://jinshuju.net/api/v1";
-const DOMESTIC_ENDPOINT = "/forms/HAKraV/entries";
-const FOREIGN_ENDPOINT = "/forms/DecUHn/entries";
-const VOLUNTEER_ENDPOINT = "/forms/qrIApg/entries";
-const DONATOR_ENDPOINT = "/forms/gFPs9s/entries";
-const SPONSER_ENDPOINT = "/forms/zMk7kx/entries";
-const DOMESTIC_FORM_LINK = "https://jinshuju.net/f/HAKraV";
-const FOREIGN_FORM_LINK = "https://jinshuju.net/f/DecUHn";
-const VOLUNTEER_FORM_LINK = "https://jinshuju.net/f/qrIApg";
-const SPONSER_FORM_LINK = "https://jinshuju.net/f/zMk7kx";
+const DOMESTIC_ENDPOINT = `/forms/${REACT_APP_DOMESTIC_TOKEN}/entries`;
+const FOREIGN_ENDPOINT = `/forms/${REACT_APP_FOREIGN_TOKEN}/entries`;
+const VOLUNTEER_ENDPOINT = `/forms/${REACT_APP_VOLUNTEER_TOKEN}/entries`;
+const DONATOR_ENDPOINT = `/forms/${REACT_APP_DONATOR_TOKEN}/entries`;
+const SPONSER_ENDPOINT = `/forms/${REACT_APP_SPONSER_TOKEN}/entries`;
+const DOMESTIC_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_DOMESTIC_TOKEN}`;
+const FOREIGN_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_FOREIGN_TOKEN}`;
+const VOLUNTEER_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_VOLUNTEER_TOKEN}`;
+const SPONSER_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_SPONSER_TOKEN}`;
 
 const App = () => {
   const [chart, setChart] = useState();
@@ -74,8 +81,8 @@ const App = () => {
   useEffect(() => {
     const authObj = {
       auth: {
-        username: API_KEY,
-        password: API_SECRET
+        username: REACT_APP_JINSHUJU_API_KEY,
+        password: REACT_APP_JINSHUJU_API_SECRET
       }
     };
 
@@ -215,8 +222,8 @@ const App = () => {
                 <div className="requester">
                   <div className="content">{data["field_7"]}</div>
                   <div className="requester-info">
-                    <p>{`${data["field_1"]}`}</p>
-                    <p>{`${data["field_2"]}-${data["field_3"]}`}</p>
+                    <p>{`${data["field_11"]}`}</p>
+                    <p>{`${data["field_13"]}-${data["field_15"]}`}</p>
                   </div>
                 </div>
               ))}
