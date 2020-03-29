@@ -29,6 +29,8 @@ import {
   AVAILABLE_CITIES
 } from "./common/contants";
 
+const moment = require("moment");
+
 am4core.useTheme(am4themes_animated);
 
 const {
@@ -59,6 +61,7 @@ const DONATOR_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_DONATOR_TOKEN}`;
 const App = () => {
   const [chart, setChart] = useState();
   const [maskCount, setMaskCount] = useState(0);
+  const [money, setMoney] = useState(0);
   const [helpCount, setHelpCount] = useState(0);
   const [volunteerCount, setVolunteerCount] = useState(0);
   const [domesticData, setDomesticData] = useState([]);
@@ -141,7 +144,12 @@ const App = () => {
       .get(`${API_BASE}${DONATOR_ENDPOINT}`, { ...authObj })
       .then(response => {
         const { data } = response.data;
-        setDonatorData(data);
+        setDonatorData(data.reverse());
+        setMoney(
+          data.reduce((total, currentValue) => {
+            return total + currentValue["field_12"];
+          }, 0)
+        );
       })
       .catch(error => console.log(error));
 
@@ -161,6 +169,33 @@ const App = () => {
       })
       .catch(error => console.log(error));
   }, []);
+
+  const supportInfoList = [];
+  donatorData.forEach(data => {
+    console.log(data);
+    supportInfoList.push({
+      name: data["field_1"],
+      content: `捐赠了 ${data["field_12"]} 人民币`,
+      createdAt: data["created_at"]
+    });
+  });
+
+  domesticData.forEach(data => {
+    console.log("lala[ll", data);
+    supportInfoList.push({
+      name: data["field_1"],
+      content: `捐赠了 ${data["field_5"][0]} ${data["field_10"]} 个`,
+      createdAt: data["created_at"]
+    });
+  });
+
+  supportInfoList.sort(function(a, b) {
+    a = new Date(a.createdAt);
+    b = new Date(b.createdAt);
+    return a > b ? -1 : a < b ? 1 : 0;
+  });
+
+  console.log(supportInfoList);
 
   const volunteerList = volunteerData.map(data => (
     <div className="avatar">
@@ -213,7 +248,7 @@ const App = () => {
           <div className="tile">
             <div>收到捐款</div>
             <div className="data">
-              <span className="red">3930</span>
+              <span>{money}</span>
               <span className="unit">元</span>
             </div>
           </div>
@@ -234,7 +269,7 @@ const App = () => {
           <div className="tile">
             <div>援助海外城市</div>
             <div className="data">
-              <span className="red">3</span>
+              <span>2</span>
               <span className="unit">个</span>
             </div>
           </div>
@@ -248,7 +283,42 @@ const App = () => {
         <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
         <div className="info">
           <div>
-            <div>
+            <div className="w60">
+              <table className="info-table">
+                {/* {donatorData.map(data => (
+                  <tr>
+                    <td>{data["field_1"]}</td>
+                    <td>捐赠了 {data["field_12"]} 人民币</td>
+                    <td>
+                      {moment(data["created_at"]).format("YYYY年MM月DD日")}
+                    </td>
+                  </tr>
+                ))} */}
+                {supportInfoList.map(data => (
+                  <tr>
+                    <td>{data.name}</td>
+                    <td>{data.content}</td>
+                    <td>{moment(data.createdAt).format("YYYY年MM月DD日")}</td>
+                    {/* <td>{data.createdAt}</td> */}
+                  </tr>
+                ))}
+              </table>
+            </div>
+            <div className="w40">
+              <p>我们目前急需口罩和采购口罩的资金。多少不限，请勿坐视。</p>
+              <a
+                className="btn"
+                target="_blank"
+                rel="noopener noreferrer"
+                href={DOMESTIC_FORM_LINK}
+                type="button"
+              >
+                提供援助
+              </a>
+            </div>
+          </div>
+          <div>
+            <div clasName="w40">
               <p>
                 凡华人组织和个人都可以通过这里申请口罩援助，我们会认真对待每一条申请。
               </p>
@@ -262,7 +332,7 @@ const App = () => {
                 申请援助
               </a>
             </div>
-            <div>
+            <div className="align-right w60">
               {_.sampleSize(foreignData, 2).map(data => (
                 <div className="requester">
                   <div className="content">{data["field_7"]}</div>
@@ -276,57 +346,12 @@ const App = () => {
               ))}
             </div>
           </div>
-          <div>
-            <div>
-              <table className="pure-table pure-table-striped">
-                {donatorData.map(data => (
-                  <tr>
-                    <td>{data["field_1"]}</td>
-                    <td>{data["field_7"]}</td>
-                    <td>{data["created_at"]}</td>
-                  </tr>
-                ))}
-              </table>
-            </div>
-            <div className="align-right">
-              <p>我们目前急需口罩和采购口罩的资金。多少不限，请勿坐视。</p>
-              <a
-                className="btn"
-                target="_blank"
-                rel="noopener noreferrer"
-                href={DOMESTIC_FORM_LINK}
-                type="button"
-              >
-                提供援助
-              </a>
-            </div>
-          </div>
         </div>
       </section>
       <section className="highlights">
-        <h1>援助图记</h1>
+        <h1>爱的留声机</h1>
         <p className="text">这里，是我们随手记录的一些真实瞬间。</p>
-        <Slider {...carouselSettings}>
-          {hightlightList}
-          {/* <div className="carousel-images">
-            <img src={heroine} alt="heroine"></img>
-            <img src={heroine} alt="heroine"></img>
-            <img src={heroine} alt="heroine"></img>
-            <img src={heroine} alt="heroine"></img>
-          </div>
-          <div className="carousel-images">
-            <img src={heroine} alt="heroine"></img>
-            <img src={heroine} alt="heroine"></img>
-            <img src={heroine} alt="heroine"></img>
-            <img src={heroine} alt="heroine"></img>
-          </div>
-          <div className="carousel-images">
-            <img src={heroine} alt="heroine"></img>
-            <img src={heroine} alt="heroine"></img>
-            <img src={heroine} alt="heroine"></img>
-            <img src={heroine} alt="heroine"></img>
-          </div> */}
-        </Slider>
+        <Slider {...carouselSettings}>{hightlightList}</Slider>
         <div className="volunteers">
           <div className="column left">
             <h2>默默付出着的志愿者们</h2>
