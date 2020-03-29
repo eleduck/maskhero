@@ -2,6 +2,11 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 import am4geodata_data_countries2 from "@amcharts/amcharts4-geodata/data/countries2";
+import {
+  AVAILABLE_PROVINCES,
+  AVAILABLE_COUNTIES,
+  AVAILABLE_CITIES
+} from "../common/contants";
 
 const countries = require("i18n-iso-countries");
 countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
@@ -84,14 +89,21 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
         let helpCount = 0;
         let volunteerCount = 0;
         if (domesticData.length > 0) {
-          maskCount = domesticData.filter(
-            data => countries.getNames("zh")[id] === data["field_2"]
-          ).length;
+          const list = domesticData.filter(
+            // data => countries.getNames("zh")[id] === data["field_2"]
+            () => countries.getNames("zh")[id] === "中国"
+          );
+          maskCount = list.reduce((total, currentValue) => {
+            // field_10 means masks
+            return total + currentValue["field_10"];
+          }, 0);
         }
 
         if (foreignData.length > 0) {
           helpCount = foreignData.filter(
-            data => countries.getNames("zh")[id] === data["field_2"]
+            data =>
+              countries.getNames("zh")[id] ===
+              AVAILABLE_COUNTIES[data["field_13"]].nameCN
           ).length;
         }
 

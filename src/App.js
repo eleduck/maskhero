@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
+import _ from "lodash";
 import logo from "./images/logo.png";
 import avatar from "./images/avatar.png";
 import ICBC from "./images/ICBC.png";
@@ -22,11 +23,19 @@ import "slick-carousel/slick/slick-theme.css";
 import heroine from "./images/heroine.png";
 import axios from "axios";
 
+import {
+  AVAILABLE_PROVINCES,
+  AVAILABLE_COUNTIES,
+  AVAILABLE_CITIES
+} from "./common/contants";
+
 am4core.useTheme(am4themes_animated);
 
 const {
   REACT_APP_JINSHUJU_API_KEY,
   REACT_APP_JINSHUJU_API_SECRET,
+  REACT_APP_JINSHUJU_API_FOREIGN_KEY,
+  REACT_APP_JINSHUJU_API_FOREIGN_SECRET,
   REACT_APP_DOMESTIC_TOKEN,
   REACT_APP_FOREIGN_TOKEN,
   REACT_APP_VOLUNTEER_TOKEN,
@@ -43,6 +52,7 @@ const DOMESTIC_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_DOMESTIC_TOKEN}`;
 const FOREIGN_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_FOREIGN_TOKEN}`;
 const VOLUNTEER_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_VOLUNTEER_TOKEN}`;
 const SPONSER_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_SPONSER_TOKEN}`;
+const DONATOR_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_DONATOR_TOKEN}`;
 
 const App = () => {
   const [chart, setChart] = useState();
@@ -101,7 +111,12 @@ const App = () => {
       .catch(error => console.log(error));
 
     axios
-      .get(`${API_BASE}${FOREIGN_ENDPOINT}`, { ...authObj })
+      .get(`${API_BASE}${FOREIGN_ENDPOINT}`, {
+        auth: {
+          username: REACT_APP_JINSHUJU_API_FOREIGN_KEY,
+          password: REACT_APP_JINSHUJU_API_FOREIGN_SECRET
+        }
+      })
       .then(response => {
         const { data } = response.data;
         setForeignData(data);
@@ -218,12 +233,14 @@ const App = () => {
               </a>
             </div>
             <div>
-              {foreignData.map(data => (
+              {_.sampleSize(foreignData, 2).map(data => (
                 <div className="requester">
                   <div className="content">{data["field_7"]}</div>
                   <div className="requester-info">
                     <p>{`${data["field_11"]}`}</p>
-                    <p>{`${data["field_13"]}-${data["field_15"]}`}</p>
+                    <p>{`${AVAILABLE_COUNTIES[data["field_13"]].nameCN}-${
+                      AVAILABLE_CITIES[data["field_15"]].nameCN
+                    }`}</p>
                   </div>
                 </div>
               ))}
@@ -358,7 +375,15 @@ const App = () => {
           <div className="qrcode">
             <img src={icon2} alt="qrcode" />
             <p>不在多少，但求有心</p>
-            <button type="button">爱心捐赠</button>
+            <a
+              className="btn"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={DONATOR_FORM_LINK}
+              type="button"
+            >
+              爱心捐赠
+            </a>
           </div>
           <div className="qrcode">
             <img src={icon3} alt="qrcode" />
@@ -368,7 +393,15 @@ const App = () => {
           <div className="qrcode">
             <img src={icon4} alt="qrcode" />
             <p>如果你是开发者</p>
-            <button type="button">参与开源</button>
+            <a
+              className="btn"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/eleduck/maskhero"
+              type="button"
+            >
+              参与开源
+            </a>
           </div>
         </div>
       </section>
