@@ -86,7 +86,7 @@ section {
   .text {
     font-size: 24px;
     margin-top: 10px;
-    color: #777777;
+    color: #865b5b;
   }
 }
 
@@ -114,6 +114,7 @@ button,
     p {
       font-size: 18px;
       color: #777;
+      margin-top: 80px;
       margin-bottom: 36px;
     }
 
@@ -129,6 +130,27 @@ button,
           padding-left: 20px;
         }
         width: 50%;
+      }
+    }
+
+    .w40 {
+      width: 40%;
+    }
+
+    .w60 {
+      width: 60%;
+    }
+
+    .info-table {
+      width: 100%;
+      padding: 20px 20px;
+      border: 1px solid #c4c4c4;
+      box-sizing: border-box;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 5px;
+
+      & > tr > td {
+        padding: 10px 12px;
       }
     }
 
@@ -165,7 +187,7 @@ button,
 
     .align-right {
       text-align: right;
-      padding: 30px 0px;
+      padding-top: 60px;
     }
   }
 }
