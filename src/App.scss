@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   // background-color: #f;
 }
@@ -5,6 +9,10 @@ body {
 // TODO: make red for fake data
 .red {
   color: red;
+}
+
+.mb {
+  display: none;
 }
 
 .header {
@@ -33,6 +41,10 @@ body {
 
   .logo {
     width: 160px;
+  }
+
+  .logo-mb {
+    display: none;
   }
 
   .title {
@@ -86,7 +98,7 @@ section {
   .text {
     font-size: 24px;
     margin-top: 10px;
-    color: #865b5b;
+    color: #777;
   }
 }
 
@@ -290,5 +302,227 @@ footer {
 
   img {
     width: 300px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .btn {
+    padding: 12px 32px;
+  }
+
+  .header {
+    padding: 20px;
+    padding-top: 50px;
+    text-align: center;
+
+    .logo {
+      display: none;
+    }
+    .logo-mb {
+      display: inline-block;
+      width: 30vw;
+    }
+    .title {
+      // display: none;
+      margin-top: 30px;
+      width: 80vw;
+    }
+    h1 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+    p {
+      // margin: 0 auto;
+      width: 100%;
+      margin: 0 auto;
+      margin-top: 30px;
+      text-align: left;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 18px;
+      letter-spacing: -0.015em;
+    }
+    .wrapper {
+      margin-top: 20px;
+      margin-bottom: 60px;
+      text-align: center;
+
+      .tile {
+        margin: 12px;
+        margin-top: 20px;
+        font-size: 18px;
+        text-align: left;
+        .data {
+          padding: 0px;
+        }
+
+        .data {
+          font-size: 30px;
+          .unit {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+
+  section {
+    padding: 20px;
+    h1 {
+      font-size: 32px;
+    }
+    .text {
+      font-size: 16px;
+    }
+  }
+
+  .support {
+    padding: 20px;
+    #chartdiv {
+      margin-top: -140px;
+      margin-bottom: 20px;
+    }
+
+    .info {
+      display: block;
+      & > * {
+        display: block;
+        // flex-direction: row;
+
+        & > * {
+          &:first-child {
+            padding-right: 0px;
+          }
+          &:last-child {
+            padding-left: 0px;
+          }
+          width: auto;
+        }
+      }
+
+      .info-table {
+        padding: 10px;
+        font-size: 12px;
+        & > tr > td {
+          padding: 3px 5px;
+        }
+      }
+
+      p {
+        font-size: 16px;
+        margin-top: 20px;
+        margin-bottom: 15px;
+      }
+
+      .requester {
+        position: relative;
+        border-radius: 4px;
+      }
+
+      .align-right {
+        text-align: left;
+        padding-top: 20px;
+
+        .content {
+          min-height: 80px;
+          width: 100%;
+        }
+
+        .requester-info {
+          position: absolute;
+          right: 20px;
+          bottom: 5px;
+          font-size: 12px;
+          width: 100%;
+          text-align: right;
+
+          p {
+            display: inline-block;
+          }
+        }
+
+        .mb {
+          display: block;
+        }
+      }
+    }
+    .w40,
+    .w60 {
+      width: 100% !important;
+    }
+    .dt.w40 {
+      display: none;
+    }
+  }
+
+  .highlights {
+    .volunteers {
+      flex-direction: column;
+      .column.left,
+      .column.right {
+        width: 100%;
+        padding: 0;
+      }
+
+      .column.right {
+        text-align: center;
+      }
+
+      .avatar {
+        width: 18% !important;
+        margin-left: 0px !important;
+        padding-left: 0px !important;
+      }
+    }
+  }
+
+  .sponsers center {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #777777;
+    font-size: 14px;
+
+    span {
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+  }
+
+  .helpus {
+    .text {
+      margin-bottom: 30px;
+    }
+
+    .qrcodes {
+      flex-direction: column;
+
+      .qrcode {
+        position: relative;
+        display: flex;
+        width: 100%;
+        text-align: center;
+
+        img {
+          width: 70px;
+          height: 70px;
+        }
+
+        p {
+          position: absolute;
+          margin: 0px;
+          top: 5px;
+          left: 90px;
+          color: #777;
+        }
+
+        .btn {
+          position: absolute;
+          padding: 5px 10px;
+          bottom: 10px;
+          left: 90px;
+        }
+      }
+    }
   }
 }

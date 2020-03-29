@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import _ from "lodash";
 import logo from "./images/logo.png";
+import logomb from "./images/logomb.png";
 import avatar from "./images/avatar.png";
 import ICBC from "./images/ICBC.png";
 import icon1 from "./images/icon1.png";
@@ -172,7 +173,6 @@ const App = () => {
 
   const supportInfoList = [];
   donatorData.forEach(data => {
-    console.log(data);
     supportInfoList.push({
       name: data["field_1"],
       content: `捐赠了 ${data["field_12"]} 人民币`,
@@ -181,7 +181,6 @@ const App = () => {
   });
 
   domesticData.forEach(data => {
-    console.log("lala[ll", data);
     supportInfoList.push({
       name: data["field_1"],
       content: `捐赠了 ${data["field_5"][0]} ${data["field_10"]} 个`,
@@ -229,13 +228,14 @@ const App = () => {
     <div className="app">
       <header className="header">
         <img src={logo} className="logo" alt="logo" />
+        <img src={logomb} className="logo-mb" alt="logo" />
         <img src={title} className="title" alt="title" />
         <h1>海外的亲们，是时候让我们陪你们打下半场了！</h1>
         <p>
           这场疫情，国内打下半场，国外打下半场，海外华人打全场。”这话于国内的我们而言是段子，于国外的你们是猝不及防的遭遇。
           在倾力支援国内之后，异国他乡的土地上的你们，除了对抗病毒本身，还要替我们承受“Chinese
           Virus”的污名乃至这背后的威胁、暴力。
-          这一切，国内的亲们，不会坐视。岂曰无衣，与子同袍！我们一起来打下半场。
+          这一切，国内的亲们，不会坐视。岂曰无衣，与子同袍！我们一起来打下半场。点此查看我们正在做的>>>
         </p>
         <div className="wrapper">
           <div className="tile">
@@ -304,7 +304,7 @@ const App = () => {
                 ))}
               </table>
             </div>
-            <div className="w40">
+            <div className="w40 dt">
               <p>我们目前急需口罩和采购口罩的资金。多少不限，请勿坐视。</p>
               <a
                 className="btn"
@@ -318,7 +318,7 @@ const App = () => {
             </div>
           </div>
           <div>
-            <div clasName="w40">
+            <div className="w40">
               <p>
                 凡华人组织和个人都可以通过这里申请口罩援助，我们会认真对待每一条申请。
               </p>
@@ -326,7 +326,8 @@ const App = () => {
                 className="btn"
                 target="_blank"
                 rel="noopener noreferrer"
-                href={FOREIGN_FORM_LINK}
+                // href={FOREIGN_FORM_LINK}
+                href={"https://jinshuju.net/f/sIDktA"}
                 type="button"
               >
                 申请援助
@@ -344,6 +345,21 @@ const App = () => {
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="mb">
+              <p>
+                凡华人组织和个人都可以通过这里申请口罩援助，我们会认真对待每一条申请。
+              </p>
+              <a
+                className="btn"
+                target="_blank"
+                rel="noopener noreferrer"
+                // href={FOREIGN_FORM_LINK}
+                href={"https://jinshuju.net/f/sIDktA"}
+                type="button"
+              >
+                申请援助
+              </a>
             </div>
           </div>
         </div>
@@ -397,7 +413,7 @@ const App = () => {
         </div>
         <center>
           <span>
-            与子偕行，共赴国殇！这次行动中，以下这些无私有爱的合作伙伴们，也在发光发热。
+            我们的力量总归有限，真心的邀请其他公司/组织/品牌/等合作共建，帮助到更多的海外华人。
           </span>
           <a
             className="btn"
@@ -444,7 +460,15 @@ const App = () => {
           <div className="qrcode">
             <img src={icon3} alt="qrcode" />
             <p>转发就是很好的支持</p>
-            <button type="button">分享</button>
+            <a
+              className="btn"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/eleduck/maskhero"
+              type="button"
+            >
+              分享
+            </a>
           </div>
           <div className="qrcode">
             <img src={icon4} alt="qrcode" />

@@ -15,6 +15,7 @@ console.log(countries.getNames("zh"));
 
 // temp function
 export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
+  chart.responsive.enabled = true;
   chart.projection = new am4maps.projections.Miller();
 
   // Create map polygon series for world map
