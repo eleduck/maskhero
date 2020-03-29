@@ -40,7 +40,8 @@ const {
   REACT_APP_FOREIGN_TOKEN,
   REACT_APP_VOLUNTEER_TOKEN,
   REACT_APP_DONATOR_TOKEN,
-  REACT_APP_SPONSER_TOKEN
+  REACT_APP_SPONSER_TOKEN,
+  REACT_APP_HIGHLIGHT_TOKEN
 } = process.env;
 const API_BASE = "https://jinshuju.net/api/v1";
 const DOMESTIC_ENDPOINT = `/forms/${REACT_APP_DOMESTIC_TOKEN}/entries`;
@@ -48,6 +49,7 @@ const FOREIGN_ENDPOINT = `/forms/${REACT_APP_FOREIGN_TOKEN}/entries`;
 const VOLUNTEER_ENDPOINT = `/forms/${REACT_APP_VOLUNTEER_TOKEN}/entries`;
 const DONATOR_ENDPOINT = `/forms/${REACT_APP_DONATOR_TOKEN}/entries`;
 const SPONSER_ENDPOINT = `/forms/${REACT_APP_SPONSER_TOKEN}/entries`;
+const HIGHLIGHT_ENDPOINT = `/forms/${REACT_APP_HIGHLIGHT_TOKEN}/entries`;
 const DOMESTIC_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_DOMESTIC_TOKEN}`;
 const FOREIGN_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_FOREIGN_TOKEN}`;
 const VOLUNTEER_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_VOLUNTEER_TOKEN}`;
@@ -64,11 +66,13 @@ const App = () => {
   const [volunteerData, setVolunteerData] = useState([]);
   const [donatorData, setDonatorData] = useState([]);
   const [sponserData, setSponserData] = useState([]);
+  const [highlightData, setHighLightData] = useState([]);
 
   const carouselSettings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    initialSlide: 0,
+    speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1
   };
@@ -148,6 +152,14 @@ const App = () => {
         setSponserData(data);
       })
       .catch(error => console.log(error));
+
+    axios
+      .get(`${API_BASE}${HIGHLIGHT_ENDPOINT}`, { ...authObj })
+      .then(response => {
+        const { data } = response.data;
+        setHighLightData(data);
+      })
+      .catch(error => console.log(error));
   }, []);
 
   const volunteerList = volunteerData.map(data => (
@@ -156,6 +168,27 @@ const App = () => {
       <div className="cover"></div>
     </div>
   ));
+
+  const hightlightList = [];
+  let images = [];
+  highlightData.forEach((data, index) => {
+    if (index % 4 === 0) {
+      images = [
+        <img style={{ opacity: 0 }} src="" alt="empty" />,
+        <img style={{ opacity: 0 }} src="" alt="empty" />,
+        <img style={{ opacity: 0 }} src="" alt="empty" />,
+        <img style={{ opacity: 0 }} src="" alt="empty" />
+      ];
+    }
+    images[index % 4] = <img src={data["field_11"][0]} alt="empty" />;
+    if (index % 4 === 3 || index === highlightData.length - 1) {
+      hightlightList.unshift(
+        <div key={`hl-${index}`} className="carousel-images">
+          {images}
+        </div>
+      );
+    }
+  });
 
   return (
     <div className="app">
@@ -274,7 +307,8 @@ const App = () => {
         <h1>援助图记</h1>
         <p className="text">这里，是我们随手记录的一些真实瞬间。</p>
         <Slider {...carouselSettings}>
-          <div className="carousel-images">
+          {hightlightList}
+          {/* <div className="carousel-images">
             <img src={heroine} alt="heroine"></img>
             <img src={heroine} alt="heroine"></img>
             <img src={heroine} alt="heroine"></img>
@@ -291,7 +325,7 @@ const App = () => {
             <img src={heroine} alt="heroine"></img>
             <img src={heroine} alt="heroine"></img>
             <img src={heroine} alt="heroine"></img>
-          </div>
+          </div> */}
         </Slider>
         <div className="volunteers">
           <div className="column left">
