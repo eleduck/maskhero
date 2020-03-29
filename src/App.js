@@ -150,15 +150,12 @@ const App = () => {
       .catch(error => console.log(error));
   }, []);
 
-  const list = [];
-  for (let i = 0; i < 16; i++) {
-    list.push(
-      <div className="avatar">
-        <img src={avatar} alt="avatar" />
-        <div className="cover"></div>
-      </div>
-    );
-  }
+  const volunteerList = volunteerData.map(data => (
+    <div className="avatar">
+      <img src={data["x_field_weixin_headimgurl"] || avatar} alt="avatar" />
+      <div className="cover"></div>
+    </div>
+  ));
 
   return (
     <div className="app">
@@ -314,7 +311,7 @@ const App = () => {
               加入我们
             </a>
           </div>
-          <div className="column right">{list}</div>
+          <div className="column right">{volunteerList}</div>
         </div>
       </section>
       <section className="sponsers">
