@@ -2,6 +2,11 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: "DINAlternate-Bold";
+  src: url("/public/DINAlternate-Bold.woff") format("woff");
+}
+
 body {
   // background-color: #f;
 }
@@ -17,15 +22,16 @@ body {
 
 .header {
   background-color: #e5e5e5;
-  background-image: url(./images/bg.jpg);
+  background-image: url(./images/bg.png);
   background-size: cover;
-  padding: 40px 80px;
+  padding: 68px 150px 10px 150px;
   color: #fff;
 
   h1 {
     font-weight: normal;
-    font-size: 32px;
-    line-height: 80px;
+    font-size: 24px;
+    line-height: 60px;
+    margin-top: 10px;
     margin-bottom: 0px;
   }
 
@@ -34,13 +40,13 @@ body {
     margin-top: 0px;
     font-weight: normal;
     line-height: 40px;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     letter-spacing: -0.015em;
   }
 
   .logo {
-    width: 160px;
+    width: 138px;
   }
 
   .logo-mb {
@@ -48,8 +54,8 @@ body {
   }
 
   .title {
-    margin-top: 5px;
-    margin-left: 15px;
+    margin-top: 43px;
+    margin-left: 10px;
     display: block;
   }
 
@@ -67,16 +73,17 @@ body {
     .tile {
       margin-right: 40px;
       display: inline-block;
-      font-size: 24px;
+      font-size: 16px;
 
       .data {
-        padding: 10px 5px 30px 0px;
-        font-size: 52px;
-        color: #f9ba48;
+        font-family: "DINAlternate-Bold";
+        padding: 10px 50px 30px 0px;
+        font-size: 56px;
+        color: #ffdc5f;
 
         .unit {
           margin-left: 5px;
-          font-size: 24px;
+          font-size: 16px;
         }
       }
     }
@@ -84,20 +91,19 @@ body {
 }
 
 section {
-  padding: 50px;
+  padding: 24px 162px;
 
   h1 {
     margin: 0;
     display: inline-block;
-    font-size: 32px;
+    font-size: 24px;
     padding-bottom: 10px;
     border-bottom: 6px solid #f9ba48;
-    font-weight: normal;
   }
 
   .text {
-    font-size: 24px;
-    margin-top: 10px;
+    font-size: 18px;
+    margin-top: 8px;
     color: #777;
   }
 }
@@ -106,7 +112,7 @@ button,
 .btn {
   display: inline-block;
   background-color: #f9ba48;
-  padding: 16px 52px;
+  padding: 12px 39px;
   color: white;
   font-size: 16px;
   border-radius: 4px;
@@ -122,12 +128,17 @@ button,
   .info {
     display: flex;
     flex-direction: column;
+    font-size: 13px;
 
     p {
-      font-size: 18px;
+      font-size: 14px;
       color: #777;
       margin-top: 80px;
       margin-bottom: 36px;
+    }
+
+    .support-column {
+      text-align: right;
     }
 
     & > * {
@@ -181,15 +192,15 @@ button,
         background: #f1f1f1;
         border-radius: 20px;
         padding: 3%;
-        font-size: 16px;
-        width: 60%;
+        font-size: 13px;
+        width: 70%;
       }
 
       .requester-info {
         padding-left: 4%;
         color: #777;
         width: 30%;
-        font-size: 16px;
+        font-size: 13px;
 
         p {
           margin: 0;
@@ -224,7 +235,7 @@ button,
     color: #777777;
 
     h2 {
-      font-size: 24px;
+      font-size: 18px;
       margin-bottom: 30px;
       color: #000;
     }
@@ -244,9 +255,9 @@ button,
       }
 
       p {
-        line-height: 30px;
-        font-size: 18px;
-        margin-bottom: 35px;
+        line-height: 22px;
+        font-size: 14px;
+        margin-bottom: 25px;
       }
 
       .avatar {
@@ -258,6 +269,7 @@ button,
         img {
           margin-top: 10px;
           width: 100%;
+          border-radius: 50%;
         }
       }
     }
@@ -290,6 +302,14 @@ button,
     .qrcode {
       width: 30%;
       text-align: center;
+
+      img {
+        width: 20%;
+      }
+
+      p {
+        color: #777;
+      }
     }
   }
 }

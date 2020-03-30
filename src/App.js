@@ -270,7 +270,7 @@ const App = () => {
         </p>
         <div className="wrapper">
           <div className="tile">
-            <div className="name">捐赠口罩</div>
+            <div className="name">援助口罩</div>
             <div className="data">
               {maskCount}
               <span className="unit">个</span>
@@ -307,7 +307,7 @@ const App = () => {
         </div>
       </header>
       <section className="support">
-        <h1>援助信息</h1>
+        <h1>援助地图</h1>
         <p className="text">
           我们正在以城市为单位，接收海外华人的援助申请，同时在国内募集物资，实施援助。
         </p>
@@ -335,7 +335,7 @@ const App = () => {
                 ))}
               </table>
             </div>
-            <div className="w40 dt">
+            <div className="w40 dt support-column">
               <p>我们目前急需口罩和采购口罩的资金。多少不限，请勿坐视。</p>
               <a
                 className="btn"
@@ -395,10 +395,10 @@ const App = () => {
           </div>
         </div>
       </section>
-      {/* <section className="highlights">
+      <section className="highlights">
         <h1>爱的留声机</h1>
-        <p className="text">这里，是我们随手记录的一些真实瞬间。</p>
-        <Slider {...carouselSettings}>{hightlightList}</Slider>
+        {/* <p className="text">这里，是我们随手记录的一些真实瞬间。</p> */}
+        {/* <Slider {...carouselSettings}>{hightlightList}</Slider> */}
         <div className="volunteers">
           <div className="column left">
             <h2>默默付出着的志愿者们</h2>
@@ -419,7 +419,7 @@ const App = () => {
           </div>
           <div className="column right">{volunteerList}</div>
         </div>
-      </section> */}
+      </section>
       <section className="sponsers">
         <h1>值得尊敬的伙伴们</h1>
         <p className="text">
