@@ -2,6 +2,7 @@
   "name": "maskhero",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/maskhero",
   "dependencies": {
     "@amcharts/amcharts4": "^4.9.11",
     "@amcharts/amcharts4-geodata": "^4.1.12",

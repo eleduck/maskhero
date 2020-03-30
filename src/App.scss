@@ -193,13 +193,13 @@ button,
         border-radius: 20px;
         padding: 3%;
         font-size: 13px;
-        width: 70%;
+        width: 80%;
       }
 
       .requester-info {
         padding-left: 4%;
         color: #777;
-        width: 30%;
+        width: 20%;
         font-size: 13px;
 
         p {
@@ -209,7 +209,8 @@ button,
     }
 
     .align-right {
-      text-align: right;
+      // text-align: right;
+      margin-left: 20px;
       padding-top: 60px;
     }
   }
