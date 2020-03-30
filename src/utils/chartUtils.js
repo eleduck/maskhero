@@ -19,6 +19,11 @@ console.log(countries.getNames("zh"));
 export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
   chart.responsive.enabled = true;
   chart.projection = new am4maps.projections.Miller();
+  chart.seriesContainer.draggable = false;
+  chart.seriesContainer.resizable = false;
+  chart.maxZoomLevel = 1;
+  chart.seriesContainer.events.disableType("doublehit");
+  chart.chartContainer.background.events.disableType("doublehit");
 
   // Create map polygon series for world map
   let worldSeries = chart.series.push(new am4maps.MapPolygonSeries());
@@ -94,19 +99,9 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
 
   // Set up data for countries
   let data = [];
-  console.log(am4geodata_data_countries2);
   for (let id in am4geodata_data_countries2) {
     if (am4geodata_data_countries2.hasOwnProperty(id)) {
       let country = am4geodata_data_countries2[id];
-
-      if (id === "TW") {
-        console.log("ttww", country);
-        // data.push({
-        //   id: id,
-        //   color: chart.colors.getIndex(2)
-        // });
-      }
-
       let maskCount = 0;
       let helpCount = 0;
       let volunteerCount = 0;
@@ -143,7 +138,7 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
           color:
             // TODO: Maybe need a color strategy
             maskCount > 0 || helpCount > 0 || volunteerCount > 0 || id === "TW"
-              ? chart.colors.getIndex(2)
+              ? am4core.color("#F9BA48")
               : chart.colors.getIndex(0),
           maskCount,
           helpCount,
@@ -153,7 +148,7 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
       } else if (id === "TW") {
         data.push({
           id: id,
-          color: chart.colors.getIndex(2),
+          color: am4core.color("#F9BA48"),
           maskCount: 0,
           helpCount: 0,
           volunteerCount: 0
@@ -162,9 +157,6 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
     }
   }
   worldSeries.data = data;
-  console.log(worldSeries.data);
-
-  console.log(countrySeries.data);
 
   // Zoom control
   chart.zoomControl = new am4maps.ZoomControl();

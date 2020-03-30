@@ -325,6 +325,8 @@ const App = () => {
           这场疫情，国内打下半场，国外打下半场，海外华人打全场。”这话于国内的我们而言是段子，于国外的你们是猝不及防的遭遇。
           在倾力支援国内之后，异国他乡的土地上的你们，除了对抗病毒本身，还要替我们承受“Chinese
           Virus”的污名乃至这背后的威胁、暴力。
+        </p>
+        <p className="second">
           这一切，国内的亲们，不会坐视。岂曰无衣，与子同袍！我们一起来打下半场。点此查看我们正在做的>>>
         </p>
         <div className="wrapper">
@@ -365,6 +367,47 @@ const App = () => {
           </div>
         </div>
       </header>
+      <div className="wrapper-mb">
+        <h1>截止目前为止，我们已经</h1>
+        <div className="tile">
+          <div className="name">援助口罩</div>
+          <div className="data">
+            {maskCount}
+            <span className="unit">个</span>
+          </div>
+        </div>
+        <div className="split"></div>
+        <div className="tile">
+          <div className="name">收到捐款</div>
+          <div className="data">
+            <span>{money}</span>
+            <span className="unit">元</span>
+          </div>
+        </div>
+        <div className="split"></div>
+        <div className="tile">
+          <div className="name">求助信息</div>
+          <div className="data">
+            {helpCount}
+            <span className="unit">条</span>
+          </div>
+        </div>
+        <div className="tile">
+          <div className="name">志愿者</div>
+          <div className="data">
+            {volunteerCount}
+            <span className="unit">人</span>
+          </div>
+        </div>
+        <div className="split"></div>
+        <div className="tile">
+          <div className="name">援助海外城市</div>
+          <div className="data">
+            <span>2</span>
+            <span className="unit">个</span>
+          </div>
+        </div>
+      </div>
       <section className="support">
         <h1>援助地图</h1>
         <p className="text">
@@ -372,18 +415,9 @@ const App = () => {
         </p>
         <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
         <div className="info">
-          <div>
+          <div className="row-1">
             <div className="w60">
               <table className="info-table">
-                {/* {donatorData.map(data => (
-                  <tr>
-                    <td>{data["field_1"]}</td>
-                    <td>捐赠了 {data["field_12"]} 人民币</td>
-                    <td>
-                      {moment(data["created_at"]).format("YYYY年MM月DD日")}
-                    </td>
-                  </tr>
-                ))} */}
                 {supportInfoList.slice(0, 5).map(data => (
                   <tr>
                     <td>{data.name}</td>
@@ -393,6 +427,15 @@ const App = () => {
                   </tr>
                 ))}
               </table>
+              <a
+                className="btn-mb"
+                target="_blank"
+                rel="noopener noreferrer"
+                href={DOMESTIC_FORM_LINK}
+                type="button"
+              >
+                提供援助
+              </a>
             </div>
             <div className="w40 dt support-column">
               <p>我们目前急需口罩和采购口罩的资金。多少不限，请勿坐视。</p>
@@ -407,7 +450,7 @@ const App = () => {
               </a>
             </div>
           </div>
-          <div>
+          <div className="row-2">
             <div className="w40">
               <p>
                 凡华人组织和个人都可以通过这里申请口罩援助，我们会认真对待每一条申请。
@@ -442,6 +485,16 @@ const App = () => {
               </p>
               <a
                 className="btn"
+                target="_blank"
+                rel="noopener noreferrer"
+                // href={FOREIGN_FORM_LINK}
+                href={"https://jinshuju.net/f/sIDktA"}
+                type="button"
+              >
+                申请援助
+              </a>
+              <a
+                className="btn-mb"
                 target="_blank"
                 rel="noopener noreferrer"
                 // href={FOREIGN_FORM_LINK}
