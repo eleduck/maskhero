@@ -168,6 +168,7 @@ button,
 
     .requester {
       margin: 10px 0;
+      margin-left: 100px;
 
       .content,
       .requester-info {
@@ -182,7 +183,7 @@ button,
         border-radius: 20px;
         padding: 3%;
         font-size: 16px;
-        width: 60%;
+        width: 70%;
       }
 
       .requester-info {
@@ -198,7 +199,7 @@ button,
     }
 
     .align-right {
-      text-align: right;
+      text-align: left;
       padding-top: 60px;
     }
   }
