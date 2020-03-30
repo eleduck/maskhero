@@ -45,7 +45,8 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
   });
 
   let countryPolygon = countrySeries.mapPolygons.template;
-  countryPolygon.tooltipText = "{name}: \n 口罩送达：{maskCount}";
+  countryPolygon.tooltipText =
+    "{name}: \n 捐赠口罩: {maskCount} \n 求助信息：{helpCount} \n 志愿者：{volunteerCount} 个";
   countryPolygon.nonScalingStroke = true;
   countryPolygon.strokeOpacity = 0.5;
   countryPolygon.fill = am4core.color("#eee");
@@ -54,31 +55,40 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
   hs.properties.fill = chart.colors.getIndex(9);
 
   // Set up click events
-  worldPolygon.events.on("hit", function(ev) {
-    ev.target.series.chart.zoomToMapObject(ev.target);
-    let map = ev.target.dataItem.dataContext.map;
-    if (map) {
-      ev.target.isHover = false;
-      countrySeries.geodataSource.url =
-        "https://www.amcharts.com/lib/4/geodata/json/" + map + ".json";
-      countrySeries.geodataSource.load();
-      // wrong event
-      // countrySeries.geodataSource.events.on("done", ev => {
-      //   for (let id in countrySeries.data) {
-      //     countrySeries.data[id].maskCount = Math.round(Math.random() * 10);
-      //   }
-      // });
-      // TODO: Workaround. need to find out data loaded event or callback to inject custom data;
-      setTimeout(() => {
-        for (let id in countrySeries.data) {
-          console.log(id);
-          console.log(countrySeries.data[id]);
-          countrySeries.data[id].maskCount = Math.round(Math.random() * 10);
-          console.log(countrySeries.data);
-        }
-      }, 2000);
-    }
-  });
+  // worldPolygon.events.on("hit", function(ev) {
+  //   ev.target.series.chart.zoomToMapObject(ev.target);
+  //   let map = ev.target.dataItem.dataContext.map;
+  //   if (map) {
+  //     ev.target.isHover = false;
+  //     countrySeries.geodataSource.url =
+  //       "https://www.amcharts.com/lib/4/geodata/json/" + map + ".json";
+  //     countrySeries.geodataSource.load();
+  //     // wrong event
+  //     countrySeries.geodataSource.events.on("done", ev => {
+  //       console.log("done");
+  //       // console.log(countrySeries);
+  //       // console.log(ev);
+  //       // TODO: Workaround
+  //       setTimeout(() => {
+  //         console.log("data", countrySeries.data);
+  //       }, 500);
+  //       for (let id in countrySeries.data) {
+  //         console.log("id", id);
+  //         // console.log("data", countrySeries.data[id]);
+  //         // countrySeries.data[id].maskCount = Math.round(Math.random() * 10);
+  //       }
+  //     });
+  //     // TODO: Workaround. need to find out data loaded event or callback to inject custom data;
+  //     // setTimeout(() => {
+  //     //   for (let id in countrySeries.data) {
+  //     //     console.log("id", countrySeries.data[id]);
+  //     //     console.log("data", countrySeries.data);
+  //     //     countrySeries.data[id].maskCount = Math.round(Math.random() * 10);
+  //     //     console.log(countrySeries.data);
+  //     //   }
+  //     // }, 2000);
+  //   }
+  // });
 
   // Set up data for countries
   let data = [];
@@ -110,7 +120,8 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
 
         if (volunteerData.length > 0) {
           volunteerCount = volunteerData.filter(
-            data => countries.getNames("zh")[id] === data["field_3"]
+            data =>
+              countries.getNames("zh")[id] === data["x_field_weixin_country"]
           ).length;
         }
 

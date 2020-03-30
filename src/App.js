@@ -364,7 +364,7 @@ const App = () => {
           </div>
         </div>
       </section>
-      <section className="highlights">
+      {/* <section className="highlights">
         <h1>爱的留声机</h1>
         <p className="text">这里，是我们随手记录的一些真实瞬间。</p>
         <Slider {...carouselSettings}>{hightlightList}</Slider>
@@ -388,7 +388,7 @@ const App = () => {
           </div>
           <div className="column right">{volunteerList}</div>
         </div>
-      </section>
+      </section> */}
       <section className="sponsers">
         <h1>值得尊敬的伙伴们</h1>
         <p className="text">
@@ -457,7 +457,7 @@ const App = () => {
               爱心捐赠
             </a>
           </div>
-          <div className="qrcode">
+          {/* <div className="qrcode">
             <img src={icon3} alt="qrcode" />
             <p>转发就是很好的支持</p>
             <a
@@ -469,7 +469,7 @@ const App = () => {
             >
               分享
             </a>
-          </div>
+          </div> */}
           <div className="qrcode">
             <img src={icon4} alt="qrcode" />
             <p>如果你是开发者</p>
