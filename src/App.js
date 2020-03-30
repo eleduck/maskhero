@@ -150,7 +150,8 @@ const App = () => {
             console.log("res", fData.concat(data));
 
             let res = fData.concat(data);
-            res = res.filter(r => !_.isEmpty(r.field_7));
+            // res = res.filter(r => !_.isEmpty(r.field_7));
+
             setForeignData(res);
             setHelpCount(fCount + data.length);
           })
@@ -251,6 +252,8 @@ const App = () => {
       );
     }
   });
+
+  const filteredData = foreignData.filter(r => !_.isEmpty(r.field_7));
 
   return (
     <div className="app">
@@ -362,7 +365,7 @@ const App = () => {
               </a>
             </div>
             <div className="align-right w60">
-              {_.sampleSize(foreignData, 2).map(data => (
+              {_.sampleSize(filteredData, 2).map(data => (
                 <div className="requester">
                   <div className="content">{data["field_7"]}</div>
                   <div className="requester-info">

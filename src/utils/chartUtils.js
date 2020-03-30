@@ -111,6 +111,7 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
         }
 
         if (foreignData.length > 0) {
+          console.log(foreignData);
           helpCount = foreignData.filter(
             data =>
               countries.getNames("zh")[id] ===
