@@ -108,7 +108,7 @@ section {
   }
 }
 
-button,
+button.btn,
 .btn {
   display: inline-block;
   background-color: #f9ba48;
@@ -220,10 +220,10 @@ button,
   .carousel-images {
     display: flex !important;
     justify-content: space-between;
-    img {
+    div {
       display: inline-block;
-      height: 20vw;
-      width: 20vw;
+      height: 19vw;
+      width: 19vw;
     }
   }
 

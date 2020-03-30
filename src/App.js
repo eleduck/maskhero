@@ -24,6 +24,8 @@ import "slick-carousel/slick/slick-theme.css";
 import heroine from "./images/heroine.png";
 import axios from "axios";
 
+import Carousel, { Modal, ModalGateway } from "react-images";
+
 import {
   AVAILABLE_PROVINCES,
   AVAILABLE_COUNTIES,
@@ -74,6 +76,36 @@ const App = () => {
   const [donatorData, setDonatorData] = useState([]);
   const [sponserData, setSponserData] = useState([]);
   const [highlightData, setHighLightData] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const toggleModal = index => {
+    setModalIsOpen(!modalIsOpen);
+    setSelectedIndex(index);
+  };
+
+  const delta = 6;
+  let startX;
+  let startY;
+  let drag = false;
+  const handleTouchStart = event => {
+    drag = false;
+    startX = event.pageX;
+    startY = event.pageY;
+  };
+
+  const handleTouchMove = event => {
+    drag = true;
+  };
+
+  const handleTouchEnd = (event, index) => {
+    console.log("00", event, index);
+    const diffX = Math.abs(event.pageX - startX);
+    const diffY = Math.abs(event.pageY - startY);
+    if (diffX < delta && diffY < delta) {
+      toggleModal(index);
+    }
+  };
 
   const carouselSettings = {
     dots: true,
@@ -243,7 +275,29 @@ const App = () => {
         <img style={{ opacity: 0 }} src="" alt="empty" />
       ];
     }
-    images[index % 4] = <img src={data["field_11"][0]} alt="empty" />;
+    images[index % 4] = (
+      <div
+        style={{
+          backgroundImage: `url(${data["field_11"][0]})`,
+          // width: "18vw",
+          // height: "18vw",
+          backgroundSize: "cover"
+        }}
+        className="carousel-img"
+        src={data["field_11"][0]}
+        alt="empty"
+        onTouchStart={handleTouchStart}
+        onMouseDown={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onMouseMove={handleTouchMove}
+        onTouchEnd={e => {
+          handleTouchEnd(e, index);
+        }}
+        onMouseUp={e => {
+          handleTouchEnd(e, index);
+        }}
+      ></div>
+    );
     if (index % 4 === 3 || index === highlightData.length - 1) {
       hightlightList.unshift(
         <div key={`hl-${index}`} className="carousel-images">
@@ -254,6 +308,11 @@ const App = () => {
   });
 
   const filteredData = foreignData.filter(r => !_.isEmpty(r.field_7));
+  const imageCa = highlightData.map(h => {
+    return { source: h["field_11"][0] };
+  });
+
+  console.log("ca", imageCa);
 
   return (
     <div className="app">
@@ -325,7 +384,7 @@ const App = () => {
                     </td>
                   </tr>
                 ))} */}
-                {supportInfoList.map(data => (
+                {supportInfoList.slice(0, 5).map(data => (
                   <tr>
                     <td>{data.name}</td>
                     <td>{data.content}</td>
@@ -365,7 +424,7 @@ const App = () => {
               </a>
             </div>
             <div className="align-right w60">
-              {_.sampleSize(filteredData, 2).map(data => (
+              {_.sampleSize(filteredData, 3).map(data => (
                 <div className="requester">
                   <div className="content">{data["field_7"]}</div>
                   <div className="requester-info">
@@ -397,8 +456,15 @@ const App = () => {
       </section>
       <section className="highlights">
         <h1>爱的留声机</h1>
-        {/* <p className="text">这里，是我们随手记录的一些真实瞬间。</p> */}
-        {/* <Slider {...carouselSettings}>{hightlightList}</Slider> */}
+        <p className="text">这里，是我们随手记录的一些真实瞬间。</p>
+        <Slider {...carouselSettings}>{hightlightList}</Slider>
+        <ModalGateway>
+          {modalIsOpen ? (
+            <Modal onClose={toggleModal}>
+              <Carousel currentIndex={selectedIndex} views={imageCa} />
+            </Modal>
+          ) : null}
+        </ModalGateway>
         <div className="volunteers">
           <div className="column left">
             <h2>默默付出着的志愿者们</h2>
