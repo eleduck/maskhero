@@ -10,13 +10,16 @@ require 'mina/git'
 #   branch       - Branch name to deploy. (needed by mina/git)
 
 set :application_name, 'maskhero'
-set :domain, 'baibonjwa.com'
-set :deploy_to, '/var/www/maskhero'
+# asuna
+# set :domain, '47.105.176.154'
+# mipha
+set :domain, '118.190.55.251'
+set :deploy_to, '/home/deploy/maskhero'
 set :repository, 'git@github.com:eleduck/maskhero.git'
 set :branch, 'develop'
 
 # Optional settings:
-set :user, 'happybai'          # Username in the server to SSH to.
+set :user, 'deploy'          # Username in the server to SSH to.
 #   set :port, '30000'           # SSH port number.
 #   set :forward_agent, true     # SSH forward_agent.
 
@@ -66,7 +69,7 @@ task :deploy do
     invoke :'deploy:link_shared_paths'
 
     command "yarn install"
-    command "yarn build"
+    # command "yarn build"
 
     invoke :'deploy:cleanup'
 

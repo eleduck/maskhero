@@ -426,21 +426,9 @@ const App = () => {
           与子偕行，共赴国殇！这次行动中，以下这些无私有爱的合作伙伴们，也在发光发热。
         </p>
         <div>
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
-          <img className="sponser" src={ICBC} alt="icbc" />
+          {sponserData.map(sponser => (
+            <img className="sponser" src={sponser["field_11"][0]} alt="icbc" />
+          ))}
         </div>
         <center>
           <span>
