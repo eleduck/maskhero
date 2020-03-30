@@ -59,6 +59,9 @@ const VOLUNTEER_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_VOLUNTEER_TOKEN}
 const SPONSER_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_SPONSER_TOKEN}`;
 const DONATOR_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_DONATOR_TOKEN}`;
 
+// TODO: workaround
+const TEMP_ENDPOINT = "/forms/Ukw1aQ/entries";
+
 const App = () => {
   const [chart, setChart] = useState();
   const [maskCount, setMaskCount] = useState(0);
@@ -127,8 +130,35 @@ const App = () => {
       })
       .then(response => {
         const { data } = response.data;
-        setForeignData(data);
-        setHelpCount(data.length);
+        // setForeignData(data);
+        // setHelpCount(data.length);
+
+        // TODO: workaround to combine two api data into one
+        let fData = data;
+        let fCount = data.length;
+        axios
+          .get(`${API_BASE}${TEMP_ENDPOINT}`, {
+            auth: {
+              username: REACT_APP_JINSHUJU_API_KEY,
+              password: REACT_APP_JINSHUJU_API_SECRET
+            }
+          })
+          .then(response => {
+            const { data } = response.data;
+            console.log("www", data);
+            console.log("fData", fData);
+            console.log("res", fData.concat(data));
+
+            let res = fData.concat(data);
+            res = res.filter(r => !_.isEmpty(r.field_7));
+            setForeignData(res);
+            setHelpCount(fCount + data.length);
+          })
+          .catch(error => {
+            setForeignData(fData);
+            setHelpCount(fCount);
+            // console.log(error);
+          });
       })
       .catch(error => console.log(error));
 
@@ -193,8 +223,6 @@ const App = () => {
     b = new Date(b.createdAt);
     return a > b ? -1 : a < b ? 1 : 0;
   });
-
-  console.log(supportInfoList);
 
   const volunteerList = volunteerData.map(data => (
     <div className="avatar">
