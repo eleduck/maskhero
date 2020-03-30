@@ -8,6 +8,8 @@ import {
   AVAILABLE_CITIES
 } from "../common/contants";
 
+console.log("conuntry", am4geodata_data_countries2);
+
 const countries = require("i18n-iso-countries");
 countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 countries.registerLocale(require("i18n-iso-countries/langs/zh.json"));
@@ -92,51 +94,69 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
 
   // Set up data for countries
   let data = [];
+  console.log(am4geodata_data_countries2);
   for (let id in am4geodata_data_countries2) {
     if (am4geodata_data_countries2.hasOwnProperty(id)) {
       let country = am4geodata_data_countries2[id];
+
+      if (id === "TW") {
+        console.log("ttww", country);
+        // data.push({
+        //   id: id,
+        //   color: chart.colors.getIndex(2)
+        // });
+      }
+
+      let maskCount = 0;
+      let helpCount = 0;
+      let volunteerCount = 0;
+      if (domesticData.length > 0) {
+        const list = domesticData.filter(
+          // data => countries.getNames("zh")[id] === data["field_2"]
+          () => countries.getNames("zh")[id] === "中国"
+        );
+        maskCount = list.reduce((total, currentValue) => {
+          // field_10 means masks
+          return total + currentValue["field_10"];
+        }, 0);
+      }
+
+      if (foreignData.length > 0) {
+        console.log(foreignData);
+        helpCount = foreignData.filter(
+          data =>
+            countries.getNames("zh")[id] ===
+            AVAILABLE_COUNTIES[data["field_13"]].nameCN
+        ).length;
+      }
+
+      if (volunteerData.length > 0) {
+        volunteerCount = volunteerData.filter(
+          data =>
+            countries.getNames("zh")[id] === data["x_field_weixin_country"]
+        ).length;
+      }
+
       if (country.maps.length) {
-        let maskCount = 0;
-        let helpCount = 0;
-        let volunteerCount = 0;
-        if (domesticData.length > 0) {
-          const list = domesticData.filter(
-            // data => countries.getNames("zh")[id] === data["field_2"]
-            () => countries.getNames("zh")[id] === "中国"
-          );
-          maskCount = list.reduce((total, currentValue) => {
-            // field_10 means masks
-            return total + currentValue["field_10"];
-          }, 0);
-        }
-
-        if (foreignData.length > 0) {
-          console.log(foreignData);
-          helpCount = foreignData.filter(
-            data =>
-              countries.getNames("zh")[id] ===
-              AVAILABLE_COUNTIES[data["field_13"]].nameCN
-          ).length;
-        }
-
-        if (volunteerData.length > 0) {
-          volunteerCount = volunteerData.filter(
-            data =>
-              countries.getNames("zh")[id] === data["x_field_weixin_country"]
-          ).length;
-        }
-
         data.push({
           id: id,
           color:
             // TODO: Maybe need a color strategy
-            maskCount > 0 || helpCount > 0 || volunteerCount > 0
+            maskCount > 0 || helpCount > 0 || volunteerCount > 0 || id === "TW"
               ? chart.colors.getIndex(2)
               : chart.colors.getIndex(0),
           maskCount,
           helpCount,
           volunteerCount,
           map: country.maps[0]
+        });
+      } else if (id === "TW") {
+        data.push({
+          id: id,
+          color: chart.colors.getIndex(2),
+          maskCount: 0,
+          helpCount: 0,
+          volunteerCount: 0
         });
       }
     }
