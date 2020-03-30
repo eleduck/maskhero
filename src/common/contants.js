@@ -16,5 +16,9 @@ export const AVAILABLE_CITIES = {
   Brandon: {
     name: "Brandon",
     nameCN: "布兰登"
+  },
+  Winnipeg: {
+    name: "Winnipeg",
+    nameCN: "温尼伯"
   }
 };
