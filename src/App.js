@@ -3,6 +3,7 @@ import _ from "lodash";
 import logo from "./images/logo.png";
 import logomb from "./images/logomb.png";
 import avatar from "./images/avatar.png";
+import vector from "./images/vector.png";
 import ICBC from "./images/ICBC.png";
 import icon1 from "./images/icon1.png";
 import icon2 from "./images/icon2.png";
@@ -77,7 +78,10 @@ const App = () => {
   const [sponserData, setSponserData] = useState([]);
   const [highlightData, setHighLightData] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [shareModalIsOpen, setShareModalIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [filteredData, setFilteredData] = useState([]);
+  const [supportInfoList, setSupportInfoList] = useState([]);
 
   const toggleModal = index => {
     setModalIsOpen(!modalIsOpen);
@@ -99,7 +103,6 @@ const App = () => {
   };
 
   const handleTouchEnd = (event, index) => {
-    console.log("00", event, index);
     const diffX = Math.abs(event.pageX - startX);
     const diffY = Math.abs(event.pageY - startY);
     if (diffX < delta && diffY < delta) {
@@ -177,15 +180,31 @@ const App = () => {
           })
           .then(response => {
             const { data } = response.data;
-            console.log("www", data);
-            console.log("fData", fData);
-            console.log("res", fData.concat(data));
+            // console.log("www", data);
+            // console.log("fData", fData);
+            // console.log("res", fData.concat(data));
 
             let res = fData.concat(data);
             // res = res.filter(r => !_.isEmpty(r.field_7));
 
             setForeignData(res);
             setHelpCount(fCount + data.length);
+
+            setFilteredData(
+              _.sampleSize(
+                res.filter(r => !_.isEmpty(r.field_7)),
+                3
+              )
+            );
+
+            setInterval(() => {
+              setFilteredData(
+                _.sampleSize(
+                  res.filter(r => !_.isEmpty(r.field_7)),
+                  3
+                )
+              );
+            }, 10000);
           })
           .catch(error => {
             setForeignData(fData);
@@ -234,9 +253,10 @@ const App = () => {
       .catch(error => console.log(error));
   }, []);
 
-  const supportInfoList = [];
+  // const supportInfoList = [];
+  const list = [];
   donatorData.forEach(data => {
-    supportInfoList.push({
+    list.push({
       name: data["field_1"],
       content: `捐赠了 ${data["field_12"]} 人民币`,
       createdAt: data["created_at"]
@@ -244,14 +264,14 @@ const App = () => {
   });
 
   domesticData.forEach(data => {
-    supportInfoList.push({
+    list.push({
       name: data["field_1"],
       content: `捐赠了 ${data["field_5"][0]} ${data["field_10"]} 个`,
       createdAt: data["created_at"]
     });
   });
 
-  supportInfoList.sort(function(a, b) {
+  list.sort(function(a, b) {
     a = new Date(a.createdAt);
     b = new Date(b.createdAt);
     return a > b ? -1 : a < b ? 1 : 0;
@@ -259,8 +279,16 @@ const App = () => {
 
   const volunteerList = volunteerData.map(data => (
     <div className="avatar">
-      <img src={data["x_field_weixin_headimgurl"] || avatar} alt="avatar" />
-      <div className="cover"></div>
+      <img
+        src={
+          data["x_field_weixin_headimgurl"].replace("http://", "https://") ||
+          avatar
+        }
+        alt="avatar"
+      />
+      <div className="overlay">
+        <div className="text">{data["field_1"]}</div>
+      </div>
     </div>
   ));
 
@@ -307,27 +335,48 @@ const App = () => {
     }
   });
 
-  const filteredData = foreignData.filter(r => !_.isEmpty(r.field_7));
   const imageCa = highlightData.map(h => {
     return { source: h["field_11"][0] };
   });
 
-  console.log("ca", imageCa);
+  // console.log("ca", imageCa);
 
   return (
     <div className="app">
+      <div
+        className={`shareModal ${shareModalIsOpen ? "open" : ""}`}
+        onClick={e => {
+          document.body.classList.remove("modal-open");
+          setShareModalIsOpen(false);
+        }}
+      >
+        <div className="sharethis-inline-share-buttons"></div>
+        <div className="share-mb">
+          <p>请点击右上角</p>
+          <p>将它发送给指定朋友</p>
+          <p>或分享到朋友圈</p>
+        </div>
+      </div>
       <header className="header">
         <img src={logo} className="logo" alt="logo" />
         <img src={logomb} className="logo-mb" alt="logo" />
         <img src={title} className="title" alt="title" />
         <h1>海外的亲们，是时候让我们陪你们打下半场了！</h1>
+        <div className="bar-mb"></div>
         <p>
           这场疫情，国内打下半场，国外打下半场，海外华人打全场。”这话于国内的我们而言是段子，于国外的你们是猝不及防的遭遇。
           在倾力支援国内之后，异国他乡的土地上的你们，除了对抗病毒本身，还要替我们承受“Chinese
           Virus”的污名乃至这背后的威胁、暴力。
         </p>
         <p className="second">
-          这一切，国内的亲们，不会坐视。岂曰无衣，与子同袍！我们一起来打下半场。点此查看我们正在做的>>>
+          这一切，国内的亲们，不会坐视。岂曰无衣，与子同袍！我们一起来打下半场。
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://eleduck.com/posts/6XNfOL"
+          >
+            点此查看我们正在做的>>>
+          </a>
         </p>
         <div className="wrapper">
           <div className="tile">
@@ -337,6 +386,7 @@ const App = () => {
               <span className="unit">个</span>
             </div>
           </div>
+          <div className="split"></div>
           <div className="tile">
             <div>收到捐款</div>
             <div className="data">
@@ -344,6 +394,7 @@ const App = () => {
               <span className="unit">元</span>
             </div>
           </div>
+          <div className="split"></div>
           <div className="tile">
             <div>求助信息</div>
             <div className="data">
@@ -351,6 +402,7 @@ const App = () => {
               <span className="unit">条</span>
             </div>
           </div>
+          <div className="split"></div>
           <div className="tile">
             <div>志愿者</div>
             <div className="data">
@@ -358,6 +410,7 @@ const App = () => {
               <span className="unit">人</span>
             </div>
           </div>
+          <div className="split"></div>
           <div className="tile">
             <div>援助海外城市</div>
             <div className="data">
@@ -366,6 +419,7 @@ const App = () => {
             </div>
           </div>
         </div>
+        <img className="arrow" src={vector} alt="arrow"></img>
       </header>
       <div className="wrapper-mb">
         <h1>截止目前为止，我们已经</h1>
@@ -392,6 +446,7 @@ const App = () => {
             <span className="unit">条</span>
           </div>
         </div>
+        <div className="split"></div>
         <div className="tile">
           <div className="name">志愿者</div>
           <div className="data">
@@ -413,12 +468,22 @@ const App = () => {
         <p className="text">
           我们正在以城市为单位，接收海外华人的援助申请，同时在国内募集物资，实施援助。
         </p>
-        <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
+        <div id="chartdiv"></div>
+        <div className="legend">
+          <div className="marker">
+            <div className="color color-1"></div>
+            <div className="text">已援助</div>
+          </div>
+          <div className="marker">
+            <div className="color color-2"></div>
+            <div className="text">未援助</div>
+          </div>
+        </div>
         <div className="info">
           <div className="row-1">
             <div className="w60">
               <table className="info-table">
-                {supportInfoList.slice(0, 5).map(data => (
+                {list.slice(0, 5).map(data => (
                   <tr>
                     <td>{data.name}</td>
                     <td>{data.content}</td>
@@ -429,9 +494,8 @@ const App = () => {
               </table>
               <a
                 className="btn-mb"
-                target="_blank"
                 rel="noopener noreferrer"
-                href={DOMESTIC_FORM_LINK}
+                href="#helpus"
                 type="button"
               >
                 提供援助
@@ -441,9 +505,8 @@ const App = () => {
               <p>我们目前急需口罩和采购口罩的资金。多少不限，请勿坐视。</p>
               <a
                 className="btn"
-                target="_blank"
                 rel="noopener noreferrer"
-                href={DOMESTIC_FORM_LINK}
+                href="#helpus"
                 type="button"
               >
                 提供援助
@@ -467,7 +530,7 @@ const App = () => {
               </a>
             </div>
             <div className="align-right w60">
-              {_.sampleSize(filteredData, 3).map(data => (
+              {filteredData.map(data => (
                 <div className="requester">
                   <div className="content">{data["field_7"]}</div>
                   <div className="requester-info">
@@ -510,7 +573,36 @@ const App = () => {
       <section className="highlights">
         <h1>爱的留声机</h1>
         <p className="text">这里，是我们随手记录的一些真实瞬间。</p>
-        <Slider {...carouselSettings}>{hightlightList}</Slider>
+        <Slider className="carousel-dt" {...carouselSettings}>
+          {hightlightList}
+        </Slider>
+        <Slider className="carousel-mb" {...carouselSettings}>
+          {highlightData.map((data, index) => (
+            <div className="carousel-images">
+              <div
+                style={{
+                  backgroundImage: `url(${data["field_11"][0]})`,
+                  // width: "18vw",
+                  // height: "18vw",
+                  backgroundSize: "cover"
+                }}
+                className="carousel-img"
+                src={data["field_11"][0]}
+                alt="empty"
+                onTouchStart={handleTouchStart}
+                onMouseDown={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onMouseMove={handleTouchMove}
+                onTouchEnd={e => {
+                  handleTouchEnd(e, index);
+                }}
+                onMouseUp={e => {
+                  handleTouchEnd(e, index);
+                }}
+              ></div>
+            </div>
+          ))}
+        </Slider>
         <ModalGateway>
           {modalIsOpen ? (
             <Modal onClose={toggleModal}>
@@ -537,6 +629,15 @@ const App = () => {
             </a>
           </div>
           <div className="column right">{volunteerList}</div>
+          <a
+            className="btn-mb"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={VOLUNTEER_FORM_LINK}
+            type="button"
+          >
+            加入我们
+          </a>
         </div>
       </section>
       <section className="sponsers">
@@ -565,25 +666,12 @@ const App = () => {
         </center>
       </section>
 
-      <section className="helpus">
+      <section className="helpus" id="helpus">
         <h1>希望您能这样帮助我们</h1>
         <p className="text">我们每个人的顺手贡献，都将漂洋过海，温暖人心</p>
         <div className="qrcodes">
           <div className="qrcode">
             <img src={icon1} alt="qrcode" />
-            <p>不在多少，但求有心</p>
-            <a
-              className="btn"
-              target="_blank"
-              rel="noopener noreferrer"
-              href={SPONSER_FORM_LINK}
-              type="button"
-            >
-              合作联系
-            </a>
-          </div>
-          <div className="qrcode">
-            <img src={icon2} alt="qrcode" />
             <p>不在多少，但求有心</p>
             <a
               className="btn"
@@ -595,19 +683,32 @@ const App = () => {
               爱心捐赠
             </a>
           </div>
-          {/* <div className="qrcode">
-            <img src={icon3} alt="qrcode" />
-            <p>转发就是很好的支持</p>
+          <div className="qrcode">
+            <img src={icon2} alt="qrcode" />
+            <p>不在多少，但求有心</p>
             <a
               className="btn"
               target="_blank"
               rel="noopener noreferrer"
-              href="https://github.com/eleduck/maskhero"
+              href={DOMESTIC_FORM_LINK}
               type="button"
             >
-              分享
+              爱心捐物
             </a>
-          </div> */}
+          </div>
+          <div className="qrcode">
+            <img src={icon3} alt="qrcode" />
+            <p>转发就是很好的支持</p>
+            <button
+              className="btn"
+              onClick={() => {
+                document.body.classList.add("modal-open");
+                setShareModalIsOpen(true);
+              }}
+            >
+              分享
+            </button>
+          </div>
           <div className="qrcode">
             <img src={icon4} alt="qrcode" />
             <p>如果你是开发者</p>

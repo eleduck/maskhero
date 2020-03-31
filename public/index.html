@@ -28,9 +28,18 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>远程战疫 - 岂曰无衣，与子同袍</title>
+    <title>与子同袍-海外华人援助计划</title>
+    <script
+      type="text/javascript"
+      src="https://platform-api.sharethis.com/js/sharethis.js#property=5e82ee0b84b11d0019a4d6c6&product=inline-share-buttons"
+      async="async"
+    ></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
   </head>
   <body>
+    <div style="margin:0 auto;width:0px;height:0px;overflow:hidden; ">
+      <img src="%PUBLIC_URL%/logo512.png" />
+    </div>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--
@@ -43,5 +52,39 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      // window.wx = wx;
+      // fetch(
+      //   `https://svc.eleduck.com/api/v1/wechat/signature?url=${window.location.href.toString()}`
+      // )
+      //   .then(response => {
+      //     return response.json();
+      //   })
+      //   .then(data => {
+      //     console.log(data);
+      //     console.log("wx", wx);
+      //     wx.config({
+      //       debug: true,
+      //       appId: "wxc7761b6c8088927e",
+      //       timestamp: data.timestamp,
+      //       nonceStr: data.noncestr,
+      //       signature: data.signature,
+      //       jsApiList: ["updateAppMessageShareData", "updateTimelineShareData"]
+      //     });
+      //   });
+      // wx.ready(function() {
+      //   alert("ready");
+      //   const shareData = {
+      //     imgUrl: "%PUBLIC_URL%/logo512.png"
+      //   };
+      //   wx.updateAppMessageShareData(shareData);
+      //   wx.updateTimelineShareData(shareData);
+      // });
+      // wx.error(function(res) {
+      //   console.log(res);
+      //   alert(res);
+      //   // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+      // });
+    </script>
   </body>
 </html>
