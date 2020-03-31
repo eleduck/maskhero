@@ -158,6 +158,8 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
           // field_10 means masks
           return total + currentValue["field_10"];
         }, 0);
+        // TODO: Workaround
+        if (maskCount !== 0) maskCount += 1500;
       }
 
       if (foreignData.length > 0) {
@@ -183,6 +185,8 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
           data =>
             countries.getNames("zh")[id] === data["x_field_weixin_country"]
         ).length;
+        // TODO: volunteer
+        if (volunteerCount > 0) volunteerCount = 18;
       }
 
       if (country.maps.length) {
