@@ -382,7 +382,8 @@ const App = () => {
           <div className="tile">
             <div className="name">援助口罩</div>
             <div className="data">
-              {maskCount}
+              {/* {maskCount} */}
+              {2000}
               <span className="unit">个</span>
             </div>
           </div>
@@ -391,15 +392,17 @@ const App = () => {
             <div>收到捐款</div>
             <div className="data">
               <span>{money}</span>
+              {/* <span>{5180}</span> */}
               <span className="unit">元</span>
             </div>
           </div>
           <div className="split"></div>
           <div className="tile">
-            <div>求助信息</div>
+            <div>援助华人家庭</div>
             <div className="data">
-              {helpCount}
-              <span className="unit">条</span>
+              {/* {helpCount} */}
+              {200}
+              <span className="unit">个</span>
             </div>
           </div>
           <div className="split"></div>
@@ -407,6 +410,7 @@ const App = () => {
             <div>志愿者</div>
             <div className="data">
               {volunteerCount}
+              {/* {18} */}
               <span className="unit">人</span>
             </div>
           </div>
@@ -414,7 +418,7 @@ const App = () => {
           <div className="tile">
             <div>援助海外城市</div>
             <div className="data">
-              <span>2</span>
+              <span>4</span>
               <span className="unit">个</span>
             </div>
           </div>
@@ -426,7 +430,8 @@ const App = () => {
         <div className="tile">
           <div className="name">援助口罩</div>
           <div className="data">
-            {maskCount}
+            {2000}
+            {/* {maskCount} */}
             <span className="unit">个</span>
           </div>
         </div>
@@ -435,15 +440,17 @@ const App = () => {
           <div className="name">收到捐款</div>
           <div className="data">
             <span>{money}</span>
+            {/* <span>{5180}</span> */}
             <span className="unit">元</span>
           </div>
         </div>
         <div className="split"></div>
         <div className="tile">
-          <div className="name">求助信息</div>
+          <div className="name">援助华人家庭</div>
           <div className="data">
-            {helpCount}
-            <span className="unit">条</span>
+            {/* {helpCount} */}
+            {200}
+            <span className="unit">个</span>
           </div>
         </div>
         <div className="split"></div>
@@ -458,7 +465,7 @@ const App = () => {
         <div className="tile">
           <div className="name">援助海外城市</div>
           <div className="data">
-            <span>2</span>
+            <span>4</span>
             <span className="unit">个</span>
           </div>
         </div>

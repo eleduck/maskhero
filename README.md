@@ -1,11 +1,10 @@
 # 项目配置
 
-1. 下载代码进入目录并切换到 develop 分支
+1. 下载代码并进入目录
 
    ```shell
    git clone git@github.com:eleduck/maskhero.git
    cd maskhero
-   git checkout develop
    ```
 
 2. 安装 NPM 包
