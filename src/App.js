@@ -145,7 +145,8 @@ const App = () => {
     axios
       .get(`${API_BASE}${DOMESTIC_ENDPOINT}`, { ...authObj })
       .then(response => {
-        const { data } = response.data;
+        let { data } = response.data;
+        data = data.filter(d => d["field_12"] === "已审核");
         setDomesticData(data);
         setMaskCount(
           data.reduce((total, currentValue) => {
@@ -217,7 +218,8 @@ const App = () => {
     axios
       .get(`${API_BASE}${VOLUNTEER_ENDPOINT}`, { ...authObj })
       .then(response => {
-        const { data } = response.data;
+        let { data } = response.data;
+        data = data.filter(d => d["field_13"] === "已审核");
         setVolunteerData(data);
         setVolunteerCount(data.length);
       })
@@ -226,7 +228,8 @@ const App = () => {
     axios
       .get(`${API_BASE}${DONATOR_ENDPOINT}`, { ...authObj })
       .then(response => {
-        const { data } = response.data;
+        let { data } = response.data;
+        data = data.filter(d => d["field_13"] === "已审核");
         setDonatorData(data.reverse());
         setMoney(
           data.reduce((total, currentValue) => {
@@ -239,7 +242,8 @@ const App = () => {
     axios
       .get(`${API_BASE}${SPONSER_ENDPOINT}`, { ...authObj })
       .then(response => {
-        const { data } = response.data;
+        let { data } = response.data;
+        data = data.filter(d => d["field_13"] === "已审核");
         setSponserData(data);
       })
       .catch(error => console.log(error));
@@ -247,7 +251,8 @@ const App = () => {
     axios
       .get(`${API_BASE}${HIGHLIGHT_ENDPOINT}`, { ...authObj })
       .then(response => {
-        const { data } = response.data;
+        let { data } = response.data;
+        data = data.filter(d => d["field_12"] === "已审核");
         setHighLightData(data);
       })
       .catch(error => console.log(error));
