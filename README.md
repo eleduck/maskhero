@@ -1,3 +1,6 @@
+[![Slack Status](https://slackin-extended.baibonjwa.now.sh/badge.svg)](https://slackin-extended.baibonjwa.now.sh)
+
+
 # 项目配置
 
 1. 下载代码并进入目录
