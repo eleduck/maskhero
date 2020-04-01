@@ -182,11 +182,10 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
       if (volunteerData.length > 0) {
         // console.log(volunteerData);
         volunteerCount = volunteerData.filter(
-          data =>
-            countries.getNames("zh")[id] === data["x_field_weixin_country"]
+          data => countries.getNames("zh")[id] === data["field_14"]
         ).length;
         // TODO: volunteer
-        if (volunteerCount > 0) volunteerCount = 18;
+        // if (volunteerCount > 0) volunteerCount = 18;
       }
 
       if (country.maps.length) {
