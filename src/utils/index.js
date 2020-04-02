@@ -6,6 +6,9 @@
 /* eslint-disable */
 
 
+import {getWXSignature} from '../request'
+
+
 
 // 是否微信内浏览器
 export const isWXClient = () => {
@@ -26,23 +29,20 @@ export const WXShare = () => {
     };
 
     //获取分享参数
-    fetch(`https://svc.eleduck.com/api/v1/wechat/signature?url=${url}`)
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            wx.config({
-                // debug: true,
-                appId: "wxc7761b6c8088927e",
-                timestamp: data.timestamp,
-                nonceStr: data.noncestr,
-                signature: data.signature,
-                jsApiList: ["updateAppMessageShareData", "updateTimelineShareData"]
-            });
-        })
-        .catch(error => {
-            console.error("wx.config Error:", error);
+    getWXSignature(url)
+    .then(data => {
+        wx.config({
+            // debug: true,
+            appId: "wxc7761b6c8088927e",
+            timestamp: data.timestamp,
+            nonceStr: data.noncestr,
+            signature: data.signature,
+            jsApiList: ["updateAppMessageShareData", "updateTimelineShareData"]
         });
+    })
+    .catch(error => {
+        console.error("wx.config Error:", error);
+    });
 
     //配置成功触发
     wx.ready(function () {
