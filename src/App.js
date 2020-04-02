@@ -17,6 +17,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { buildChart } from "./utils/chartUtils";
+import {WXShare} from './utils'
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -135,6 +136,9 @@ const App = () => {
   }, [domesticData, foreignData, volunteerData]);
 
   useEffect(() => {
+    //微信分享
+    WXShare()
+    
     const authObj = {
       auth: {
         username: REACT_APP_JINSHUJU_API_KEY,

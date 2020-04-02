@@ -53,43 +53,7 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <script>
-      // const vConsole = new VConsole();
-      var url = location.href.split("#")[0];
-      // console.log(url);
-      fetch(`https://svc.eleduck.com/api/v1/wechat/signature?url=${url}`)
-        .then(response => {
-          return response.json();
-        })
-        .then(data => {
-          data = data;
-          wx.config({
-            // debug: true,
-            appId: "wxc7761b6c8088927e",
-            timestamp: data.timestamp,
-            nonceStr: data.noncestr,
-            signature: data.signature,
-            jsApiList: ["updateAppMessageShareData", "updateTimelineShareData"]
-          });
-        })
-        .catch(error => {
-          console.error("Error:", error);
-        });
-      wx.ready(function() {
-        // console.log("ready");
-        const shareData = {
-          title: "与子同袍-海外华人援助计划",
-          link: "https://eleduck.com/maskhero",
-          imgUrl: "https://eleduck.com/maskhero/logo512.png"
-        };
-        wx.updateAppMessageShareData(shareData);
-        wx.updateTimelineShareData(shareData);
-      });
-      wx.error(function(res) {
-        console.log(res);
-        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-      });
-    </script>
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script
       async
