@@ -215,7 +215,7 @@ const App = () => {
       .get(`${API_BASE}${VOLUNTEER_ENDPOINT}`, { ...authObj })
       .then(response => {
         let { data } = response.data;
-        data = data.filter(d => d["field_13"] === "已审核");
+        data = data.filter(d => d["field_18"] === "已通过");
         setVolunteerData(data);
         setVolunteerCount(data.length);
       })
@@ -256,11 +256,10 @@ const App = () => {
 
   // For donator table scrolling effect
   useEffect(() => {
-    const donatorWrapper = document.querySelector('#donator-wrapper');
-    const donatorTable = document.querySelector('.info-table');
+    const donatorWrapper = document.querySelector("#donator-wrapper");
+    const donatorTable = document.querySelector(".info-table");
 
-    const requesterWrapper = document.querySelector('#requester-wrapper');
-
+    const requesterWrapper = document.querySelector("#requester-wrapper");
 
     const donatorScroll = () => {
       // When donator list is scrolled to the end, the cycle will restart
@@ -286,12 +285,28 @@ const App = () => {
     let r = setInterval(requesterScroll, 20);
 
     //When mouseover event is triggered, stop table from scrolling
-    donatorWrapper.addEventListener('mouseover', () => clearInterval(d), false);
-    requesterWrapper.addEventListener('mouseover', () => clearInterval(r), false);
+    donatorWrapper.addEventListener("mouseover", () => clearInterval(d), false);
+    requesterWrapper.addEventListener(
+      "mouseover",
+      () => clearInterval(r),
+      false
+    );
     //When mouseout event is triggered, continue scrolling
-    donatorWrapper.addEventListener('mouseout', () => {d = setInterval(donatorScroll, 20)}, false);
-    requesterWrapper.addEventListener('mouseout', () => {r = setInterval(requesterScroll, 20)}, false);
-  },[]);
+    donatorWrapper.addEventListener(
+      "mouseout",
+      () => {
+        d = setInterval(donatorScroll, 20);
+      },
+      false
+    );
+    requesterWrapper.addEventListener(
+      "mouseout",
+      () => {
+        r = setInterval(requesterScroll, 20);
+      },
+      false
+    );
+  }, []);
 
   // const supportInfoList = [];
   const list = [];
@@ -310,7 +325,6 @@ const App = () => {
       createdAt: data["created_at"]
     });
   });
-
 
   list.sort(function(a, b) {
     a = new Date(a.createdAt);
