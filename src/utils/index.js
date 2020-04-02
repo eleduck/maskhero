@@ -27,9 +27,9 @@ export const WXShare = () => {
         link: url,
         imgUrl: "https://eleduck.com/maskhero/logo512.png"
     };
-
+    
     //获取分享参数
-    getWXSignature(url)
+    getWXSignature(encodeURIComponent(url))
     .then(data => {
         wx.config({
             // debug: true,
