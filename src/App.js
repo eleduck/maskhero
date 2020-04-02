@@ -243,7 +243,7 @@ const App = () => {
       .get(`${API_BASE}${SPONSER_ENDPOINT}`, { ...authObj })
       .then(response => {
         let { data } = response.data;
-        data = data.filter(d => d["field_13"] === "已审核");
+        data = data.filter(d => d["field_12"] === "已审核");
         setSponserData(data);
       })
       .catch(error => console.log(error));
