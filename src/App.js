@@ -266,7 +266,7 @@ const App = () => {
       if (donatorWrapper.scrollTop >= 0.5 * donatorTable.scrollHeight) {
         donatorWrapper.scrollTop -= 0.5 * donatorTable.scrollHeight;
       } else {
-        console.log(donatorWrapper.scrollTop, donatorTable.scrollHeight);
+        // console.log(donatorWrapper.scrollTop, donatorTable.scrollHeight);
         donatorWrapper.scrollTop++;
       }
     };
