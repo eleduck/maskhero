@@ -191,21 +191,17 @@ const App = () => {
             setForeignData(res);
             setHelpCount(fCount + data.length);
 
-            setFilteredData(
-              _.sampleSize(
-                res.filter(r => !_.isEmpty(r.field_7)),
-                3
-              )
-            );
+            // With scrolling effect, no need _.sampleSize and setInterval
+            setFilteredData(res.filter(r => !_.isEmpty(r.field_7)));
 
-            setInterval(() => {
-              setFilteredData(
-                _.sampleSize(
-                  res.filter(r => !_.isEmpty(r.field_7)),
-                  3
-                )
-              );
-            }, 10000);
+            // setInterval(() => {
+            //   setFilteredData(
+            //     _.sampleSize(
+            //       res.filter(r => !_.isEmpty(r.field_7)),
+            //       3
+            //     )
+            //   );
+            // }, 10000);
           })
           .catch(error => {
             setForeignData(fData);
@@ -258,6 +254,45 @@ const App = () => {
       .catch(error => console.log(error));
   }, []);
 
+  // For donator table scrolling effect
+  useEffect(() => {
+    const donatorWrapper = document.querySelector('#donator-wrapper');
+    const donatorTable = document.querySelector('.info-table');
+
+    const requesterWrapper = document.querySelector('#requester-wrapper');
+
+
+    const donatorScroll = () => {
+      // When donator list is scrolled to the end, the cycle will restart
+      if (donatorWrapper.scrollTop >= 0.5 * donatorTable.scrollHeight) {
+        donatorWrapper.scrollTop -= 0.5 * donatorTable.scrollHeight;
+      } else {
+        console.log(donatorWrapper.scrollTop, donatorTable.scrollHeight);
+        donatorWrapper.scrollTop++;
+      }
+    };
+
+    const requesterScroll = () => {
+      // When requester messages are scrolled to the end, the cycle will restart
+      if (requesterWrapper.scrollTop >= 0.5 * requesterWrapper.scrollHeight) {
+        requesterWrapper.scrollTop -= 0.5 * requesterWrapper.scrollHeight;
+      } else {
+        // console.log(requesterWrapper.scrollTop, requesterWrapper.scrollHeight);
+        requesterWrapper.scrollTop++;
+      }
+    };
+    // Set a timer for the scrolling effect
+    let d = setInterval(donatorScroll, 20);
+    let r = setInterval(requesterScroll, 20);
+
+    //When mouseover event is triggered, stop table from scrolling
+    donatorWrapper.addEventListener('mouseover', () => clearInterval(d), false);
+    requesterWrapper.addEventListener('mouseover', () => clearInterval(r), false);
+    //When mouseout event is triggered, continue scrolling
+    donatorWrapper.addEventListener('mouseout', () => {d = setInterval(donatorScroll, 20)}, false);
+    requesterWrapper.addEventListener('mouseout', () => {r = setInterval(requesterScroll, 20)}, false);
+  },[]);
+
   // const supportInfoList = [];
   const list = [];
   donatorData.forEach(data => {
@@ -275,6 +310,7 @@ const App = () => {
       createdAt: data["created_at"]
     });
   });
+
 
   list.sort(function(a, b) {
     a = new Date(a.createdAt);
@@ -493,26 +529,38 @@ const App = () => {
         </div>
         <div className="info">
           <div className="row-1">
-            <div className="w60">
+            <a
+              className="btn-mb"
+              rel="noopener noreferrer"
+              href="#helpus"
+              type="button"
+            >
+              提供援助
+            </a>
+            <div id="donator-wrapper" className="w60">
               <table className="info-table">
-                {list.slice(0, 5).map(data => (
-                  <tr>
-                    <td>{data.name}</td>
-                    <td>{data.content}</td>
-                    <td>{moment(data.createdAt).format("YYYY年MM月DD日")}</td>
-                    {/* <td>{data.createdAt}</td> */}
-                  </tr>
-                ))}
+                <tbody>
+                  {list.map((data, index) => (
+                    <tr key={`donator-${index}`}>
+                      <td>{data.name}</td>
+                      <td>{data.content}</td>
+                      <td>{moment(data.createdAt).format("YYYY年MM月DD日")}</td>
+                      {/* <td>{data.createdAt}</td> */}
+                    </tr>
+                  ))}
+                  {/* Repeat the list to make sure the infinite scrolling effect */}
+                  {list.map((data, index) => (
+                    <tr key={`donator-repeat-${index}`}>
+                      <td>{data.name}</td>
+                      <td>{data.content}</td>
+                      <td>{moment(data.createdAt).format("YYYY年MM月DD日")}</td>
+                      {/* <td>{data.createdAt}</td> */}
+                    </tr>
+                  ))}
+                </tbody>
               </table>
-              <a
-                className="btn-mb"
-                rel="noopener noreferrer"
-                href="#helpus"
-                type="button"
-              >
-                提供援助
-              </a>
             </div>
+
             <div className="w40 dt support-column">
               <p>我们目前急需口罩和采购口罩的资金。多少不限，请勿坐视。</p>
               <a
@@ -541,7 +589,19 @@ const App = () => {
                 申请援助
               </a>
             </div>
-            <div className="align-right w60">
+            <div id="requester-wrapper" className="align-right w60">
+              {filteredData.map(data => (
+                <div className="requester">
+                  <div className="content">{data["field_7"]}</div>
+                  <div className="requester-info">
+                    <p>{`${data["field_11"]}`}</p>
+                    <p>{`${AVAILABLE_COUNTIES[data["field_13"]].nameCN}-${
+                      AVAILABLE_CITIES[data["field_15"]].nameCN
+                    }`}</p>
+                  </div>
+                </div>
+              ))}
+              {/* Repeat the message list to make sure the infinite scrolling effect */}
               {filteredData.map(data => (
                 <div className="requester">
                   <div className="content">{data["field_7"]}</div>

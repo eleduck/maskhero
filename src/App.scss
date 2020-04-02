@@ -239,6 +239,8 @@ a.btn-mb {
 
     .w60 {
       width: 60%;
+      height: 200px;
+      overflow: hidden;
     }
 
     .info-table {
@@ -248,15 +250,15 @@ a.btn-mb {
       border-radius: 5px;
       border-collapse: collapse;
 
-      & > tr:nth-child(odd) {
+      tbody > tr:nth-child(odd) {
         background-color: #f1f1f1;
       }
 
-      & > tr:nth-child(even) {
+      tbody > tr:nth-child(even) {
         background-color: #fafafa;
       }
 
-      & > tr > td {
+      tbody > tr > td {
         padding: 10px 12px;
       }
     }
@@ -294,8 +296,9 @@ a.btn-mb {
 
     .align-right {
       // text-align: right;
+      height: 250px;
       margin-left: 20px;
-      padding-top: 60px;
+      margin-top: 60px;
     }
   }
 }
@@ -707,6 +710,7 @@ footer {
         text-align: left;
         padding-top: 0px;
         margin-left: 0px;
+        margin-top: 20px;
         font-size: 10px;
 
         .content,
