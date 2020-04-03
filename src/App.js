@@ -157,7 +157,7 @@ const App = () => {
       })
       .catch((error) => console.log(error));
 
-    const getForeigns = (next = "") => {
+    const getForeigns = (tmpData = [], next = "") => {
       axios
         .get(`${API_BASE}${FOREIGN_ENDPOINT}?next=${next}`, {
           auth: {
@@ -168,14 +168,14 @@ const App = () => {
         .then((response) => {
           const { data, next } = response.data;
 
-          if (next) {
-            getForeigns(next);
-          }
-
-          let newData = foreignData.concat(data);
+          let newData = tmpData.concat(data);
           setForeignData(newData);
           setHelpCount(newData.length);
           setFilteredData(newData.filter((r) => !_.isEmpty(r.field_7)));
+          if (next) {
+            getForeigns(newData, next);
+          }
+
           // setForeignData(data);
           // setHelpCount(data.length);
 
@@ -184,7 +184,7 @@ const App = () => {
         .catch((error) => console.log(error));
     };
 
-    getForeigns();
+    getForeigns(foreignData);
 
     axios
       .get(`${API_BASE}${VOLUNTEER_ENDPOINT}`, { ...authObj })
@@ -196,15 +196,12 @@ const App = () => {
       })
       .catch((error) => console.log(error));
 
-    const getDonators = (next = "") => {
+    const getDonators = (tmpData = [], next = "") => {
       axios
         .get(`${API_BASE}${DONATOR_ENDPOINT}?next=${next}`, { ...authObj })
         .then((response) => {
           let { data, next } = response.data;
-          if (next) {
-            getDonators(next);
-          }
-          const newData = donatorData
+          const newData = tmpData
             .concat(data)
             .filter((d) => d["field_13"] === "已审核");
           setDonatorData(newData.reverse());
@@ -213,11 +210,14 @@ const App = () => {
               return total + currentValue["field_12"];
             }, 0)
           );
+          if (next) {
+            getDonators(newData, next);
+          }
         })
         .catch((error) => console.log(error));
     };
 
-    getDonators();
+    getDonators(donatorData);
 
     axios
       .get(`${API_BASE}${SPONSER_ENDPOINT}`, { ...authObj })
