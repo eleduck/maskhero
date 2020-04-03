@@ -190,7 +190,7 @@ const App = () => {
       .get(`${API_BASE}${VOLUNTEER_ENDPOINT}`, { ...authObj })
       .then((response) => {
         let { data } = response.data;
-        data = data.filter((d) => d["field_13"] === "已审核");
+        data = data.filter((d) => d["field_18"] === "已通过");
         setVolunteerData(data);
         setVolunteerCount(data.length);
       })
