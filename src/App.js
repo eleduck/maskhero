@@ -17,7 +17,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { buildChart } from "./utils/chartUtils";
-import {WXShare} from './utils'
+import { WXShare } from "./utils";
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -28,11 +28,7 @@ import axios from "axios";
 
 import Carousel, { Modal, ModalGateway } from "react-images";
 
-import {
-  AVAILABLE_PROVINCES,
-  AVAILABLE_COUNTIES,
-  AVAILABLE_CITIES
-} from "./common/contants";
+import { getCountryName, getCityName } from "./common/contants";
 
 const moment = require("moment");
 
@@ -48,7 +44,7 @@ const {
   REACT_APP_VOLUNTEER_TOKEN,
   REACT_APP_DONATOR_TOKEN,
   REACT_APP_SPONSER_TOKEN,
-  REACT_APP_HIGHLIGHT_TOKEN
+  REACT_APP_HIGHLIGHT_TOKEN,
 } = process.env;
 const API_BASE = "https://jinshuju.net/api/v1";
 const DOMESTIC_ENDPOINT = `/forms/${REACT_APP_DOMESTIC_TOKEN}/entries`;
@@ -84,7 +80,7 @@ const App = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [supportInfoList, setSupportInfoList] = useState([]);
 
-  const toggleModal = index => {
+  const toggleModal = (index) => {
     setModalIsOpen(!modalIsOpen);
     setSelectedIndex(index);
   };
@@ -93,13 +89,13 @@ const App = () => {
   let startX;
   let startY;
   let drag = false;
-  const handleTouchStart = event => {
+  const handleTouchStart = (event) => {
     drag = false;
     startX = event.pageX;
     startY = event.pageY;
   };
 
-  const handleTouchMove = event => {
+  const handleTouchMove = (event) => {
     drag = true;
   };
 
@@ -117,7 +113,7 @@ const App = () => {
     initialSlide: 0,
     speed: 300,
     slidesToShow: 1,
-    slidesToScroll: 1
+    slidesToScroll: 1,
   };
 
   useLayoutEffect(() => {
@@ -137,20 +133,20 @@ const App = () => {
 
   useEffect(() => {
     //微信分享
-    WXShare()
-    
+    WXShare();
+
     const authObj = {
       auth: {
         username: REACT_APP_JINSHUJU_API_KEY,
-        password: REACT_APP_JINSHUJU_API_SECRET
-      }
+        password: REACT_APP_JINSHUJU_API_SECRET,
+      },
     };
 
     axios
       .get(`${API_BASE}${DOMESTIC_ENDPOINT}`, { ...authObj })
-      .then(response => {
+      .then((response) => {
         let { data } = response.data;
-        data = data.filter(d => d["field_12"] === "已审核");
+        data = data.filter((d) => d["field_12"] === "已审核");
         setDomesticData(data);
         setMaskCount(
           data.reduce((total, currentValue) => {
@@ -159,103 +155,87 @@ const App = () => {
           }, 0)
         );
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
 
-    axios
-      .get(`${API_BASE}${FOREIGN_ENDPOINT}`, {
-        auth: {
-          username: REACT_APP_JINSHUJU_API_FOREIGN_KEY,
-          password: REACT_APP_JINSHUJU_API_FOREIGN_SECRET
-        }
-      })
-      .then(response => {
-        const { data } = response.data;
-        // setForeignData(data);
-        // setHelpCount(data.length);
+    const getForeigns = (tmpData = [], next = "") => {
+      axios
+        .get(`${API_BASE}${FOREIGN_ENDPOINT}?next=${next}`, {
+          auth: {
+            username: REACT_APP_JINSHUJU_API_FOREIGN_KEY,
+            password: REACT_APP_JINSHUJU_API_FOREIGN_SECRET,
+          },
+        })
+        .then((response) => {
+          const { data, next } = response.data;
 
-        // TODO: workaround to combine two api data into one
-        let fData = data;
-        let fCount = data.length;
-        axios
-          .get(`${API_BASE}${TEMP_ENDPOINT}`, {
-            auth: {
-              username: REACT_APP_JINSHUJU_API_KEY,
-              password: REACT_APP_JINSHUJU_API_SECRET
-            }
-          })
-          .then(response => {
-            const { data } = response.data;
-            // console.log("www", data);
-            // console.log("fData", fData);
-            // console.log("res", fData.concat(data));
+          let newData = tmpData.concat(data);
+          setForeignData(newData);
+          setHelpCount(newData.length);
+          setFilteredData(newData.filter((r) => !_.isEmpty(r.field_7)));
+          if (next) {
+            getForeigns(newData, next);
+          }
 
-            let res = fData.concat(data);
-            // res = res.filter(r => !_.isEmpty(r.field_7));
+          // setForeignData(data);
+          // setHelpCount(data.length);
 
-            setForeignData(res);
-            setHelpCount(fCount + data.length);
+          // TODO: workaround to combine two api data into one
+        })
+        .catch((error) => console.log(error));
+    };
 
-            // With scrolling effect, no need _.sampleSize and setInterval
-            setFilteredData(res.filter(r => !_.isEmpty(r.field_7)));
-
-            // setInterval(() => {
-            //   setFilteredData(
-            //     _.sampleSize(
-            //       res.filter(r => !_.isEmpty(r.field_7)),
-            //       3
-            //     )
-            //   );
-            // }, 10000);
-          })
-          .catch(error => {
-            setForeignData(fData);
-            setHelpCount(fCount);
-            // console.log(error);
-          });
-      })
-      .catch(error => console.log(error));
+    getForeigns(foreignData);
 
     axios
       .get(`${API_BASE}${VOLUNTEER_ENDPOINT}`, { ...authObj })
-      .then(response => {
+      .then((response) => {
         let { data } = response.data;
-        data = data.filter(d => d["field_18"] === "已通过");
+        data = data.filter((d) => d["field_18"] === "已通过");
         setVolunteerData(data);
         setVolunteerCount(data.length);
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
 
-    axios
-      .get(`${API_BASE}${DONATOR_ENDPOINT}`, { ...authObj })
-      .then(response => {
-        let { data } = response.data;
-        data = data.filter(d => d["field_13"] === "已审核");
-        setDonatorData(data.reverse());
-        setMoney(
-          data.reduce((total, currentValue) => {
-            return total + currentValue["field_12"];
-          }, 0)
-        );
-      })
-      .catch(error => console.log(error));
+    const getDonators = (tmpData = [], next = "") => {
+      axios
+        .get(`${API_BASE}${DONATOR_ENDPOINT}?next=${next}`, { ...authObj })
+        .then((response) => {
+          let { data, next } = response.data;
+          const newData = tmpData
+            .concat(data)
+            .filter((d) => d["field_13"] === "已审核");
+          setDonatorData(newData.reverse());
+          setMoney(
+            newData.reduce((total, currentValue) => {
+              return total + currentValue["field_12"];
+            }, 0)
+          );
+          if (next) {
+            getDonators(newData, next);
+          }
+        })
+        .catch((error) => console.log(error));
+    };
+
+    getDonators(donatorData);
 
     axios
       .get(`${API_BASE}${SPONSER_ENDPOINT}`, { ...authObj })
-      .then(response => {
+      .then((response) => {
         let { data } = response.data;
-        data = data.filter(d => d["field_12"] === "已审核");
+        data = data.filter((d) => d["field_12"] === "已审核");
         setSponserData(data);
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
 
     axios
       .get(`${API_BASE}${HIGHLIGHT_ENDPOINT}`, { ...authObj })
-      .then(response => {
+      .then((response) => {
         let { data } = response.data;
-        data = data.filter(d => d["field_12"] === "已审核");
+        data = data.filter((d) => d["field_12"] === "已审核");
         setHighLightData(data);
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   }, []);
 
   // For donator table scrolling effect
@@ -314,29 +294,29 @@ const App = () => {
 
   // const supportInfoList = [];
   const list = [];
-  donatorData.forEach(data => {
+  donatorData.forEach((data) => {
     list.push({
       name: data["field_1"],
       content: `捐赠了 ${data["field_12"]} 人民币`,
-      createdAt: data["created_at"]
+      createdAt: data["created_at"],
     });
   });
 
-  domesticData.forEach(data => {
+  domesticData.forEach((data) => {
     list.push({
       name: data["field_1"],
       content: `捐赠了 ${data["field_5"][0]} ${data["field_10"]} 个`,
-      createdAt: data["created_at"]
+      createdAt: data["created_at"],
     });
   });
 
-  list.sort(function(a, b) {
+  list.sort(function (a, b) {
     a = new Date(a.createdAt);
     b = new Date(b.createdAt);
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
-  const volunteerList = volunteerData.map(data => (
+  const volunteerList = volunteerData.map((data) => (
     <div className="avatar">
       <img
         src={
@@ -359,7 +339,7 @@ const App = () => {
         <img style={{ opacity: 0 }} src="" alt="empty" />,
         <img style={{ opacity: 0 }} src="" alt="empty" />,
         <img style={{ opacity: 0 }} src="" alt="empty" />,
-        <img style={{ opacity: 0 }} src="" alt="empty" />
+        <img style={{ opacity: 0 }} src="" alt="empty" />,
       ];
     }
     images[index % 4] = (
@@ -368,7 +348,7 @@ const App = () => {
           backgroundImage: `url(${data["field_11"][0]})`,
           // width: "18vw",
           // height: "18vw",
-          backgroundSize: "cover"
+          backgroundSize: "cover",
         }}
         className="carousel-img"
         src={data["field_11"][0]}
@@ -377,10 +357,10 @@ const App = () => {
         onMouseDown={handleTouchStart}
         onTouchMove={handleTouchMove}
         onMouseMove={handleTouchMove}
-        onTouchEnd={e => {
+        onTouchEnd={(e) => {
           handleTouchEnd(e, index);
         }}
-        onMouseUp={e => {
+        onMouseUp={(e) => {
           handleTouchEnd(e, index);
         }}
       ></div>
@@ -394,7 +374,7 @@ const App = () => {
     }
   });
 
-  const imageCa = highlightData.map(h => {
+  const imageCa = highlightData.map((h) => {
     return { source: h["field_11"][0] };
   });
 
@@ -404,7 +384,7 @@ const App = () => {
     <div className="app">
       <div
         className={`shareModal ${shareModalIsOpen ? "open" : ""}`}
-        onClick={e => {
+        onClick={(e) => {
           document.body.classList.remove("modal-open");
           setShareModalIsOpen(false);
         }}
@@ -608,26 +588,26 @@ const App = () => {
               </a>
             </div>
             <div id="requester-wrapper" className="align-right w60">
-              {filteredData.map(data => (
+              {filteredData.map((data) => (
                 <div className="requester">
                   <div className="content">{data["field_7"]}</div>
                   <div className="requester-info">
                     <p>{`${data["field_11"]}`}</p>
-                    <p>{`${AVAILABLE_COUNTIES[data["field_13"]].nameCN}-${
-                      AVAILABLE_CITIES[data["field_15"]].nameCN
-                    }`}</p>
+                    <p>{`${getCountryName(data["field_13"])}-${getCityName(
+                      data["field_15"]
+                    )}`}</p>
                   </div>
                 </div>
               ))}
               {/* Repeat the message list to make sure the infinite scrolling effect */}
-              {filteredData.map(data => (
+              {filteredData.map((data) => (
                 <div className="requester">
                   <div className="content">{data["field_7"]}</div>
                   <div className="requester-info">
                     <p>{`${data["field_11"]}`}</p>
-                    <p>{`${AVAILABLE_COUNTIES[data["field_13"]].nameCN}-${
-                      AVAILABLE_CITIES[data["field_15"]].nameCN
-                    }`}</p>
+                    <p>{`${getCountryName(data["field_13"])}-${getCityName(
+                      data["field_15"]
+                    )}`}</p>
                   </div>
                 </div>
               ))}
@@ -674,7 +654,7 @@ const App = () => {
                   backgroundImage: `url(${data["field_11"][0]})`,
                   // width: "18vw",
                   // height: "18vw",
-                  backgroundSize: "cover"
+                  backgroundSize: "cover",
                 }}
                 className="carousel-img"
                 src={data["field_11"][0]}
@@ -683,10 +663,10 @@ const App = () => {
                 onMouseDown={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onMouseMove={handleTouchMove}
-                onTouchEnd={e => {
+                onTouchEnd={(e) => {
                   handleTouchEnd(e, index);
                 }}
-                onMouseUp={e => {
+                onMouseUp={(e) => {
                   handleTouchEnd(e, index);
                 }}
               ></div>
@@ -736,7 +716,7 @@ const App = () => {
           与子偕行，共赴国殇！这次行动中，以下这些无私有爱的合作伙伴们，也在发光发热。
         </p>
         <div>
-          {sponserData.map(sponser => (
+          {sponserData.map((sponser) => (
             <img className="sponser" src={sponser["field_11"][0]} alt="icbc" />
           ))}
         </div>
