@@ -6,7 +6,7 @@ import {
   AVAILABLE_PROVINCES,
   AVAILABLE_COUNTIES,
   AVAILABLE_CITIES
-} from "../common/contants";
+} from "./contants";
 
 console.log("conuntry", am4geodata_data_countries2);
 
