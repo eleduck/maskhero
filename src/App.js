@@ -1,37 +1,42 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
+import axios from "axios";
 import _ from "lodash";
-import logo from "./images/logo.png";
-import logomb from "./images/logomb.png";
-import avatar from "./images/avatar.png";
-import vector from "./images/vector.png";
-import ICBC from "./images/ICBC.png";
-import icon1 from "./images/icon1.png";
-import icon2 from "./images/icon2.png";
-import icon3 from "./images/icon3.png";
-import icon4 from "./images/icon4.png";
-import footerImg from "./images/footer-img.png";
-import title from "./images/title.png";
-import "./App.scss";
+import  moment from "moment";
 
-import * as am4core from "@amcharts/amcharts4/core";
-import * as am4maps from "@amcharts/amcharts4/maps";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import { buildChart } from "./utils/chartUtils";
-import { WXShare } from "./utils";
-
+//轮播插件
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import heroine from "./images/heroine.png";
-import axios from "axios";
-
+//查看图片
 import Carousel, { Modal, ModalGateway } from "react-images";
 
-import { getCountryName, getCityName } from "./common/contants";
+// 图片资源
+import logo from "./assets/images/logo.png";
+import logomb from "./assets/images/logomb.png";
+import avatar from "./assets/images/avatar.png";
+import vector from "./assets/images/vector.png";
+import icon1 from "./assets/images/icon1.png";
+import icon2 from "./assets/images/icon2.png";
+import icon3 from "./assets/images/icon3.png";
+import icon4 from "./assets/images/icon4.png";
+import footerImg from "./assets/images/footer-img.png";
+import title from "./assets/images/title.png";
 
-const moment = require("moment");
+// 引入样式
+import "./assets/styles/common.scss";
+import "./assets/styles/app.scss";
 
+// utils
+import { buildChart } from "./utils/chartUtils";
+import { getCountryName, getCityName } from "./utils/contants";
+import { WXShare } from "./utils";
+
+
+//地图插件
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4maps from "@amcharts/amcharts4/maps";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 am4core.useTheme(am4themes_animated);
 
 const {
