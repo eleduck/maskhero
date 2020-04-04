@@ -1,63 +1,32 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import _ from "lodash";
-import logo from "./images/logo.png";
-import logomb from "./images/logomb.png";
-import avatar from "./images/avatar.png";
-import vector from "./images/vector.png";
-import ICBC from "./images/ICBC.png";
-import icon1 from "./images/icon1.png";
-import icon2 from "./images/icon2.png";
-import icon3 from "./images/icon3.png";
-import icon4 from "./images/icon4.png";
-import footerImg from "./images/footer-img.png";
-import title from "./images/title.png";
-import "./App.scss";
+import  moment from "moment";
 
-import * as am4core from "@amcharts/amcharts4/core";
-import * as am4maps from "@amcharts/amcharts4/maps";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+// 引入样式
+import "./assets/styles/common.scss";
+import "./assets/styles/app.scss";
+
+// 图片资源、金数据
+import {images, JINSHUJU} from "./utils/contants"
+
+// 接口请求
+import * as request from './request'
+
+// utils
 import { buildChart } from "./utils/chartUtils";
-import { WXShare } from "./utils";
+import { WXShare, getCountryName, getCityName } from "./utils";
 
+// 轮播插件
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-import heroine from "./images/heroine.png";
-import axios from "axios";
-
+// 预览插件
 import Carousel, { Modal, ModalGateway } from "react-images";
-
-import { getCountryName, getCityName } from "./common/contants";
-
-const moment = require("moment");
-
+// 地图插件
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4maps from "@amcharts/amcharts4/maps";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 am4core.useTheme(am4themes_animated);
-
-const {
-  REACT_APP_JINSHUJU_API_KEY,
-  REACT_APP_JINSHUJU_API_SECRET,
-  REACT_APP_JINSHUJU_API_FOREIGN_KEY,
-  REACT_APP_JINSHUJU_API_FOREIGN_SECRET,
-  REACT_APP_DOMESTIC_TOKEN,
-  REACT_APP_FOREIGN_TOKEN,
-  REACT_APP_VOLUNTEER_TOKEN,
-  REACT_APP_DONATOR_TOKEN,
-  REACT_APP_SPONSER_TOKEN,
-  REACT_APP_HIGHLIGHT_TOKEN,
-} = process.env;
-const API_BASE = "https://jinshuju.net/api/v1";
-const DOMESTIC_ENDPOINT = `/forms/${REACT_APP_DOMESTIC_TOKEN}/entries`;
-const FOREIGN_ENDPOINT = `/forms/${REACT_APP_FOREIGN_TOKEN}/entries`;
-const VOLUNTEER_ENDPOINT = `/forms/${REACT_APP_VOLUNTEER_TOKEN}/entries`;
-const DONATOR_ENDPOINT = `/forms/${REACT_APP_DONATOR_TOKEN}/entries`;
-const SPONSER_ENDPOINT = `/forms/${REACT_APP_SPONSER_TOKEN}/entries`;
-const HIGHLIGHT_ENDPOINT = `/forms/${REACT_APP_HIGHLIGHT_TOKEN}/entries`;
-const DOMESTIC_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_DOMESTIC_TOKEN}`;
-const FOREIGN_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_FOREIGN_TOKEN}`;
-const VOLUNTEER_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_VOLUNTEER_TOKEN}`;
-const SPONSER_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_SPONSER_TOKEN}`;
-const DONATOR_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_DONATOR_TOKEN}`;
 
 // TODO: workaround
 const TEMP_ENDPOINT = "/forms/Ukw1aQ/entries";
@@ -131,79 +100,60 @@ const App = () => {
     };
   }, [domesticData, foreignData, volunteerData]);
 
+
   useEffect(() => {
     //微信分享
     WXShare();
+    
+    // 获取国内物资援助数据
+    request.getDomesticData()
+    .then((response) => {
+      let { data } = response;
+      data = data.filter((d) => d["field_12"] === "已审核");
+      setDomesticData(data);
+      setMaskCount(
+        data.reduce((total, currentValue) => {
+          // field_10 means masks
+          return total + currentValue["field_10"];
+        }, 0)
+      );
+    })
+    .catch((error) => console.log(error));
 
-    const authObj = {
-      auth: {
-        username: REACT_APP_JINSHUJU_API_KEY,
-        password: REACT_APP_JINSHUJU_API_SECRET,
-      },
-    };
-
-    axios
-      .get(`${API_BASE}${DOMESTIC_ENDPOINT}`, { ...authObj })
-      .then((response) => {
-        let { data } = response.data;
-        data = data.filter((d) => d["field_12"] === "已审核");
-        setDomesticData(data);
-        setMaskCount(
-          data.reduce((total, currentValue) => {
-            // field_10 means masks
-            return total + currentValue["field_10"];
-          }, 0)
-        );
+    // 获取国外反馈数据
+    const getForeigns = (tmpData = [], next = "") => {
+      request.getForeignData(next)
+      .then(response=> {
+        let { data, next } = response;
+        let newData = tmpData.concat(data);
+        setForeignData(newData);
+        setHelpCount(newData.length);
+        setFilteredData(newData.filter((r) => !_.isEmpty(r.field_7)));
+        if (next) {
+          getForeigns(newData, next);
+        }
+        // TODO: workaround to combine two api data into one
       })
       .catch((error) => console.log(error));
-
-    const getForeigns = (tmpData = [], next = "") => {
-      axios
-        .get(`${API_BASE}${FOREIGN_ENDPOINT}?next=${next}`, {
-          auth: {
-            username: REACT_APP_JINSHUJU_API_FOREIGN_KEY,
-            password: REACT_APP_JINSHUJU_API_FOREIGN_SECRET,
-          },
-        })
-        .then((response) => {
-          const { data, next } = response.data;
-
-          let newData = tmpData.concat(data);
-          setForeignData(newData);
-          setHelpCount(newData.length);
-          setFilteredData(newData.filter((r) => !_.isEmpty(r.field_7)));
-          if (next) {
-            getForeigns(newData, next);
-          }
-
-          // setForeignData(data);
-          // setHelpCount(data.length);
-
-          // TODO: workaround to combine two api data into one
-        })
-        .catch((error) => console.log(error));
     };
-
     getForeigns(foreignData);
 
-    axios
-      .get(`${API_BASE}${VOLUNTEER_ENDPOINT}`, { ...authObj })
-      .then((response) => {
-        let { data } = response.data;
-        data = data.filter((d) => d["field_18"] === "已通过");
-        setVolunteerData(data);
-        setVolunteerCount(data.length);
-      })
-      .catch((error) => console.log(error));
+    // 获取自愿者数据
+    request.getVolunteerData()
+    .then((response) => {
+      let { data } = response;
+      data = data.filter((d) => d["field_18"] === "已通过");
+      setVolunteerData(data);
+      setVolunteerCount(data.length);
+    })
+    .catch((error) => console.log(error));
 
+    // 获取捐赠者数据
     const getDonators = (tmpData = [], next = "") => {
-      axios
-        .get(`${API_BASE}${DONATOR_ENDPOINT}?next=${next}`, { ...authObj })
-        .then((response) => {
-          let { data, next } = response.data;
-          const newData = tmpData
-            .concat(data)
-            .filter((d) => d["field_13"] === "已审核");
+      request.getDonatorData(next)
+      .then((response) => {
+          let { data, next } = response;
+          const newData = tmpData.concat(data).filter((d) => d["field_13"] === "已审核");
           setDonatorData(newData.reverse());
           setMoney(
             newData.reduce((total, currentValue) => {
@@ -216,26 +166,25 @@ const App = () => {
         })
         .catch((error) => console.log(error));
     };
-
     getDonators(donatorData);
 
-    axios
-      .get(`${API_BASE}${SPONSER_ENDPOINT}`, { ...authObj })
-      .then((response) => {
-        let { data } = response.data;
-        data = data.filter((d) => d["field_12"] === "已审核");
-        setSponserData(data);
-      })
-      .catch((error) => console.log(error));
+    // 获取赞助商
+    request.getSponserData()
+    .then((response) => {
+      let { data } = response;
+      data = data.filter((d) => d["field_12"] === "已审核");
+      setSponserData(data);
+    })
+    .catch((error) => console.log(error));
 
-    axios
-      .get(`${API_BASE}${HIGHLIGHT_ENDPOINT}`, { ...authObj })
-      .then((response) => {
-        let { data } = response.data;
-        data = data.filter((d) => d["field_12"] === "已审核");
-        setHighLightData(data);
-      })
-      .catch((error) => console.log(error));
+    // 获取留声机
+    request.getHighLightData()
+    .then((response) => {
+      let { data } = response;
+      data = data.filter((d) => d["field_12"] === "已审核");
+      setHighLightData(data);
+    })
+    .catch((error) => console.log(error));
   }, []);
 
   // For donator table scrolling effect
@@ -321,7 +270,7 @@ const App = () => {
       <img
         src={
           data["x_field_weixin_headimgurl"].replace("http://", "https://") ||
-          avatar
+          images.avatar
         }
         alt="avatar"
       />
@@ -332,17 +281,17 @@ const App = () => {
   ));
 
   const hightlightList = [];
-  let images = [];
+  let imagesTemp = [];
   highlightData.forEach((data, index) => {
     if (index % 4 === 0) {
-      images = [
+      imagesTemp = [
         <img style={{ opacity: 0 }} src="" alt="empty" />,
         <img style={{ opacity: 0 }} src="" alt="empty" />,
         <img style={{ opacity: 0 }} src="" alt="empty" />,
         <img style={{ opacity: 0 }} src="" alt="empty" />,
       ];
     }
-    images[index % 4] = (
+    imagesTemp[index % 4] = (
       <div
         style={{
           backgroundImage: `url(${data["field_11"][0]})`,
@@ -368,7 +317,7 @@ const App = () => {
     if (index % 4 === 3 || index === highlightData.length - 1) {
       hightlightList.unshift(
         <div key={`hl-${index}`} className="carousel-images">
-          {images}
+          {imagesTemp}
         </div>
       );
     }
@@ -377,8 +326,6 @@ const App = () => {
   const imageCa = highlightData.map((h) => {
     return { source: h["field_11"][0] };
   });
-
-  // console.log("ca", imageCa);
 
   return (
     <div className="app">
@@ -396,10 +343,11 @@ const App = () => {
           <p>或分享到朋友圈</p>
         </div>
       </div>
+
       <header className="header">
-        <img src={logo} className="logo" alt="logo" />
-        <img src={logomb} className="logo-mb" alt="logo" />
-        <img src={title} className="title" alt="title" />
+        <img src={images.logo} className="logo" alt="logo" />
+        <img src={images.logomb} className="logo-mb" alt="logo" />
+        <img src={images.title} className="title" alt="title" />
         <h1>海外的亲们，是时候让我们陪你们打下半场了！</h1>
         <div className="bar-mb"></div>
         <p>
@@ -462,8 +410,9 @@ const App = () => {
             </div>
           </div>
         </div>
-        <img className="arrow" src={vector} alt="arrow"></img>
+        <img className="arrow" src={images.vector} alt="arrow"></img>
       </header>
+
       <div className="wrapper-mb">
         <h1>截止目前为止，我们已经</h1>
         <div className="tile">
@@ -509,6 +458,7 @@ const App = () => {
           </div>
         </div>
       </div>
+
       <section className="support">
         <h1>援助地图</h1>
         <p className="text">
@@ -580,7 +530,7 @@ const App = () => {
                 className="btn"
                 target="_blank"
                 rel="noopener noreferrer"
-                // href={FOREIGN_FORM_LINK}
+                // href={JINSHUJU.FOREIGN_FORM_LINK}
                 href={"https://jinshuju.net/f/sIDktA"}
                 type="button"
               >
@@ -620,7 +570,7 @@ const App = () => {
                 className="btn"
                 target="_blank"
                 rel="noopener noreferrer"
-                // href={FOREIGN_FORM_LINK}
+                // href={JINSHUJU.FOREIGN_FORM_LINK}
                 href={"https://jinshuju.net/f/sIDktA"}
                 type="button"
               >
@@ -630,7 +580,7 @@ const App = () => {
                 className="btn-mb"
                 target="_blank"
                 rel="noopener noreferrer"
-                // href={FOREIGN_FORM_LINK}
+                // href={JINSHUJU.FOREIGN_FORM_LINK}
                 href={"https://jinshuju.net/f/sIDktA"}
                 type="button"
               >
@@ -640,6 +590,7 @@ const App = () => {
           </div>
         </div>
       </section>
+
       <section className="highlights">
         <h1>爱的留声机</h1>
         <p className="text">这里，是我们随手记录的一些真实瞬间。</p>
@@ -692,7 +643,7 @@ const App = () => {
               className="btn"
               target="_blank"
               rel="noopener noreferrer"
-              href={VOLUNTEER_FORM_LINK}
+              href={JINSHUJU.VOLUNTEER_FORM_LINK}
               type="button"
             >
               加入我们
@@ -703,13 +654,14 @@ const App = () => {
             className="btn-mb"
             target="_blank"
             rel="noopener noreferrer"
-            href={VOLUNTEER_FORM_LINK}
+            href={JINSHUJU.VOLUNTEER_FORM_LINK}
             type="button"
           >
             加入我们
           </a>
         </div>
       </section>
+
       <section className="sponsers">
         <h1>值得尊敬的伙伴们</h1>
         <p className="text">
@@ -728,7 +680,7 @@ const App = () => {
             className="btn"
             target="_blank"
             rel="noopener noreferrer"
-            href={SPONSER_FORM_LINK}
+            href={JINSHUJU.SPONSER_FORM_LINK}
             type="button"
           >
             合作联系
@@ -741,33 +693,33 @@ const App = () => {
         <p className="text">我们每个人的顺手贡献，都将漂洋过海，温暖人心</p>
         <div className="qrcodes">
           <div className="qrcode">
-            <img src={icon1} alt="qrcode" />
+            <img src={images.icon1} alt="qrcode" />
             <p>不在多少，但求有心</p>
             <a
               className="btn"
               target="_blank"
               rel="noopener noreferrer"
-              href={DONATOR_FORM_LINK}
+              href={JINSHUJU.DONATOR_FORM_LINK}
               type="button"
             >
               爱心捐赠
             </a>
           </div>
           <div className="qrcode">
-            <img src={icon2} alt="qrcode" />
+            <img src={images.icon2} alt="qrcode" />
             <p>不在多少，但求有心</p>
             <a
               className="btn"
               target="_blank"
               rel="noopener noreferrer"
-              href={DOMESTIC_FORM_LINK}
+              href={JINSHUJU.DOMESTIC_FORM_LINK}
               type="button"
             >
               爱心捐物
             </a>
           </div>
           <div className="qrcode">
-            <img src={icon3} alt="qrcode" />
+            <img src={images.icon3} alt="qrcode" />
             <p>转发就是很好的支持</p>
             <button
               className="btn"
@@ -780,7 +732,7 @@ const App = () => {
             </button>
           </div>
           <div className="qrcode">
-            <img src={icon4} alt="qrcode" />
+            <img src={images.icon4} alt="qrcode" />
             <p>如果你是开发者</p>
             <a
               className="btn"
@@ -794,8 +746,9 @@ const App = () => {
           </div>
         </div>
       </section>
+
       <footer>
-        <img src={footerImg} alt="footer" />
+        <img src={images.footerImg} alt="footer" />
         <center>Eleduck.com With Love.</center>
       </footer>
     </div>

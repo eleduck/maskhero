@@ -1,12 +1,13 @@
 /**
  * 
- * utility 函数模块
+ * utility 通用函数模块
  * 
  */
 /* eslint-disable */
 
 
-import {getWXSignature} from '../request'
+import { getWXSignature } from '../request'
+import { AVAILABLE_COUNTIES, AVAILABLE_CITIES} from './contants'
 
 
 
@@ -27,22 +28,22 @@ export const WXShare = () => {
         link: url,
         imgUrl: "https://eleduck.com/maskhero/logo512.png"
     };
-    
+
     //获取分享参数
     getWXSignature(encodeURIComponent(url))
-    .then(data => {
-        wx.config({
-            // debug: true,
-            appId: "wxc7761b6c8088927e",
-            timestamp: data.timestamp,
-            nonceStr: data.noncestr,
-            signature: data.signature,
-            jsApiList: ["updateAppMessageShareData", "updateTimelineShareData"]
+        .then(data => {
+            wx.config({
+                // debug: true,
+                appId: "wxc7761b6c8088927e",
+                timestamp: data.timestamp,
+                nonceStr: data.noncestr,
+                signature: data.signature,
+                jsApiList: ["updateAppMessageShareData", "updateTimelineShareData"]
+            });
+        })
+        .catch(error => {
+            console.error("wx.config Error:", error);
         });
-    })
-    .catch(error => {
-        console.error("wx.config Error:", error);
-    });
 
     //配置成功触发
     wx.ready(function () {
@@ -78,3 +79,26 @@ export const WXShare = () => {
         console.log('wx.error', res);
     });
 }
+
+
+
+//获取国家中文名称
+export const getCountryName = (name) => {
+    const country = AVAILABLE_COUNTIES[name];
+    if (country) {
+        return country.nameCN;
+    } else {
+        return name;
+    }
+};
+
+
+//获取城市中文名
+export const getCityName = (name) => {
+    const city = AVAILABLE_CITIES[name];
+    if (city) {
+        return city.nameCN;
+    } else {
+        return name;
+    }
+};
