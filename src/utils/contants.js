@@ -5,15 +5,6 @@ export const AVAILABLE_COUNTIES = {
   },
 };
 
-export const getCountryName = (name) => {
-  const country = AVAILABLE_COUNTIES[name];
-  if (country) {
-    return country.nameCN;
-  } else {
-    return name;
-  }
-};
-
 export const AVAILABLE_PROVINCES = {
   Manitoba: {
     name: "Manitoba",
@@ -34,13 +25,4 @@ export const AVAILABLE_CITIES = {
     name: "Ottawa",
     nameCN: "渥太华",
   },
-};
-
-export const getCityName = (name) => {
-  const city = AVAILABLE_CITIES[name];
-  if (city) {
-    return city.nameCN;
-  } else {
-    return name;
-  }
 };

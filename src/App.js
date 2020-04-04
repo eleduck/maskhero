@@ -29,8 +29,7 @@ import "./assets/styles/app.scss";
 
 // utils
 import { buildChart } from "./utils/chartUtils";
-import { getCountryName, getCityName } from "./utils/contants";
-import { WXShare } from "./utils";
+import { WXShare, getCountryName, getCityName } from "./utils";
 
 
 //地图插件
