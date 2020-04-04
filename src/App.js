@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import axios from "axios";
 import _ from "lodash";
 import  moment from "moment";
+
 // 引入样式
 import "./assets/styles/common.scss";
 import "./assets/styles/app.scss";
-// 图片资源
+
+// 图片资源、金数据
 import {images, JINSHUJU} from "./utils/contants"
+
+// 接口请求
+import * as request from './request'
 
 // utils
 import { buildChart } from "./utils/chartUtils";
@@ -100,78 +104,56 @@ const App = () => {
   useEffect(() => {
     //微信分享
     WXShare();
+    
+    // 获取国内物资援助数据
+    request.getDomesticData()
+    .then((response) => {
+      let { data } = response;
+      data = data.filter((d) => d["field_12"] === "已审核");
+      setDomesticData(data);
+      setMaskCount(
+        data.reduce((total, currentValue) => {
+          // field_10 means masks
+          return total + currentValue["field_10"];
+        }, 0)
+      );
+    })
+    .catch((error) => console.log(error));
 
-    //获取国内数据
-    const authObj = {
-      auth: {
-        username: JINSHUJU.KEY,
-        password: JINSHUJU.SECRET,
-      },
-    };
-    axios
-      .get(`${JINSHUJU.DOMESTIC_ENDPOINT}`, { ...authObj })
-      .then((response) => {
-        let { data } = response.data;
-        data = data.filter((d) => d["field_12"] === "已审核");
-        setDomesticData(data);
-        setMaskCount(
-          data.reduce((total, currentValue) => {
-            // field_10 means masks
-            return total + currentValue["field_10"];
-          }, 0)
-        );
+    // 获取国外反馈数据
+    const getForeigns = (tmpData = [], next = "") => {
+      request.getForeignData(next)
+      .then(response=> {
+        let { data, next } = response;
+        let newData = tmpData.concat(data);
+        setForeignData(newData);
+        setHelpCount(newData.length);
+        setFilteredData(newData.filter((r) => !_.isEmpty(r.field_7)));
+        if (next) {
+          getForeigns(newData, next);
+        }
+        // TODO: workaround to combine two api data into one
       })
       .catch((error) => console.log(error));
-
-    //获取国外数据
-    const getForeigns = (tmpData = [], next = "") => {
-      axios
-        .get(`${JINSHUJU.FOREIGN_ENDPOINT}?next=${next}`, {
-          auth: {
-            username: JINSHUJU.FOREIGN_KEY,
-            password: JINSHUJU.FOREIGN_SECRET,
-          },
-        })
-        .then((response) => {
-          const { data, next } = response.data;
-
-          let newData = tmpData.concat(data);
-          setForeignData(newData);
-          setHelpCount(newData.length);
-          setFilteredData(newData.filter((r) => !_.isEmpty(r.field_7)));
-          if (next) {
-            getForeigns(newData, next);
-          }
-
-          // setForeignData(data);
-          // setHelpCount(data.length);
-
-          // TODO: workaround to combine two api data into one
-        })
-        .catch((error) => console.log(error));
     };
     getForeigns(foreignData);
 
-    //获取自愿者数据
-    axios
-      .get(`${JINSHUJU.VOLUNTEER_ENDPOINT}`, { ...authObj })
-      .then((response) => {
-        let { data } = response.data;
-        data = data.filter((d) => d["field_18"] === "已通过");
-        setVolunteerData(data);
-        setVolunteerCount(data.length);
-      })
-      .catch((error) => console.log(error));
+    // 获取自愿者数据
+    request.getVolunteerData()
+    .then((response) => {
+      let { data } = response;
+      data = data.filter((d) => d["field_18"] === "已通过");
+      setVolunteerData(data);
+      setVolunteerCount(data.length);
+    })
+    .catch((error) => console.log(error));
 
     // 获取捐赠者数据
     const getDonators = (tmpData = [], next = "") => {
-      axios
-        .get(`${JINSHUJU.DONATOR_ENDPOINT}?next=${next}`, { ...authObj })
-        .then((response) => {
-          let { data, next } = response.data;
-          const newData = tmpData
-            .concat(data)
-            .filter((d) => d["field_13"] === "已审核");
+      request.getDonatorData(next)
+      .then((response) => {
+          let { data, next } = response;
+          const newData = tmpData.concat(data).filter((d) => d["field_13"] === "已审核");
           setDonatorData(newData.reverse());
           setMoney(
             newData.reduce((total, currentValue) => {
@@ -187,23 +169,22 @@ const App = () => {
     getDonators(donatorData);
 
     // 获取赞助商
-    axios
-      .get(`${JINSHUJU.SPONSER_ENDPOINT}`, { ...authObj })
-      .then((response) => {
-        let { data } = response.data;
-        data = data.filter((d) => d["field_12"] === "已审核");
-        setSponserData(data);
-      })
-      .catch((error) => console.log(error));
+    request.getSponserData()
+    .then((response) => {
+      let { data } = response;
+      data = data.filter((d) => d["field_12"] === "已审核");
+      setSponserData(data);
+    })
+    .catch((error) => console.log(error));
 
-    axios
-      .get(`${JINSHUJU.HIGHLIGHT_ENDPOINT}`, { ...authObj })
-      .then((response) => {
-        let { data } = response.data;
-        data = data.filter((d) => d["field_12"] === "已审核");
-        setHighLightData(data);
-      })
-      .catch((error) => console.log(error));
+    // 获取留声机
+    request.getHighLightData()
+    .then((response) => {
+      let { data } = response;
+      data = data.filter((d) => d["field_12"] === "已审核");
+      setHighLightData(data);
+    })
+    .catch((error) => console.log(error));
   }, []);
 
   // For donator table scrolling effect
