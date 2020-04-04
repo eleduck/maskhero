@@ -2,36 +2,22 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
 import _ from "lodash";
 import  moment from "moment";
-
-//轮播插件
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
-//查看图片
-import Carousel, { Modal, ModalGateway } from "react-images";
-
-// 图片资源
-import logo from "./assets/images/logo.png";
-import logomb from "./assets/images/logomb.png";
-import avatar from "./assets/images/avatar.png";
-import vector from "./assets/images/vector.png";
-import icon1 from "./assets/images/icon1.png";
-import icon2 from "./assets/images/icon2.png";
-import icon3 from "./assets/images/icon3.png";
-import icon4 from "./assets/images/icon4.png";
-import footerImg from "./assets/images/footer-img.png";
-import title from "./assets/images/title.png";
-
 // 引入样式
 import "./assets/styles/common.scss";
 import "./assets/styles/app.scss";
+// 图片资源
+import {images} from "./utils/contants"
 
 // utils
 import { buildChart } from "./utils/chartUtils";
 import { WXShare, getCountryName, getCityName } from "./utils";
 
-
+// 轮播插件
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+// 预览插件
+import Carousel, { Modal, ModalGateway } from "react-images";
 //地图插件
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
@@ -325,7 +311,7 @@ const App = () => {
       <img
         src={
           data["x_field_weixin_headimgurl"].replace("http://", "https://") ||
-          avatar
+          images.avatar
         }
         alt="avatar"
       />
@@ -336,17 +322,17 @@ const App = () => {
   ));
 
   const hightlightList = [];
-  let images = [];
+  let imagesTemp = [];
   highlightData.forEach((data, index) => {
     if (index % 4 === 0) {
-      images = [
+      imagesTemp = [
         <img style={{ opacity: 0 }} src="" alt="empty" />,
         <img style={{ opacity: 0 }} src="" alt="empty" />,
         <img style={{ opacity: 0 }} src="" alt="empty" />,
         <img style={{ opacity: 0 }} src="" alt="empty" />,
       ];
     }
-    images[index % 4] = (
+    imagesTemp[index % 4] = (
       <div
         style={{
           backgroundImage: `url(${data["field_11"][0]})`,
@@ -372,7 +358,7 @@ const App = () => {
     if (index % 4 === 3 || index === highlightData.length - 1) {
       hightlightList.unshift(
         <div key={`hl-${index}`} className="carousel-images">
-          {images}
+          {imagesTemp}
         </div>
       );
     }
@@ -381,8 +367,6 @@ const App = () => {
   const imageCa = highlightData.map((h) => {
     return { source: h["field_11"][0] };
   });
-
-  // console.log("ca", imageCa);
 
   return (
     <div className="app">
@@ -401,9 +385,9 @@ const App = () => {
         </div>
       </div>
       <header className="header">
-        <img src={logo} className="logo" alt="logo" />
-        <img src={logomb} className="logo-mb" alt="logo" />
-        <img src={title} className="title" alt="title" />
+        <img src={images.logo} className="logo" alt="logo" />
+        <img src={images.logomb} className="logo-mb" alt="logo" />
+        <img src={images.title} className="title" alt="title" />
         <h1>海外的亲们，是时候让我们陪你们打下半场了！</h1>
         <div className="bar-mb"></div>
         <p>
@@ -466,7 +450,7 @@ const App = () => {
             </div>
           </div>
         </div>
-        <img className="arrow" src={vector} alt="arrow"></img>
+        <img className="arrow" src={images.vector} alt="arrow"></img>
       </header>
       <div className="wrapper-mb">
         <h1>截止目前为止，我们已经</h1>
@@ -745,7 +729,7 @@ const App = () => {
         <p className="text">我们每个人的顺手贡献，都将漂洋过海，温暖人心</p>
         <div className="qrcodes">
           <div className="qrcode">
-            <img src={icon1} alt="qrcode" />
+            <img src={images.icon1} alt="qrcode" />
             <p>不在多少，但求有心</p>
             <a
               className="btn"
@@ -758,7 +742,7 @@ const App = () => {
             </a>
           </div>
           <div className="qrcode">
-            <img src={icon2} alt="qrcode" />
+            <img src={images.icon2} alt="qrcode" />
             <p>不在多少，但求有心</p>
             <a
               className="btn"
@@ -771,7 +755,7 @@ const App = () => {
             </a>
           </div>
           <div className="qrcode">
-            <img src={icon3} alt="qrcode" />
+            <img src={images.icon3} alt="qrcode" />
             <p>转发就是很好的支持</p>
             <button
               className="btn"
@@ -784,7 +768,7 @@ const App = () => {
             </button>
           </div>
           <div className="qrcode">
-            <img src={icon4} alt="qrcode" />
+            <img src={images.icon4} alt="qrcode" />
             <p>如果你是开发者</p>
             <a
               className="btn"
@@ -799,7 +783,7 @@ const App = () => {
         </div>
       </section>
       <footer>
-        <img src={footerImg} alt="footer" />
+        <img src={images.footerImg} alt="footer" />
         <center>Eleduck.com With Love.</center>
       </footer>
     </div>

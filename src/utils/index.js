@@ -1,6 +1,6 @@
 /**
  * 
- * utility 函数模块
+ * utility 通用函数模块
  * 
  */
 /* eslint-disable */
