@@ -6,7 +6,7 @@ import  moment from "moment";
 import "./assets/styles/common.scss";
 import "./assets/styles/app.scss";
 // 图片资源
-import {images} from "./utils/contants"
+import {images, JINSHUJU} from "./utils/contants"
 
 // utils
 import { buildChart } from "./utils/chartUtils";
@@ -18,36 +18,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 // 预览插件
 import Carousel, { Modal, ModalGateway } from "react-images";
-//地图插件
+// 地图插件
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 am4core.useTheme(am4themes_animated);
-
-const {
-  REACT_APP_JINSHUJU_API_KEY,
-  REACT_APP_JINSHUJU_API_SECRET,
-  REACT_APP_JINSHUJU_API_FOREIGN_KEY,
-  REACT_APP_JINSHUJU_API_FOREIGN_SECRET,
-  REACT_APP_DOMESTIC_TOKEN,
-  REACT_APP_FOREIGN_TOKEN,
-  REACT_APP_VOLUNTEER_TOKEN,
-  REACT_APP_DONATOR_TOKEN,
-  REACT_APP_SPONSER_TOKEN,
-  REACT_APP_HIGHLIGHT_TOKEN,
-} = process.env;
-const API_BASE = "https://jinshuju.net/api/v1";
-const DOMESTIC_ENDPOINT = `/forms/${REACT_APP_DOMESTIC_TOKEN}/entries`;
-const FOREIGN_ENDPOINT = `/forms/${REACT_APP_FOREIGN_TOKEN}/entries`;
-const VOLUNTEER_ENDPOINT = `/forms/${REACT_APP_VOLUNTEER_TOKEN}/entries`;
-const DONATOR_ENDPOINT = `/forms/${REACT_APP_DONATOR_TOKEN}/entries`;
-const SPONSER_ENDPOINT = `/forms/${REACT_APP_SPONSER_TOKEN}/entries`;
-const HIGHLIGHT_ENDPOINT = `/forms/${REACT_APP_HIGHLIGHT_TOKEN}/entries`;
-const DOMESTIC_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_DOMESTIC_TOKEN}`;
-const FOREIGN_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_FOREIGN_TOKEN}`;
-const VOLUNTEER_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_VOLUNTEER_TOKEN}`;
-const SPONSER_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_SPONSER_TOKEN}`;
-const DONATOR_FORM_LINK = `https://jinshuju.net/f/${REACT_APP_DONATOR_TOKEN}`;
 
 // TODO: workaround
 const TEMP_ENDPOINT = "/forms/Ukw1aQ/entries";
@@ -121,19 +96,20 @@ const App = () => {
     };
   }, [domesticData, foreignData, volunteerData]);
 
+
   useEffect(() => {
     //微信分享
     WXShare();
 
+    //获取国内数据
     const authObj = {
       auth: {
-        username: REACT_APP_JINSHUJU_API_KEY,
-        password: REACT_APP_JINSHUJU_API_SECRET,
+        username: JINSHUJU.KEY,
+        password: JINSHUJU.SECRET,
       },
     };
-
     axios
-      .get(`${API_BASE}${DOMESTIC_ENDPOINT}`, { ...authObj })
+      .get(`${JINSHUJU.DOMESTIC_ENDPOINT}`, { ...authObj })
       .then((response) => {
         let { data } = response.data;
         data = data.filter((d) => d["field_12"] === "已审核");
@@ -147,12 +123,13 @@ const App = () => {
       })
       .catch((error) => console.log(error));
 
+    //获取国外数据
     const getForeigns = (tmpData = [], next = "") => {
       axios
-        .get(`${API_BASE}${FOREIGN_ENDPOINT}?next=${next}`, {
+        .get(`${JINSHUJU.FOREIGN_ENDPOINT}?next=${next}`, {
           auth: {
-            username: REACT_APP_JINSHUJU_API_FOREIGN_KEY,
-            password: REACT_APP_JINSHUJU_API_FOREIGN_SECRET,
+            username: JINSHUJU.FOREIGN_KEY,
+            password: JINSHUJU.FOREIGN_SECRET,
           },
         })
         .then((response) => {
@@ -173,11 +150,11 @@ const App = () => {
         })
         .catch((error) => console.log(error));
     };
-
     getForeigns(foreignData);
 
+    //获取自愿者数据
     axios
-      .get(`${API_BASE}${VOLUNTEER_ENDPOINT}`, { ...authObj })
+      .get(`${JINSHUJU.VOLUNTEER_ENDPOINT}`, { ...authObj })
       .then((response) => {
         let { data } = response.data;
         data = data.filter((d) => d["field_18"] === "已通过");
@@ -186,9 +163,10 @@ const App = () => {
       })
       .catch((error) => console.log(error));
 
+    // 获取捐赠者数据
     const getDonators = (tmpData = [], next = "") => {
       axios
-        .get(`${API_BASE}${DONATOR_ENDPOINT}?next=${next}`, { ...authObj })
+        .get(`${JINSHUJU.DONATOR_ENDPOINT}?next=${next}`, { ...authObj })
         .then((response) => {
           let { data, next } = response.data;
           const newData = tmpData
@@ -206,11 +184,11 @@ const App = () => {
         })
         .catch((error) => console.log(error));
     };
-
     getDonators(donatorData);
 
+    // 获取赞助商
     axios
-      .get(`${API_BASE}${SPONSER_ENDPOINT}`, { ...authObj })
+      .get(`${JINSHUJU.SPONSER_ENDPOINT}`, { ...authObj })
       .then((response) => {
         let { data } = response.data;
         data = data.filter((d) => d["field_12"] === "已审核");
@@ -219,7 +197,7 @@ const App = () => {
       .catch((error) => console.log(error));
 
     axios
-      .get(`${API_BASE}${HIGHLIGHT_ENDPOINT}`, { ...authObj })
+      .get(`${JINSHUJU.HIGHLIGHT_ENDPOINT}`, { ...authObj })
       .then((response) => {
         let { data } = response.data;
         data = data.filter((d) => d["field_12"] === "已审核");
@@ -384,6 +362,7 @@ const App = () => {
           <p>或分享到朋友圈</p>
         </div>
       </div>
+
       <header className="header">
         <img src={images.logo} className="logo" alt="logo" />
         <img src={images.logomb} className="logo-mb" alt="logo" />
@@ -452,6 +431,7 @@ const App = () => {
         </div>
         <img className="arrow" src={images.vector} alt="arrow"></img>
       </header>
+
       <div className="wrapper-mb">
         <h1>截止目前为止，我们已经</h1>
         <div className="tile">
@@ -497,6 +477,7 @@ const App = () => {
           </div>
         </div>
       </div>
+
       <section className="support">
         <h1>援助地图</h1>
         <p className="text">
@@ -568,7 +549,7 @@ const App = () => {
                 className="btn"
                 target="_blank"
                 rel="noopener noreferrer"
-                // href={FOREIGN_FORM_LINK}
+                // href={JINSHUJU.FOREIGN_FORM_LINK}
                 href={"https://jinshuju.net/f/sIDktA"}
                 type="button"
               >
@@ -608,7 +589,7 @@ const App = () => {
                 className="btn"
                 target="_blank"
                 rel="noopener noreferrer"
-                // href={FOREIGN_FORM_LINK}
+                // href={JINSHUJU.FOREIGN_FORM_LINK}
                 href={"https://jinshuju.net/f/sIDktA"}
                 type="button"
               >
@@ -618,7 +599,7 @@ const App = () => {
                 className="btn-mb"
                 target="_blank"
                 rel="noopener noreferrer"
-                // href={FOREIGN_FORM_LINK}
+                // href={JINSHUJU.FOREIGN_FORM_LINK}
                 href={"https://jinshuju.net/f/sIDktA"}
                 type="button"
               >
@@ -628,6 +609,7 @@ const App = () => {
           </div>
         </div>
       </section>
+
       <section className="highlights">
         <h1>爱的留声机</h1>
         <p className="text">这里，是我们随手记录的一些真实瞬间。</p>
@@ -680,7 +662,7 @@ const App = () => {
               className="btn"
               target="_blank"
               rel="noopener noreferrer"
-              href={VOLUNTEER_FORM_LINK}
+              href={JINSHUJU.VOLUNTEER_FORM_LINK}
               type="button"
             >
               加入我们
@@ -691,13 +673,14 @@ const App = () => {
             className="btn-mb"
             target="_blank"
             rel="noopener noreferrer"
-            href={VOLUNTEER_FORM_LINK}
+            href={JINSHUJU.VOLUNTEER_FORM_LINK}
             type="button"
           >
             加入我们
           </a>
         </div>
       </section>
+
       <section className="sponsers">
         <h1>值得尊敬的伙伴们</h1>
         <p className="text">
@@ -716,7 +699,7 @@ const App = () => {
             className="btn"
             target="_blank"
             rel="noopener noreferrer"
-            href={SPONSER_FORM_LINK}
+            href={JINSHUJU.SPONSER_FORM_LINK}
             type="button"
           >
             合作联系
@@ -735,7 +718,7 @@ const App = () => {
               className="btn"
               target="_blank"
               rel="noopener noreferrer"
-              href={DONATOR_FORM_LINK}
+              href={JINSHUJU.DONATOR_FORM_LINK}
               type="button"
             >
               爱心捐赠
@@ -748,7 +731,7 @@ const App = () => {
               className="btn"
               target="_blank"
               rel="noopener noreferrer"
-              href={DOMESTIC_FORM_LINK}
+              href={JINSHUJU.DOMESTIC_FORM_LINK}
               type="button"
             >
               爱心捐物
@@ -782,6 +765,7 @@ const App = () => {
           </div>
         </div>
       </section>
+
       <footer>
         <img src={images.footerImg} alt="footer" />
         <center>Eleduck.com With Love.</center>
