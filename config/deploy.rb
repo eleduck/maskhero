@@ -16,7 +16,7 @@ set :application_name, 'maskhero'
 set :domain, '118.190.55.251'
 set :deploy_to, '/home/deploy/maskhero'
 set :repository, 'git@github.com:eleduck/maskhero.git'
-set :branch, 'develop'
+set :branch, 'master'
 
 # Optional settings:
 set :user, 'deploy'          # Username in the server to SSH to.
@@ -30,6 +30,7 @@ set :nvm_path, '/home/happybai/.nvm/scripts/nvm'
 # run `mina -d` to see all folders and files already included in `shared_dirs` and `shared_files`
 set :shared_dirs, fetch(:shared_dirs, []).push()
 set :shared_files, fetch(:shared_files, []).push('.env')
+set :keep_releases, '2'
 
 # This task is the environment that is loaded for all remote run commands, such as
 # `mina deploy` or `mina rake`.
@@ -56,10 +57,10 @@ end
 
 desc "Deploys the current version to the server."
 task :deploy do
-  # run(:local) do
-  #   command "scp ormconfig.production.json #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:shared_path)}/ormconfig.json"
-  # end
   # uncomment this line to make sure you pushed your local branch to the remote origin
+  run(:local) do
+    command "yarn build"
+  end
   invoke :'git:ensure_pushed'
   deploy do
     # Put things that will set up an empty directory into a fully set-up
@@ -68,7 +69,7 @@ task :deploy do
     command "nvm use node 10.15.3"
     invoke :'deploy:link_shared_paths'
 
-    command "yarn install"
+    # command "yarn install"
     # command "yarn build"
 
     invoke :'deploy:cleanup'
@@ -79,6 +80,10 @@ task :deploy do
         command %{touch tmp/restart.txt}
       end
     end
+  end
+
+  run(:local) do
+    command "scp -r build/ #{fetch(:user)}@#{fetch(:domain)}:#{fetch(:current_path)}/"
   end
 
   # you can use `run :local` to run tasks on local machine before of after the deploy scripts
