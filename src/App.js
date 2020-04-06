@@ -9,6 +9,7 @@ import "./assets/styles/app.scss";
 
 // 引入页面组件
 import Header from './components/Header'
+import Footer from './components/Footer'
 
 // 图片资源、金数据
 import {images, JINSHUJU} from "./utils/contants"
@@ -642,10 +643,7 @@ const App = () => {
         </div>
       </section>
 
-      <footer>
-        <img src={images.footerImg} alt="footer" />
-        <center>Eleduck.com With Love.</center>
-      </footer>
+      <Footer />
     </div>
   );
 };
