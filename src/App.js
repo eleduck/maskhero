@@ -10,6 +10,7 @@ import "./assets/styles/app.scss";
 // 引入页面组件
 import Header from './components/Header'
 import Footer from './components/Footer'
+import Sponser from './components/Sponser'
 import HelpUs from './components/HelpUs'
 
 // 图片资源、金数据
@@ -49,7 +50,7 @@ const App = () => {
   const [foreignData, setForeignData] = useState([]);
   const [volunteerData, setVolunteerData] = useState([]);
   const [donatorData, setDonatorData] = useState([]);
-  const [sponserData, setSponserData] = useState([]);
+  
   const [highlightData, setHighLightData] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   
@@ -176,14 +177,6 @@ const App = () => {
     };
     getDonators(donatorData);
 
-    // 获取赞助商
-    request.getSponserData()
-    .then((response) => {
-      let { data } = response;
-      data = data.filter((d) => d["field_12"] === "已审核");
-      setSponserData(data);
-    })
-    .catch((error) => console.log(error));
 
     // 获取留声机
     request.getHighLightData()
@@ -515,6 +508,7 @@ const App = () => {
             </Modal>
           ) : null}
         </ModalGateway>
+
         <div className="volunteers">
           <div className="column left">
             <h2>默默付出着的志愿者们</h2>
@@ -544,34 +538,11 @@ const App = () => {
             加入我们
           </a>
         </div>
+      
       </section>
 
-      <section className="sponsers">
-        <h1>值得尊敬的伙伴们</h1>
-        <p className="text">
-          与子偕行，共赴国殇！这次行动中，以下这些无私有爱的合作伙伴们，也在发光发热。
-        </p>
-        <div>
-          {sponserData.map((sponser) => (
-            <img className="sponser" src={sponser["field_11"][0]} alt="icbc" />
-          ))}
-        </div>
-        <center>
-          <span>
-            我们的力量总归有限，真心的邀请其他公司/组织/品牌/等合作共建，帮助到更多的海外华人。
-          </span>
-          <a
-            className="btn"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={JINSHUJU.SPONSER_FORM_LINK}
-            type="button"
-          >
-            合作联系
-          </a>
-        </center>
-      </section>
-      
+      <Sponser />
+
       <HelpUs />
       
       <Footer />
