@@ -9,7 +9,7 @@ import {images, JINSHUJU } from "../../utils/contants"
 
 
 export default function Volunteer(props) {
-    const {updateVolunteerData}=props
+    const { updateVolunteerData }=props;
     const [volunteerData, setVolunteerData] = useState([]);
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export default function Volunteer(props) {
                 updateVolunteerData(data);
             })
             .catch((error) => console.log(error));
-    }, [])
+    }, []);
 
     
     return <div className="volunteers">
