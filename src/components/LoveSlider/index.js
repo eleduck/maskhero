@@ -72,14 +72,15 @@ export default function LoveSlider() {
     highlightData.forEach((data, index) => {
         if (index % 4 === 0) {
             imagesTemp = [
-                <img style={{ opacity: 0 }} src="" alt="empty" />,
-                <img style={{ opacity: 0 }} src="" alt="empty" />,
-                <img style={{ opacity: 0 }} src="" alt="empty" />,
-                <img style={{ opacity: 0 }} src="" alt="empty" />,
+                <img key="empty-1" style={{ opacity: 0 }} src="" alt="empty" />,
+                <img key="empty-2"style={{ opacity: 0 }} src="" alt="empty" />,
+                <img key="empty-3" style={{ opacity: 0 }} src="" alt="empty" />,
+                <img key="empty-4" style={{ opacity: 0 }} src="" alt="empty" />,
             ];
         }
         imagesTemp[index % 4] = (
             <div
+                key={index}
                 style={{
                     backgroundImage: `url(${data["field_11"][0]})`,
                     // width: "18vw",
@@ -123,7 +124,7 @@ export default function LoveSlider() {
         </Slider>
         <Slider className="carousel-mb" {...carouselSettings}>
             {highlightData.map((data, index) => (
-                <div className="carousel-images">
+                <div key={index} className="carousel-images">
                     <div
                         style={{
                             backgroundImage: `url(${data["field_11"][0]})`,

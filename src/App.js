@@ -6,10 +6,10 @@ import  moment from "moment";
 import "./assets/styles/common.scss";
 import "./assets/styles/app.scss";
 
-
 // 引入页面组件
 import Header from './components/Header'
 import Footer from './components/Footer'
+import SupportMap from './components/SupportMap'
 import LoveSlider from './components/LoveSlider'
 import Volunteer from './components/Volunteer'
 import Sponser from './components/Sponser'
@@ -22,14 +22,7 @@ import {JINSHUJU} from "./utils/contants"
 import * as request from './request'
 
 // utils
-import { buildChart } from "./utils/chartUtils";
 import { WXShare, getCountryName, getCityName } from "./utils";
-
-// 地图插件
-import * as am4core from "@amcharts/amcharts4/core";
-import * as am4maps from "@amcharts/amcharts4/maps";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-am4core.useTheme(am4themes_animated);
 
 
 
@@ -37,7 +30,6 @@ am4core.useTheme(am4themes_animated);
 const TEMP_ENDPOINT = "/forms/Ukw1aQ/entries";
 
 const App = () => {
-  const [chart, setChart] = useState();
   const [maskCount, setMaskCount] = useState(0);
   const [money, setMoney] = useState(0);
   const [helpCount, setHelpCount] = useState(0);
@@ -53,30 +45,13 @@ const App = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [supportInfoList, setSupportInfoList] = useState([]);
 
-
+  // 更新自愿者数据
   const updateVolunteerData=(data)=>{
     if(data&&data.length>0){
       setVolunteerCount(data.length)
       setVolunteerData(data)
     }
   }
-
-
-  useLayoutEffect(() => {
-    if (
-      domesticData.length > 0 &&
-      foreignData.length > 0 &&
-      volunteerData.length > 0
-    ) {
-      const chart = am4core.create("chartdiv", am4maps.MapChart);
-      buildChart(chart, domesticData, foreignData, volunteerData);
-      setChart(chart);
-    }
-    return () => {
-      chart && chart.dispose();
-    };
-  }, [domesticData, foreignData, volunteerData]);
-
 
   useEffect(() => {
     //微信分享
@@ -222,21 +197,12 @@ const App = () => {
       <Header money={money} volunteerCount={volunteerCount} />
 
       <section className="support">
-        <h1>援助地图</h1>
-        <p className="text">
-          我们正在以城市为单位，接收海外华人的援助申请，同时在国内募集物资，实施援助。
-        </p>
-        <div id="chartdiv"></div>
-        <div className="legend">
-          <div className="marker">
-            <div className="color color-1"></div>
-            <div className="text">已援助</div>
-          </div>
-          <div className="marker">
-            <div className="color color-2"></div>
-            <div className="text">未援助</div>
-          </div>
-        </div>
+        <SupportMap
+          domesticData={domesticData}
+          foreignData={foreignData}
+          volunteerData={volunteerData}
+         />
+
         <div className="info">
           <div className="row-1">
             <a
