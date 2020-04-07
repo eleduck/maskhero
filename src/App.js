@@ -6,6 +6,14 @@ import  moment from "moment";
 import "./assets/styles/common.scss";
 import "./assets/styles/app.scss";
 
+
+// 引入页面组件
+import Header from './components/Header'
+import Footer from './components/Footer'
+import Volunteer from './components/Volunteer'
+import Sponser from './components/Sponser'
+import HelpUs from './components/HelpUs'
+
 // 图片资源、金数据
 import {images, JINSHUJU} from "./utils/contants"
 
@@ -28,6 +36,8 @@ import * as am4maps from "@amcharts/amcharts4/maps";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 am4core.useTheme(am4themes_animated);
 
+
+
 // TODO: workaround
 const TEMP_ENDPOINT = "/forms/Ukw1aQ/entries";
 
@@ -41,10 +51,10 @@ const App = () => {
   const [foreignData, setForeignData] = useState([]);
   const [volunteerData, setVolunteerData] = useState([]);
   const [donatorData, setDonatorData] = useState([]);
-  const [sponserData, setSponserData] = useState([]);
+  
   const [highlightData, setHighLightData] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [shareModalIsOpen, setShareModalIsOpen] = useState(false);
+  
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [filteredData, setFilteredData] = useState([]);
   const [supportInfoList, setSupportInfoList] = useState([]);
@@ -53,6 +63,13 @@ const App = () => {
     setModalIsOpen(!modalIsOpen);
     setSelectedIndex(index);
   };
+
+  const updateVolunteerData=(data)=>{
+    if(data&&data.length>0){
+      setVolunteerCount(data.length)
+      setVolunteerData(data)
+    }
+  }
 
   const delta = 6;
   let startX;
@@ -138,15 +155,6 @@ const App = () => {
     };
     getForeigns(foreignData);
 
-    // 获取自愿者数据
-    request.getVolunteerData()
-    .then((response) => {
-      let { data } = response;
-      data = data.filter((d) => d["field_18"] === "已通过");
-      setVolunteerData(data);
-      setVolunteerCount(data.length);
-    })
-    .catch((error) => console.log(error));
 
     // 获取捐赠者数据
     const getDonators = (tmpData = [], next = "") => {
@@ -168,14 +176,6 @@ const App = () => {
     };
     getDonators(donatorData);
 
-    // 获取赞助商
-    request.getSponserData()
-    .then((response) => {
-      let { data } = response;
-      data = data.filter((d) => d["field_12"] === "已审核");
-      setSponserData(data);
-    })
-    .catch((error) => console.log(error));
 
     // 获取留声机
     request.getHighLightData()
@@ -265,20 +265,6 @@ const App = () => {
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
-  const volunteerList = volunteerData.map((data) => (
-    <div className="avatar">
-      <img
-        src={
-          data["x_field_weixin_headimgurl"].replace("http://", "https://") ||
-          images.avatar
-        }
-        alt="avatar"
-      />
-      <div className="overlay">
-        <div className="text">{data["field_1"]}</div>
-      </div>
-    </div>
-  ));
 
   const hightlightList = [];
   let imagesTemp = [];
@@ -329,135 +315,11 @@ const App = () => {
 
   return (
     <div className="app">
-      <div
-        className={`shareModal ${shareModalIsOpen ? "open" : ""}`}
-        onClick={(e) => {
-          document.body.classList.remove("modal-open");
-          setShareModalIsOpen(false);
-        }}
-      >
-        <div className="sharethis-inline-share-buttons"></div>
-        <div className="share-mb">
-          <p>请点击右上角</p>
-          <p>将它发送给指定朋友</p>
-          <p>或分享到朋友圈</p>
-        </div>
-      </div>
+      
 
-      <header className="header">
-        <img src={images.logo} className="logo" alt="logo" />
-        <img src={images.logomb} className="logo-mb" alt="logo" />
-        <img src={images.title} className="title" alt="title" />
-        <h1>海外的亲们，是时候让我们陪你们打下半场了！</h1>
-        <div className="bar-mb"></div>
-        <p>
-          这场疫情，国内打上半场，国外打下半场，海外华人打全场。”这话于国内的我们而言是段子，于国外的你们是猝不及防的遭遇。
-          在倾力支援国内之后，异国他乡的土地上的你们，除了对抗病毒本身，还要替我们承受“Chinese
-          Virus”的污名乃至这背后的威胁、暴力。
-        </p>
-        <p className="second">
-          这一切，国内的亲们，不会坐视。岂曰无衣，与子同袍！我们一起来打下半场。
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://eleduck.com/posts/6XNfOL"
-          >
-            点此查看我们正在做的>>>
-          </a>
-        </p>
-        <div className="wrapper">
-          <div className="tile">
-            <div className="name">援助口罩</div>
-            <div className="data">
-              {/* {maskCount} */}
-              {2000}
-              <span className="unit">个</span>
-            </div>
-          </div>
-          <div className="split"></div>
-          <div className="tile">
-            <div>收到捐款</div>
-            <div className="data">
-              <span>{money}</span>
-              {/* <span>{5180}</span> */}
-              <span className="unit">元</span>
-            </div>
-          </div>
-          <div className="split"></div>
-          <div className="tile">
-            <div>援助华人家庭</div>
-            <div className="data">
-              {/* {helpCount} */}
-              {200}
-              <span className="unit">个</span>
-            </div>
-          </div>
-          <div className="split"></div>
-          <div className="tile">
-            <div>志愿者</div>
-            <div className="data">
-              {volunteerCount}
-              {/* {18} */}
-              <span className="unit">人</span>
-            </div>
-          </div>
-          <div className="split"></div>
-          <div className="tile">
-            <div>援助海外城市</div>
-            <div className="data">
-              <span>4</span>
-              <span className="unit">个</span>
-            </div>
-          </div>
-        </div>
-        <img className="arrow" src={images.vector} alt="arrow"></img>
-      </header>
+      <Header money={money} volunteerCount={volunteerCount} />
 
-      <div className="wrapper-mb">
-        <h1>截止目前为止，我们已经</h1>
-        <div className="tile">
-          <div className="name">援助口罩</div>
-          <div className="data">
-            {2000}
-            {/* {maskCount} */}
-            <span className="unit">个</span>
-          </div>
-        </div>
-        <div className="split"></div>
-        <div className="tile">
-          <div className="name">收到捐款</div>
-          <div className="data">
-            <span>{money}</span>
-            {/* <span>{5180}</span> */}
-            <span className="unit">元</span>
-          </div>
-        </div>
-        <div className="split"></div>
-        <div className="tile">
-          <div className="name">援助华人家庭</div>
-          <div className="data">
-            {/* {helpCount} */}
-            {200}
-            <span className="unit">个</span>
-          </div>
-        </div>
-        <div className="split"></div>
-        <div className="tile">
-          <div className="name">志愿者</div>
-          <div className="data">
-            {volunteerCount}
-            <span className="unit">人</span>
-          </div>
-        </div>
-        <div className="split"></div>
-        <div className="tile">
-          <div className="name">援助海外城市</div>
-          <div className="data">
-            <span>4</span>
-            <span className="unit">个</span>
-          </div>
-        </div>
-      </div>
+      
 
       <section className="support">
         <h1>援助地图</h1>
@@ -631,126 +493,16 @@ const App = () => {
             </Modal>
           ) : null}
         </ModalGateway>
-        <div className="volunteers">
-          <div className="column left">
-            <h2>默默付出着的志愿者们</h2>
-            <p>
-              坦诚的讲，做这样的公益太累了。如果没有这帮志愿者的陆续加入，我和@Char根本坚持不下来。
-            </p>
-            <p>要感谢的人太多，但我更想对这些同志们说——辛苦了！</p>
-            <p>Respect!</p>
-            <a
-              className="btn"
-              target="_blank"
-              rel="noopener noreferrer"
-              href={JINSHUJU.VOLUNTEER_FORM_LINK}
-              type="button"
-            >
-              加入我们
-            </a>
-          </div>
-          <div className="column right">{volunteerList}</div>
-          <a
-            className="btn-mb"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={JINSHUJU.VOLUNTEER_FORM_LINK}
-            type="button"
-          >
-            加入我们
-          </a>
-        </div>
+
+        
+        <Volunteer updateVolunteerData={updateVolunteerData} />
       </section>
 
-      <section className="sponsers">
-        <h1>值得尊敬的伙伴们</h1>
-        <p className="text">
-          与子偕行，共赴国殇！这次行动中，以下这些无私有爱的合作伙伴们，也在发光发热。
-        </p>
-        <div>
-          {sponserData.map((sponser) => (
-            <img className="sponser" src={sponser["field_11"][0]} alt="icbc" />
-          ))}
-        </div>
-        <center>
-          <span>
-            我们的力量总归有限，真心的邀请其他公司/组织/品牌/等合作共建，帮助到更多的海外华人。
-          </span>
-          <a
-            className="btn"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={JINSHUJU.SPONSER_FORM_LINK}
-            type="button"
-          >
-            合作联系
-          </a>
-        </center>
-      </section>
+      <Sponser />
 
-      <section className="helpus" id="helpus">
-        <h1>希望您能这样帮助我们</h1>
-        <p className="text">我们每个人的顺手贡献，都将漂洋过海，温暖人心</p>
-        <div className="qrcodes">
-          <div className="qrcode">
-            <img src={images.icon1} alt="qrcode" />
-            <p>不在多少，但求有心</p>
-            <a
-              className="btn"
-              target="_blank"
-              rel="noopener noreferrer"
-              href={JINSHUJU.DONATOR_FORM_LINK}
-              type="button"
-            >
-              爱心捐赠
-            </a>
-          </div>
-          <div className="qrcode">
-            <img src={images.icon2} alt="qrcode" />
-            <p>不在多少，但求有心</p>
-            <a
-              className="btn"
-              target="_blank"
-              rel="noopener noreferrer"
-              href={JINSHUJU.DOMESTIC_FORM_LINK}
-              type="button"
-            >
-              爱心捐物
-            </a>
-          </div>
-          <div className="qrcode">
-            <img src={images.icon3} alt="qrcode" />
-            <p>转发就是很好的支持</p>
-            <button
-              className="btn"
-              onClick={() => {
-                document.body.classList.add("modal-open");
-                setShareModalIsOpen(true);
-              }}
-            >
-              分享
-            </button>
-          </div>
-          <div className="qrcode">
-            <img src={images.icon4} alt="qrcode" />
-            <p>如果你是开发者</p>
-            <a
-              className="btn"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://github.com/eleduck/maskhero"
-              type="button"
-            >
-              参与开源
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <footer>
-        <img src={images.footerImg} alt="footer" />
-        <center>Eleduck.com With Love.</center>
-      </footer>
+      <HelpUs />
+      
+      <Footer />
     </div>
   );
 };
