@@ -10,12 +10,13 @@ import "./assets/styles/app.scss";
 // 引入页面组件
 import Header from './components/Header'
 import Footer from './components/Footer'
+import LoveSlider from './components/LoveSlider'
 import Volunteer from './components/Volunteer'
 import Sponser from './components/Sponser'
 import HelpUs from './components/HelpUs'
 
 // 图片资源、金数据
-import {images, JINSHUJU} from "./utils/contants"
+import {JINSHUJU} from "./utils/contants"
 
 // 接口请求
 import * as request from './request'
@@ -24,12 +25,6 @@ import * as request from './request'
 import { buildChart } from "./utils/chartUtils";
 import { WXShare, getCountryName, getCityName } from "./utils";
 
-// 轮播插件
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-// 预览插件
-import Carousel, { Modal, ModalGateway } from "react-images";
 // 地图插件
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
@@ -46,23 +41,18 @@ const App = () => {
   const [maskCount, setMaskCount] = useState(0);
   const [money, setMoney] = useState(0);
   const [helpCount, setHelpCount] = useState(0);
+
   const [volunteerCount, setVolunteerCount] = useState(0);
+  const [volunteerData, setVolunteerData] = useState([]);
+
   const [domesticData, setDomesticData] = useState([]);
   const [foreignData, setForeignData] = useState([]);
-  const [volunteerData, setVolunteerData] = useState([]);
+  
   const [donatorData, setDonatorData] = useState([]);
   
-  const [highlightData, setHighLightData] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const [filteredData, setFilteredData] = useState([]);
   const [supportInfoList, setSupportInfoList] = useState([]);
 
-  const toggleModal = (index) => {
-    setModalIsOpen(!modalIsOpen);
-    setSelectedIndex(index);
-  };
 
   const updateVolunteerData=(data)=>{
     if(data&&data.length>0){
@@ -71,36 +61,6 @@ const App = () => {
     }
   }
 
-  const delta = 6;
-  let startX;
-  let startY;
-  let drag = false;
-  const handleTouchStart = (event) => {
-    drag = false;
-    startX = event.pageX;
-    startY = event.pageY;
-  };
-
-  const handleTouchMove = (event) => {
-    drag = true;
-  };
-
-  const handleTouchEnd = (event, index) => {
-    const diffX = Math.abs(event.pageX - startX);
-    const diffY = Math.abs(event.pageY - startY);
-    if (diffX < delta && diffY < delta) {
-      toggleModal(index);
-    }
-  };
-
-  const carouselSettings = {
-    dots: true,
-    infinite: true,
-    initialSlide: 0,
-    speed: 300,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
 
   useLayoutEffect(() => {
     if (
@@ -176,15 +136,6 @@ const App = () => {
     };
     getDonators(donatorData);
 
-
-    // 获取留声机
-    request.getHighLightData()
-    .then((response) => {
-      let { data } = response;
-      data = data.filter((d) => d["field_12"] === "已审核");
-      setHighLightData(data);
-    })
-    .catch((error) => console.log(error));
   }, []);
 
   // For donator table scrolling effect
@@ -266,60 +217,9 @@ const App = () => {
   });
 
 
-  const hightlightList = [];
-  let imagesTemp = [];
-  highlightData.forEach((data, index) => {
-    if (index % 4 === 0) {
-      imagesTemp = [
-        <img style={{ opacity: 0 }} src="" alt="empty" />,
-        <img style={{ opacity: 0 }} src="" alt="empty" />,
-        <img style={{ opacity: 0 }} src="" alt="empty" />,
-        <img style={{ opacity: 0 }} src="" alt="empty" />,
-      ];
-    }
-    imagesTemp[index % 4] = (
-      <div
-        style={{
-          backgroundImage: `url(${data["field_11"][0]})`,
-          // width: "18vw",
-          // height: "18vw",
-          backgroundSize: "cover",
-        }}
-        className="carousel-img"
-        src={data["field_11"][0]}
-        alt="empty"
-        onTouchStart={handleTouchStart}
-        onMouseDown={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onMouseMove={handleTouchMove}
-        onTouchEnd={(e) => {
-          handleTouchEnd(e, index);
-        }}
-        onMouseUp={(e) => {
-          handleTouchEnd(e, index);
-        }}
-      ></div>
-    );
-    if (index % 4 === 3 || index === highlightData.length - 1) {
-      hightlightList.unshift(
-        <div key={`hl-${index}`} className="carousel-images">
-          {imagesTemp}
-        </div>
-      );
-    }
-  });
-
-  const imageCa = highlightData.map((h) => {
-    return { source: h["field_11"][0] };
-  });
-
   return (
     <div className="app">
-      
-
       <Header money={money} volunteerCount={volunteerCount} />
-
-      
 
       <section className="support">
         <h1>援助地图</h1>
@@ -455,46 +355,7 @@ const App = () => {
 
       <section className="highlights">
         <h1>爱的留声机</h1>
-        <p className="text">这里，是我们随手记录的一些真实瞬间。</p>
-        <Slider className="carousel-dt" {...carouselSettings}>
-          {hightlightList}
-        </Slider>
-        <Slider className="carousel-mb" {...carouselSettings}>
-          {highlightData.map((data, index) => (
-            <div className="carousel-images">
-              <div
-                style={{
-                  backgroundImage: `url(${data["field_11"][0]})`,
-                  // width: "18vw",
-                  // height: "18vw",
-                  backgroundSize: "cover",
-                }}
-                className="carousel-img"
-                src={data["field_11"][0]}
-                alt="empty"
-                onTouchStart={handleTouchStart}
-                onMouseDown={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onMouseMove={handleTouchMove}
-                onTouchEnd={(e) => {
-                  handleTouchEnd(e, index);
-                }}
-                onMouseUp={(e) => {
-                  handleTouchEnd(e, index);
-                }}
-              ></div>
-            </div>
-          ))}
-        </Slider>
-        <ModalGateway>
-          {modalIsOpen ? (
-            <Modal onClose={toggleModal}>
-              <Carousel currentIndex={selectedIndex} views={imageCa} />
-            </Modal>
-          ) : null}
-        </ModalGateway>
-
-        
+        <LoveSlider />
         <Volunteer updateVolunteerData={updateVolunteerData} />
       </section>
 
