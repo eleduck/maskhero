@@ -2,37 +2,6 @@
  * 静态常量数据配置
  **/
 
-// 区域数据
-export const AVAILABLE_COUNTIES = {
-  Canada: {
-    name: "Canada",
-    nameCN: "加拿大",
-  },
-};
-
-export const AVAILABLE_PROVINCES = {
-  Manitoba: {
-    name: "Manitoba",
-    nameCN: "曼尼托巴",
-  },
-};
-
-export const AVAILABLE_CITIES = {
-  Brandon: {
-    name: "Brandon",
-    nameCN: "布兰登",
-  },
-  Winnipeg: {
-    name: "Winnipeg",
-    nameCN: "温尼伯",
-  },
-  Ottawa: {
-    name: "Ottawa",
-    nameCN: "渥太华",
-  },
-};
-
-
 // 图片资源管理
 export const images = {
   logo: require("../assets/images/logo.png"),
@@ -45,9 +14,7 @@ export const images = {
   icon4: require("../assets/images/icon4.png"),
   footerImg: require("../assets/images/footer-img.png"),
   title: require("../assets/images/title.png"),
-}
-
-
+};
 
 // 金数据相关
 const API_BASE = "https://jinshuju.net/api/v1";
@@ -74,16 +41,77 @@ export const JINSHUJU = {
   // 获取申请数据的API
   DOMESTIC_ENDPOINT: `${API_BASE}/forms/${REACT_APP_DOMESTIC_TOKEN}/entries`,
   FOREIGN_ENDPOINT: `${API_BASE}/forms/${REACT_APP_FOREIGN_TOKEN}/entries`,
-  VOLUNTEER_ENDPOINT:`${API_BASE}/forms/${REACT_APP_VOLUNTEER_TOKEN}/entries`,
-  DONATOR_ENDPOINT:`${API_BASE}/forms/${REACT_APP_DONATOR_TOKEN}/entries`,
+  VOLUNTEER_ENDPOINT: `${API_BASE}/forms/${REACT_APP_VOLUNTEER_TOKEN}/entries`,
+  DONATOR_ENDPOINT: `${API_BASE}/forms/${REACT_APP_DONATOR_TOKEN}/entries`,
   SPONSER_ENDPOINT: `${API_BASE}/forms/${REACT_APP_SPONSER_TOKEN}/entries`,
   HIGHLIGHT_ENDPOINT: `${API_BASE}/forms/${REACT_APP_HIGHLIGHT_TOKEN}/entries`,
 
   // 提交申请的链接
-  DOMESTIC_FORM_LINK:`https://jinshuju.net/f/${REACT_APP_DOMESTIC_TOKEN}`,
+  DOMESTIC_FORM_LINK: `https://jinshuju.net/f/${REACT_APP_DOMESTIC_TOKEN}`,
   FOREIGN_FORM_LINK: `https://jinshuju.net/f/${REACT_APP_FOREIGN_TOKEN}`,
-  VOLUNTEER_FORM_LINK:`https://jinshuju.net/f/${REACT_APP_VOLUNTEER_TOKEN}`,
-  SPONSER_FORM_LINK:`https://jinshuju.net/f/${REACT_APP_SPONSER_TOKEN}`,
+  VOLUNTEER_FORM_LINK: `https://jinshuju.net/f/${REACT_APP_VOLUNTEER_TOKEN}`,
+  SPONSER_FORM_LINK: `https://jinshuju.net/f/${REACT_APP_SPONSER_TOKEN}`,
   DONATOR_FORM_LINK: `https://jinshuju.net/f/${REACT_APP_DONATOR_TOKEN}`,
+};
 
-}
+// 区域数据
+export const AVAILABLE_COUNTIES = {
+  Canada: {
+    name: "Canada",
+    nameCN: "加拿大",
+  },
+  China: {
+    name: "China",
+    nameCN: "中国",
+  },
+  Australia: {
+    name: "Australia",
+    nameCN: "澳大利亚",
+  },
+};
+
+export const AVAILABLE_PROVINCES = {
+  Manitoba: {
+    name: "Manitoba",
+    nameCN: "曼尼托巴",
+  },
+};
+
+export const AVAILABLE_CITIES = {
+  Brandon: {
+    countryName: "Canada",
+    countryNameCN: "加拿大",
+    name: "Brandon",
+    nameCN: "布兰登",
+    latitude: 49.8636213,
+    longitude: -99.9767503,
+    formUrl: "https://jinshuju.net/f/con81f",
+  },
+  Winnipeg: {
+    countryName: "Canada",
+    countryNameCN: "加拿大",
+    name: "Winnipeg",
+    nameCN: "温尼伯",
+    latitude: 49.8537377,
+    longitude: -97.2923086,
+    formUrl: "https://jinshuju.net/f/Ukw1aQ",
+  },
+  Ottawa: {
+    countryName: "Canada",
+    countryNameCN: "加拿大",
+    name: "Ottawa",
+    nameCN: "渥太华",
+    latitude: 45.249814,
+    longitude: -76.080442,
+    formUrl: "https://jinshuju.net/f/lOg5eU",
+  },
+  Canberra: {
+    countryName: "Australia",
+    countryNameCN: "澳大利亚",
+    name: "Canberra",
+    nameCN: "堪培拉",
+    latitude: -35.2813043,
+    longitude: 149.1204446,
+    formUrl: "https://jinshuju.net/f/RQlAnN",
+  },
+};
