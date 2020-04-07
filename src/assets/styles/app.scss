@@ -263,6 +263,23 @@ a.btn-mb {
       }
     }
 
+    .show-name-avatar {
+      display: flex;
+      align-items: center;
+
+      //span {
+      //  line-height: 1;
+      //}
+
+      .table-avatar {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+    }
+
+
     .requester {
       margin: 10px 0;
 
