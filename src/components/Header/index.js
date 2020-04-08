@@ -1,13 +1,16 @@
 /**
  * 页面头部组件
- *
- */
-
+ * 
+ * props:
+ * money            {Number}    捐赠金额
+ * volunteerCount   {Number}    自愿者数据
+ * 
+*/
 import React, { Fragment } from "react";
 import { images } from "../../utils/contants";
 
 export default function Header(props) {
-  const { money, volunteerCount } = props;
+  const { money, volunteerCount } = props
 
   const maskCount = 2200;
   const familyCount = 200;
