@@ -19,7 +19,7 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
   chart.projection = new am4maps.projections.Miller();
   chart.seriesContainer.events.disableType("doublehit");
   chart.chartContainer.background.events.disableType("doublehit");
-  chart.chartContainer.wheelable = false;
+  // chart.chartContainer.wheelable = false;
 
   let worldSeries = chart.series.push(new am4maps.MapPolygonSeries());
   worldSeries.useGeodata = true;
@@ -61,6 +61,24 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
   // hs.properties.fill = chart.colors.getIndex(4);
   hs.properties.fill = am4core.color("#F9BA48");
 
+  // Create country specific series (but hide it for now)
+  let countrySeries = chart.series.push(new am4maps.MapPolygonSeries());
+  countrySeries.useGeodata = true;
+  countrySeries.hide();
+  countrySeries.geodataSource.events.on("done", function (ev) {
+    worldSeries.hide();
+    countrySeries.show();
+  });
+
+  let countryPolygon = countrySeries.mapPolygons.template;
+  // countryPolygon.tooltipText = "{name}";
+  countryPolygon.nonScalingStroke = true;
+  countryPolygon.strokeOpacity = 0.5;
+  countryPolygon.fill = am4core.color("#F9BA48");
+
+  // let hsCountry = countryPolygon.states.create("hover");
+  // hsCountry.properties.fill = chart.colors.getIndex(9);
+
   let disabledState = worldPolygon.states.create("disabled");
   disabledState.properties.fill = am4core.color("#000");
   disabledState.properties.fillOpacity = 0.1;
@@ -74,27 +92,14 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
   zoomedState.properties.clickable = false;
   // Set up click events
   worldPolygon.events.on("hit", function (ev) {
-    window.chart = ev.target.series.chart;
-    if (ev.target.dataItem.dataContext.id === "CA") {
-      ev.target.series.chart.zoomToGeoPoint(
-        { longitude: -101.03512779633796, latitude: 59.38624022988768 },
-        6.0
-      );
-    } else {
-      ev.target.series.chart.zoomToMapObject(ev.target, 5);
+    ev.target.series.chart.zoomToMapObject(ev.target);
+    let map = ev.target.dataItem.dataContext.map;
+    if (map) {
+      ev.target.isHover = false;
+      countrySeries.geodataSource.url =
+        "https://www.amcharts.com/lib/4/geodata/json/" + map + ".json";
+      countrySeries.geodataSource.load();
     }
-
-    setTimeout(() => {
-      worldSeries.mapPolygons.values.forEach((mp) => {
-        mp.isActive = false;
-        mp.isHover = false;
-        if (ev.target.dataItem.dataContext.id === mp.dataItem.dataContext.id) {
-          mp.setState("zoomed");
-        } else {
-          mp.setState("disabled");
-        }
-      });
-    }, 1000);
   });
 
   const data = buildWorldMapData(
@@ -109,12 +114,13 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
   chart.zoomControl = new am4maps.ZoomControl();
   chart.zoomControl.dx = -20;
   chart.zoomControl.dy = 5;
-  chart.zoomControl.plusButton.visible = false;
-  chart.zoomControl.minusButton.visible = false;
+  // chart.zoomControl.plusButton.visible = false;
+  // chart.zoomControl.minusButton.visible = false;
 
   let homeButton = new am4core.Button();
   homeButton.events.on("hit", function () {
     worldSeries.show();
+    countrySeries.hide();
     chart.goHome();
     setTimeout(() => {
       worldSeries.mapPolygons.values.forEach((mp) => {
@@ -140,6 +146,7 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
   imageSeries.id = "markers";
   imageSeries.dx = -6;
   imageSeries.dy = -12;
+  imageSeries.cursorOverStyle = am4core.MouseCursorStyle.pointer;
 
   // define template
   var imageSeriesTemplate = imageSeries.mapImages.template;
