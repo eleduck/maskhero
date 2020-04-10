@@ -14,7 +14,7 @@ import Footer from "./components/Footer";
 import SupportMap from './components/SupportMap'
 import LoveSlider from './components/LoveSlider'
 import Volunteer from "./components/Volunteer";
-import Sponser from "./components/Sponser";
+import Sponsor from "./components/Sponsor";
 import HelpUs from "./components/HelpUs";
 import Donators from "./components/Donators";
 import Requesters from "./components/Requesters";
@@ -170,7 +170,7 @@ const App = () => {
         <Volunteer updateVolunteerData={updateVolunteerData} />
       </section>
 
-      <Sponser />
+      <Sponsor />
 
       <HelpUs />
 

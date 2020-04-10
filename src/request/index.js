@@ -52,8 +52,8 @@ export const getDonatorData=(next)=>{
 };
 
 // 获取赞助商
-export const getSponserData=()=>{
-    return http.get(`${JINSHUJU.SPONSER_ENDPOINT}`, authObj)
+export const getSponsorData=()=>{
+    return http.get(`${JINSHUJU.SPONSOR_ENDPOINT}`, authObj)
 };
 
 
