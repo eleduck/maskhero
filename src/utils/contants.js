@@ -27,9 +27,13 @@ const {
   REACT_APP_FOREIGN_TOKEN,
   REACT_APP_VOLUNTEER_TOKEN,
   REACT_APP_DONATOR_TOKEN,
+  REACT_APP_SPONSOR_TOKEN,
   REACT_APP_SPONSER_TOKEN,
   REACT_APP_HIGHLIGHT_TOKEN,
 } = process.env;
+
+// For the typo 'sponser' of backward compatibility
+const SPONSOR_TOKEN = REACT_APP_SPONSOR_TOKEN || REACT_APP_SPONSER_TOKEN;
 
 export const JINSHUJU = {
   // 请求的认证数据
@@ -43,14 +47,14 @@ export const JINSHUJU = {
   FOREIGN_ENDPOINT: `${API_BASE}/forms/${REACT_APP_FOREIGN_TOKEN}/entries`,
   VOLUNTEER_ENDPOINT: `${API_BASE}/forms/${REACT_APP_VOLUNTEER_TOKEN}/entries`,
   DONATOR_ENDPOINT: `${API_BASE}/forms/${REACT_APP_DONATOR_TOKEN}/entries`,
-  SPONSER_ENDPOINT: `${API_BASE}/forms/${REACT_APP_SPONSER_TOKEN}/entries`,
+  SPONSOR_ENDPOINT: `${API_BASE}/forms/${SPONSOR_TOKEN}/entries`,
   HIGHLIGHT_ENDPOINT: `${API_BASE}/forms/${REACT_APP_HIGHLIGHT_TOKEN}/entries`,
 
   // 提交申请的链接
   DOMESTIC_FORM_LINK: `https://jinshuju.net/f/${REACT_APP_DOMESTIC_TOKEN}`,
   FOREIGN_FORM_LINK: `https://jinshuju.net/f/${REACT_APP_FOREIGN_TOKEN}`,
   VOLUNTEER_FORM_LINK: `https://jinshuju.net/f/${REACT_APP_VOLUNTEER_TOKEN}`,
-  SPONSER_FORM_LINK: `https://jinshuju.net/f/${REACT_APP_SPONSER_TOKEN}`,
+  SPONSOR_FORM_LINK: `https://jinshuju.net/f/${SPONSOR_TOKEN}`,
   DONATOR_FORM_LINK: `https://jinshuju.net/f/${REACT_APP_DONATOR_TOKEN}`,
 };
 
