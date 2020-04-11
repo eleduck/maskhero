@@ -1,8 +1,5 @@
 import requests
 import base64
-import time
-from datetime import datetime
-
 
 key_secrets={
     "grey":("zlscs0MHtGwSsHhR0BR2TA", "A5h4--Hrisrx0L24l-yZDg"),
@@ -22,17 +19,6 @@ data_result = ('1slVSR', 'donvi')
 headers={"Accept": "application/json", "Content-Type": "application/json"}
 
 url_base = 'https://jinshuju.net/api/v1/'
-
-def date_compare(item1, item2):
-    t1 = time.mktime(time.strptime(item1, '%Y/%m/%d'))
-    t2 = time.mktime(time.strptime(item2, '%Y/%m/%d'))
-    print(t1, t2)
-    if t1 < t2:
-        return -1
-    elif t1 > t2:
-        return 1
-    else:
-        return 0
         
 result = []
 for source in data_sources:
@@ -69,10 +55,4 @@ list_post_data = sorted(list_post_data, key=lambda post_data: post_data['created
 for list_post_data_val in list_post_data:
     response = requests.post(url, json = list_post_data_val, headers=headers, auth = (secret[0], secret[1]))
     print(response.text)
-    
-#with open("D:\\result.txt", mode='a', encoding='utf-8') as f:
-#    for list_post_data_key in list_post_data:
-#        f.write(list_post_data_key + '   :   '  + str(list_post_data[list_post_data_key]) + '\n')
-#       f.write('\n')
-#   f.close()
 
