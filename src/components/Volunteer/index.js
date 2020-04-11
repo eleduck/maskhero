@@ -3,6 +3,7 @@
  * 
  *  */
 
+import "./volunteer.scss"
 import React, { useState, useEffect } from 'react'
 import * as request from '../../request'
 import {images, JINSHUJU } from "../../utils/contants"
@@ -11,6 +12,7 @@ import {images, JINSHUJU } from "../../utils/contants"
 export default function Volunteer(props) {
     const { updateVolunteerData }=props;
     const [volunteerData, setVolunteerData] = useState([]);
+    const [activeIndex, setActiveIndex]= useState(0)
 
     useEffect(() => {
         // 获取自愿者数据
@@ -20,9 +22,14 @@ export default function Volunteer(props) {
                 data = data.filter((d) => d["field_18"] === "已通过");
                 setVolunteerData(data);
                 updateVolunteerData(data);
+                // 随机激活
+                let len=data.length
+                let index=Math.floor(Math.random()*len)
+                setActiveIndex(index)
             })
             .catch((error) => console.log(error));
     }, []);
+
 
     
     return <div className="volunteers">
@@ -43,10 +50,36 @@ export default function Volunteer(props) {
                 加入我们
             </a>
         </div>
-        <div className="column right">
+        <div className="column right volunteer-members">
+            {
+                volunteerData.length>0&&(
+                    <div className="members-info">
+                        <div className="info-avatar">
+                            <img
+                                src={
+                                    volunteerData[activeIndex]["x_field_weixin_headimgurl"].replace("http://", "https://") ||
+                                    images.avatar
+                                }
+                                alt="avatar"
+                                />
+                        </div>
+                        <div className="info-right">
+                            <div>
+                                <span className="info-name">{volunteerData[activeIndex]["field_1"]}</span>
+                                <span className="info-position">{volunteerData[activeIndex]["field_11"]}</span>
+                            </div>
+                            <div className="info-desc">{volunteerData[activeIndex]["field_7"]}</div>
+                        </div>
+                    </div>
+                )
+            }
+            <div className="members-list">
             {
                 volunteerData.map((data,index) => (
-                    <div className="avatar" key={index}>
+                    <div 
+                    className={`avatar ${index===activeIndex?'active':''}`} 
+                    key={index} 
+                    onClick={()=>setActiveIndex(index)}>
                         <img
                         src={
                             data["x_field_weixin_headimgurl"].replace("http://", "https://") ||
@@ -60,6 +93,7 @@ export default function Volunteer(props) {
                     </div>
                 ))
             }
+            </div>
         </div>
         <a
         className="btn-mb"
