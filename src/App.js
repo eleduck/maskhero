@@ -52,8 +52,8 @@ const App = () => {
   // 更新自愿者数据
   const updateVolunteerData = (data) => {
     if (data && data.length > 0) {
-      setVolunteerCount(data.length)
-      setVolunteerData(data)
+      setVolunteerCount(data.length);
+      setVolunteerData(data);
     }
   };
 
@@ -147,7 +147,7 @@ const App = () => {
 
 
   return (
-    <div className="app">
+    <div data-testid="rootComponent" className="app">
       <Header money={money} volunteerCount={volunteerCount} />
 
       <section className="support">

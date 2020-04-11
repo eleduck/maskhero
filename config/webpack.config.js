@@ -366,6 +366,8 @@ module.exports = function(webpackEnv) {
               include: paths.appSrc,
               loader: require.resolve('babel-loader'),
               options: {
+                rootMode: "root",
+                // configFile: path.resolve("config","./babel.config.js"),
                 customize: require.resolve(
                   'babel-preset-react-app/webpack-overrides'
                 ),
@@ -399,8 +401,8 @@ module.exports = function(webpackEnv) {
               exclude: /@babel(?:\/|\\{1,2})runtime/,
               loader: require.resolve('babel-loader'),
               options: {
-                babelrc: false,
                 configFile: false,
+                babelrc: false,
                 compact: false,
                 presets: [
                   [
