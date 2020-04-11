@@ -1,0 +1,172 @@
+
+.volunteers {
+    display: flex;
+    padding: 10px;
+    margin-top: 20px;
+    flex-direction: row;
+
+    color: #777777;
+
+    h2 {
+      font-size: 18px;
+      margin-bottom: 30px;
+      color: #000;
+    }
+
+    .column {
+      width: 50%;
+      padding: 12px;
+
+      &.left {
+        width: 65%;
+      }
+
+      &.right {
+        width: 35%;
+      }
+
+      p {
+        line-height: 22px;
+        font-size: 14px;
+        margin-bottom: 25px;
+      }
+    }
+
+
+    .volunteer-members{
+        .members-info{
+            font-size:14px;
+            background-color:#f1f1f1;
+            padding:15px 10px;
+            border-radius:5px;
+            display: none;
+            text-align: left;
+            align-items: center;
+
+            .info-avatar{
+                flex: none;
+                width: 16vw;
+                height: 16vw;  
+                border-radius:50%;  
+                margin-right:10px;
+                img{
+                    width:100%;
+                    height:100%;
+                    border-radius:50%;
+                }
+            }
+
+            .info-name{
+                color:#262626;
+                margin-right:10px;
+                font-weight:600;
+                font-size:16px;
+            }
+            .info-desc{
+                margin-top:6px;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 3;
+                line-clamp: 3;
+                overflow: hidden;
+            }
+        }
+
+        .members-list{
+            display: flex;
+            flex-wrap: wrap;
+            .avatar {
+                position: relative;
+                display: inline-block;
+                // width: 20%;
+                width: 4vw;
+                height: 4vw;
+                margin: 1%;
+        
+                img {
+                  margin-top: 10px;
+                  width: 100%;
+                  // height: 100%;
+                  border-radius: 50%;
+                }
+        
+                &:hover .overlay {
+                  opacity: 1;
+                }
+        
+                .overlay {
+                  position: absolute;
+                  background-color: rgba(1, 1, 1, 0.8);
+                  top: 0px;
+                  border-radius: 50%;
+                  margin-top: 10px;
+                  width: 100%;
+                  height: 100%;
+                  opacity: 0;
+                  transition: 0.5s ease;
+        
+                  .text {
+                    position: absolute;
+                    color: white;
+                    text-align: center;
+                    font-size: 12px;
+                    margin-top: 0px;
+                    top: 50%;
+                    left: 50%;
+                    width: 100%;
+                    -webkit-transform: translate(-50%, -50%);
+                    -ms-transform: translate(-50%, -50%);
+                    transform: translate(-50%, -50%);
+                    text-align: center;
+                  }
+                }
+            }
+        } 
+    }
+}
+
+// 移动端style
+@media (min-width: 320px) and (max-width: 767px) {
+    .volunteers {
+        flex-direction: column;
+    
+        h2 {
+          font-weight: 300;
+          font-size: 16px;
+        }
+    
+        .btn {
+          display: none;
+        }
+    
+        .column.left,
+        .column.right {
+          width: 100%;
+          padding: 0;
+        }
+    
+        .column.right {
+          text-align: center;
+        }
+
+        .volunteer-members{
+            .members-info{
+                display: flex;
+            }
+
+            .members-list{
+                .avatar {
+                    width: 16vw !important;
+                    height: 16vw !important;
+                    margin-left: 0px !important;
+                    padding-left: 0px !important;
+                    margin: 2vw 0.5vw;
+          
+                    &.active .overlay {
+                      opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}
