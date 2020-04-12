@@ -19,7 +19,7 @@ data_result = ('1slVSR', 'donvi')
 headers={"Accept": "application/json", "Content-Type": "application/json"}
 
 url_base = 'https://jinshuju.net/api/v1/'
-
+        
 result = []
 for source in data_sources:
     secret = key_secrets[source[1]]
@@ -29,6 +29,7 @@ for source in data_sources:
     url = url_base + endpoint
     response = requests.get(url, headers=headers, auth = (secret[0], secret[1]))
     resp_json = response.json()
+    
     result += resp_json["data"]
     while(resp_json["next"] != None):
         response = requests.get(url+'?next='+str(resp_json["next"]), headers=headers, auth = (secret[0], secret[1]))
@@ -40,11 +41,18 @@ code = data_result[0]
 endpoint = '/forms/%s' % code
 url = url_base + endpoint
 secret = key_secrets[data_result[1]]
+list_post_data = []
 for data in result:
     time = ''
     post_data = {}
     for key in data:
-        if key[0:6] == 'field_':
+        if key[0:6] == 'field_' or key[0:14] == 'x_field_weixin' or key == 'created_at':
             post_data[key] = data[key]
-    response = requests.post(url, json = post_data, headers=headers, auth = (secret[0], secret[1]))
+                
+    list_post_data.append(post_data)
+
+list_post_data = sorted(list_post_data, key=lambda post_data: post_data['created_at'])
+for list_post_data_val in list_post_data:
+    response = requests.post(url, json = list_post_data_val, headers=headers, auth = (secret[0], secret[1]))
     print(response.text)
+
