@@ -4,12 +4,12 @@ import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 import am4geodata_data_countries2 from "@amcharts/amcharts4-geodata/data/countries2";
 import { buildWorldMapData, buildCountryMapData } from "./dataHelper";
 
-console.log("conuntry", am4geodata_data_countries2);
+// console.log("conuntry", am4geodata_data_countries2);
 
 const countries = require("i18n-iso-countries");
 countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 countries.registerLocale(require("i18n-iso-countries/langs/zh.json"));
-console.log(countries.getNames("zh"));
+// console.log(countries.getNames("zh"));
 
 // temp function
 export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
