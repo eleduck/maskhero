@@ -56,8 +56,11 @@ list_post_data = sorted(list_post_data, key=lambda post_data: post_data['created
 with open("../merge_result.json", mode='a', encoding='utf-8') as f:
     f.seek(0)
     f.truncate()
+    f.write('[\n')
+    f.write(str(list_post_data.pop(0)).replace('\'', '\"')  + '\n')
     for list_post_data_val in list_post_data:
-        f.write(str(list_post_data_val) + '\n')
+        f.write(',' + str(list_post_data_val).replace('\'', '\"') + '\n')
+    f.write(']\n')
     f.close()
 print("merge success")
 #    response = requests.post(url, json = list_post_data_val, headers=headers, auth = (secret[0], secret[1]))
