@@ -24,7 +24,7 @@ result = []
 for source in data_sources:
     secret = key_secrets[source[1]]
     code = source[0]
-    print(code)
+    #print(code)
     endpoint = '/forms/%s/entries' % code
     url = url_base + endpoint
     response = requests.get(url, headers=headers, auth = (secret[0], secret[1]))
@@ -52,7 +52,14 @@ for data in result:
     list_post_data.append(post_data)
 
 list_post_data = sorted(list_post_data, key=lambda post_data: post_data['created_at'])
-for list_post_data_val in list_post_data:
-    response = requests.post(url, json = list_post_data_val, headers=headers, auth = (secret[0], secret[1]))
-    print(response.text)
+
+with open("../merge_result.json", mode='a', encoding='utf-8') as f:
+    f.seek(0)
+    f.truncate()
+    for list_post_data_val in list_post_data:
+        f.write(str(list_post_data_val) + '\n')
+    f.close()
+print("merge success")
+#    response = requests.post(url, json = list_post_data_val, headers=headers, auth = (secret[0], secret[1]))
+#    print(response.text)
 
