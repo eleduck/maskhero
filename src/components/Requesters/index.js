@@ -17,11 +17,11 @@ const Requesters = props => {
         requesterWrapper.scrollTop = 0;
       } else {
         // console.log(requesterWrapper.scrollTop, requesterWrapper.scrollHeight);
-        requesterWrapper.scrollTop++;
+        requesterWrapper.scrollTop ++;
       }
     };
     // Set a timer for the scrolling effect
-    let r = setInterval(requesterScroll, 20);
+    let r = setInterval(requesterScroll, 25);
 
     //When mouseover event is triggered, stop table from scrolling
     requesterWrapper.addEventListener(
@@ -33,7 +33,7 @@ const Requesters = props => {
     requesterWrapper.addEventListener(
       "mouseout",
       () => {
-        r = setInterval(requesterScroll, 20);
+        r = setInterval(requesterScroll, 25);
       },
       false
     );
@@ -58,8 +58,8 @@ const Requesters = props => {
       </div>
       <div ref={requesterWrapperRef} className="align-right w60">
         {/* Repeat the message list to make sure the infinite scrolling effect */}
-        {filteredData.concat(filteredData).map((data) => (
-          <div className="requester">
+        {filteredData.concat(filteredData).map((data, index) => (
+          <div key={index} className="requester">
             <div className="content">{data["field_7"]}</div>
             <div className="requester-info">
               <p>{`${data["field_11"]}`}</p>

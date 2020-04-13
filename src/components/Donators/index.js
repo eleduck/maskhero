@@ -23,7 +23,7 @@ const Donators = props => {
     };
 
     // Set a timer for the scrolling effect
-    let d = setInterval(donatorScroll, 20);
+    let d = setInterval(donatorScroll, 25);
 
     //When mouseover event is triggered, stop table from scrolling
     donatorWrapper.addEventListener(
@@ -33,7 +33,7 @@ const Donators = props => {
     donatorWrapper.addEventListener(
       "mouseout",
       () => {
-        d = setInterval(donatorScroll, 20);
+        d = setInterval(donatorScroll, 25);
       },
       false
     );
@@ -43,7 +43,7 @@ const Donators = props => {
   donatorData.forEach((data) => {
     list.push({
       name: data["field_1"],
-      avatar: data["x_field_weixin_headimgurl"],
+      avatar: data["x_field_weixin_headimgurl"].replace("http", "https"),
       content: `捐赠了 ${data["field_12"]} 人民币`,
       createdAt: data["created_at"],
     });
@@ -52,7 +52,7 @@ const Donators = props => {
   domesticData.forEach((data) => {
     list.push({
       name: data["field_1"],
-      avatar: data["x_field_weixin_headimgurl"],
+      avatar: data["x_field_weixin_headimgurl"].replace("http", "https"),
       content: `捐赠了 ${data["field_5"][0]} ${data["field_10"]} 个`,
       createdAt: data["created_at"],
     });
@@ -63,6 +63,8 @@ const Donators = props => {
     b = new Date(b.createdAt);
     return a > b ? -1 : a < b ? 1 : 0;
   });
+
+  console.log(list);
 
   return (
     <div className="row-1">
