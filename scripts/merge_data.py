@@ -1,5 +1,6 @@
 import requests
 import base64
+import os
 
 key_secrets={
     "grey":("zlscs0MHtGwSsHhR0BR2TA", "A5h4--Hrisrx0L24l-yZDg"),
@@ -53,7 +54,8 @@ for data in result:
 
 list_post_data = sorted(list_post_data, key=lambda post_data: post_data['created_at'])
 
-with open("../merge_result.json", mode='a', encoding='utf-8') as f:
+dir = os.path.dirname(__file__)
+with open(dir + "/../public/merge_result.json", mode='a', encoding='utf-8') as f:
     f.seek(0)
     f.truncate()
     f.write('[\n')
