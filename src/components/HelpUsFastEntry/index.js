@@ -42,7 +42,7 @@ export default function HelpUsFastEntry() {
                             {item.name}
                         </div>
                         <div className="item-icon">
-                            <img src={item.icon} />
+                            <img src={item.icon} alt="" />
                         </div>
                     </a>
                 </div>
