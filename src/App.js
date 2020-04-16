@@ -5,8 +5,6 @@ import _ from "lodash";
 import "./assets/styles/common.scss";
 import "./assets/styles/app.scss";
 
-// 图片资源、金数据
-import { JINSHUJU } from "./utils/contants"
 
 // 引入组件
 import Header from "./components/Header";
@@ -148,7 +146,7 @@ const App = () => {
 
   return (
     <div data-testid="rootComponent" className="app">
-      <Header money={money} volunteerCount={volunteerCount} />
+      <Header money={money} volunteerCount={volunteerCount} maskCount={maskCount} />
 
       <section className="support">
         <SupportMap
