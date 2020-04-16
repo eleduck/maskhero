@@ -14,6 +14,10 @@ export const images = {
   icon4: require("../assets/images/icon4.png"),
   footerImg: require("../assets/images/footer-img.png"),
   title: require("../assets/images/title.png"),
+  helpup_fastentry_github:require('../assets/images/helpup_fastentry_github.png'),
+  helpup_fastentry_seek:require('../assets/images/helpup_fastentry_seek.png'),
+  helpup_fastentry_join:require('../assets/images/helpup_fastentry_join.png'),
+  helpup_fastentry_love:require('../assets/images/helpup_fastentry_love.png'),
 };
 
 // 金数据相关

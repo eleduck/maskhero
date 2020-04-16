@@ -8,6 +8,7 @@
 */
 import React, { Fragment } from "react";
 import { images } from "../../utils/contants";
+import HelpUsFastEntry from '../HelpUsFastEntry';
 
 export default function Header(props) {
   const { money, volunteerCount } = props
@@ -40,7 +41,7 @@ export default function Header(props) {
           </a>
         </p>
 
-        {/* 移动端统计布局 */}
+        {/* pc端统计布局 */}
         <div className="wrapper">
           <div className="tile">
             <div className="name">援助口罩</div>
@@ -83,9 +84,12 @@ export default function Header(props) {
           </div>
         </div>
         <img className="arrow" src={images.vector} alt="arrow"></img>
+     
+        {/* 帮助我们快速入口 */}
+        <HelpUsFastEntry />
       </header>
 
-      {/* PC端统计布局 */}
+      {/* 移动端统计布局 */}
       <div className="wrapper-mb">
         <h1>截止目前为止，我们已经</h1>
         <div className="tile">
