@@ -11,7 +11,7 @@ import { images } from "../../utils/contants";
 import HelpUsFastEntry from '../HelpUsFastEntry';
 
 export default function Header(props) {
-  const { money, volunteerCount } = props
+  const { money, volunteerCount } = props;
 
   const maskCount = 2200;
   const familyCount = 200;
