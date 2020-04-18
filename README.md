@@ -1,5 +1,6 @@
 # 与子同袍-援助海外华人计划
 
+[![Build Status](https://travis-ci.com/eleduck/maskhero.svg?branch=master)](https://travis-ci.com/eleduck/maskhero)
 [![Slack Status](https://slackin-extended.baibonjwa.now.sh/badge.svg)](https://slackin-extended.baibonjwa.now.sh)
 
 
