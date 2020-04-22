@@ -67,7 +67,7 @@ const Donators = props => {
   console.log(list);
 
   return (
-    <div className="row-1">
+    <div className="row-1 module-space">
       <a
         className="btn-mb"
         rel="noopener noreferrer"

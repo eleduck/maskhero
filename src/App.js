@@ -148,7 +148,7 @@ const App = () => {
     <div data-testid="rootComponent" className="app">
       <Header money={money} volunteerCount={volunteerCount} maskCount={maskCount} />
 
-      <section className="support">
+      <section className="support module-space">
         <SupportMap
           domesticData={domesticData}
           foreignData={foreignData}
@@ -162,7 +162,7 @@ const App = () => {
         </div>
       </section>
 
-      <section className="highlights">
+      <section className="highlights module-space">
         <h1>爱的留声机</h1>
         <LoveSlider />
         <Volunteer updateVolunteerData={updateVolunteerData} />

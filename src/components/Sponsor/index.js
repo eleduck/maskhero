@@ -20,7 +20,7 @@ export default function Sponsor() {
             .catch((error) => console.log(error));
     }, [])
 
-    return <section className="sponsors">
+    return <section className="sponsors module-space">
         <h1>值得尊敬的伙伴们</h1>
         <p className="text">
             与子偕行，共赴国殇！这次行动中，以下这些无私有爱的合作伙伴们，也在发光发热。
