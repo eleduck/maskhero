@@ -20,7 +20,6 @@ code {
 .container-pc{
   display: none;
 }
-
 @media screen  and (min-width: 320px) and (max-width: 767px) {
   .container-mb{
     display: block !important;
@@ -32,6 +31,7 @@ code {
     display: block !important;
   }
 }
+
 
 /*  模块间隔 */
 .module-space{

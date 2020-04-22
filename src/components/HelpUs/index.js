@@ -2,6 +2,7 @@
  * 帮助我们页面组件
  * 
 */
+import './helpus.scss'
 import React, {Fragment, useState} from 'react'
 import { images, JINSHUJU } from "../../utils/contants"
 

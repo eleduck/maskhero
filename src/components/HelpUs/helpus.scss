@@ -1,0 +1,119 @@
+.helpus {
+    margin-bottom: 20px;
+  
+    .text {
+      margin-bottom: 60px;
+    }
+  
+    .qrcodes {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .qrcode {
+        width: 30%;
+        text-align: center;
+  
+        img {
+          width: 20%;
+        }
+  
+        p {
+          color: #777;
+        }
+      }
+    }
+}
+
+
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.sharethis-inline-share-buttons {
+  height: 100%;
+  // margin-top: -25%;
+}
+.shareModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(1, 1, 1, 0.8);
+  transition: all 0.3s ease;
+  z-index: -1;
+  padding-top: 30vh;
+  // pointer-events: none;
+}
+.shareModal.open {
+  z-index: 100;
+  opacity: 1;
+}
+.share-mb {
+  display: none;
+}
+  
+
+@media screen  and (min-width: 320px) and (max-width: 767px) {
+    .helpus {
+        background-color: #fafafa;
+        .text {
+          margin-bottom: 30px;
+        }
+    
+        .qrcodes {
+          flex-direction: column;
+    
+          .qrcode {
+            position: relative;
+            display: flex;
+            width: 100%;
+            text-align: center;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            background: #fff;
+    
+            img {
+              width: 12vw;
+              height: 12vw;
+            }
+    
+            p {
+              width: 40vw;
+              font-size: 13px;
+            }
+    
+            .btn {
+              padding: 0 !important;
+              width: 100px;
+              height: 33px;
+              line-height: 33px;
+              margin-top: 0px;
+            }
+          }
+        }
+    }
+
+
+    .sharethis-inline-share-buttons {
+      display: none !important;
+    }
+    .shareModal {
+      padding-top: 10vh;
+    }
+
+    .share-mb {
+      display: block;
+      color: white;
+      position: absolute;
+      right: 20px;
+      overflow: hidden;
+    }
+
+}

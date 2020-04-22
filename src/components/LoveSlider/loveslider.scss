@@ -1,0 +1,48 @@
+
+
+.carousel-mb {
+  display: none !important;
+}
+
+.highlights {
+  .carousel-images {
+    display: flex !important;
+    justify-content: space-between;
+
+    .carousel-img {
+      cursor: pointer;
+    }
+
+    div {
+      display: inline-block;
+      height: 19vw;
+      width: 19vw;
+    }
+  }
+}
+
+
+@media screen  and (min-width: 320px) and (max-width: 767px) {
+
+  .carousel-dt {
+    display: none !important;
+  }
+
+  .carousel-mb {
+    display: block !important;
+    width: 90%;
+    box-sizing: border-box;
+    margin: 0 auto;
+  }
+  
+
+  .highlights {
+    .carousel-images {
+      .carousel-img {
+        width: 90vw;
+        height: 90vw;
+      }
+    }
+  }
+
+}

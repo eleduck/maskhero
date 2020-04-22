@@ -1,6 +1,7 @@
 /**
  * 赞助商页面组件
  *  */
+import './sponsor.scss'
 import React, { useState, useEffect } from 'react'
 import * as request from '../../request'
 import { JINSHUJU } from "../../utils/contants"
