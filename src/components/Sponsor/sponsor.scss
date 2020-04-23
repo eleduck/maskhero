@@ -1,0 +1,30 @@
+
+.sponsors {
+    background-color: #fafafa;
+    .sponsor {
+      width: 16%;
+      margin: 2%;
+    }
+  
+    center {
+      margin-top: 20px;
+      color: #777777;
+    }
+
+}
+
+
+@media screen  and (min-width: 320px) and (max-width: 767px) {
+
+    .sponsors center {
+        margin-top: 20px;
+        color: #777777;
+        font-size: 16px;
+        line-height: 24px;
+    
+        span {
+          display: inline-block;
+          margin-bottom: 20px;
+        }
+    }
+}

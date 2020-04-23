@@ -1,6 +1,7 @@
 /**
  * 爱的留声机组件
  *  */
+import './loveslider.scss'
 import React, { Fragment, useState, useEffect } from 'react'
 import * as request from '../../request'
 
