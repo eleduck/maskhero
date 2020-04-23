@@ -45,26 +45,31 @@ a:active {
 
 .header {
   position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  height: 100vh;
+  min-height: 600px;
   background-color: #e5e5e5;
   background-image: url(../images/bg.png);
   background-size: cover;
-  padding: 68px 150px 10px 150px;
+  padding: 20px 100px 0 100px;
   color: #fff;
 
   h1 {
     font-weight: normal;
-    font-size: 24px;
+    font-size: 20px;
     line-height: 60px;
     margin-top: 10px;
     margin-bottom: 0px;
   }
 
   p {
-    width: 60vw;
+    width: 70vw;
     margin-top: 0px;
     margin-bottom: 0px;
     font-weight: normal;
-    line-height: 40px;
+    line-height: 36px;
     font-size: 14px;
     font-style: normal;
     letter-spacing: -0.015em;
@@ -79,21 +84,25 @@ a:active {
   }
 
   .title {
-    margin-top: 43px;
+    width: 476px;
+    margin-top: 16px;
     margin-left: 10px;
     display: block;
   }
 
   .arrow {
     width: 50px;
-    position: relative;
-    left: 50%;
-    margin-left: -25px;
+    margin-top: auto;
+    align-self: center;
+    margin-bottom: 16px;
   }
 
   .wrapper {
-    margin-top: 80px;
-    margin-bottom: 60px;
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
 
     .split {
       display: inline-block;
@@ -110,8 +119,8 @@ a:active {
 
       .data {
         font-family: "DINAlternate-Bold";
-        padding: 10px 50px 30px 0px;
-        font-size: 56px;
+        padding: 10px 50px 0 0;
+        font-size: 44px;
         color: #ffdc5f;
 
         .unit {
@@ -379,6 +388,59 @@ a.btn-mb {
   .split {
     height: 2px;
     background-color: #f9ba48;
+  }
+}
+
+@media (max-width: 1200px) {
+  .header {
+    height: fit-content;
+    padding: 60px 150px 0 150px;
+
+    h1 {
+      font-weight: normal;
+      font-size: 24px;
+      line-height: 60px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      width: 60vw;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      font-weight: normal;
+      line-height: 40px;
+      font-size: 14px;
+      font-style: normal;
+      letter-spacing: -0.015em;
+    }
+
+    .title {
+      width: 476px;
+      margin-top: 24px;
+      margin-left: 10px;
+      display: block;
+    }
+
+    .arrow {
+      width: 50px;
+      margin-top: auto;
+      align-self: center;
+      margin-bottom: 16px;
+    }
+
+    .wrapper {
+      margin-top: 30px;
+      margin-bottom: 0;
+
+      .tile {
+
+        .data {
+          padding: 10px 50px 30px 0;
+          font-size: 44px;
+        }
+      }
+    }
   }
 }
 
