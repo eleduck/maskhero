@@ -40,7 +40,7 @@ const Requesters = props => {
   }, []);
 
   return (
-    <div className="row-2">
+    <div className="row-2 module-space">
       <div className="w40">
         <p>
           凡华人组织和个人都可以通过这里申请口罩援助，我们会认真对待每一条申请。

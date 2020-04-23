@@ -2,6 +2,7 @@
  * 帮助我们页面组件
  * 
 */
+import './helpus.scss'
 import React, {Fragment, useState} from 'react'
 import { images, JINSHUJU } from "../../utils/contants"
 
@@ -11,7 +12,7 @@ export default function HelpUs(){
 
 
     return <Fragment>
-      <section className="helpus" id="helpus">
+      <section className="helpus module-space" id="helpus">
         <h1>希望您能这样帮助我们</h1>
         <p className="text">我们每个人的顺手贡献，都将漂洋过海，温暖人心</p>
         <div className="qrcodes">
