@@ -64,7 +64,7 @@ const Donators = props => {
     return a > b ? -1 : a < b ? 1 : 0;
   });
 
-  console.log(list);
+  // console.log(list);
 
   return (
     <div className="row-1 module-space">
