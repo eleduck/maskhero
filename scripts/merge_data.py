@@ -13,6 +13,8 @@ data_sources = [
     ('Ukw1aQ', 'grey'),
     ('lOg5eU', 'char'),
     ('RQlAnN', 'char'),
+    ('uyS9MZ', 'char'),
+    ('7isBlz', 'char'),
 ]
 
 data_result = ('1slVSR', 'donvi')
