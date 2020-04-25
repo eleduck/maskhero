@@ -11,11 +11,11 @@ import { images } from "../../utils/contants";
 import HelpUsFastEntry from '../HelpUsFastEntry';
 
 export default function Header(props) {
-  const { money, volunteerCount } = props;
+  const { money, volunteerCount, maskCount } = props;
 
-  const maskCount = 2200;
+  // const maskCount = 2200;
   const familyCount = 200;
-  const foreignCityCount = 4;
+  const foreignCityCount = 6;
 
   return (
     <Fragment>
@@ -46,7 +46,7 @@ export default function Header(props) {
           <div className="tile">
             <div className="name">援助口罩</div>
             <div className="data">
-              {maskCount}
+              {maskCount + 1500}
               <span className="unit">个</span>
             </div>
           </div>

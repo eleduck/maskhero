@@ -76,6 +76,10 @@ export const AVAILABLE_COUNTIES = {
     name: "Australia",
     nameCN: "澳大利亚",
   },
+  Ireland: {
+    name: "Ireland",
+    nameCN: "爱尔兰",
+  },
 };
 
 export const AVAILABLE_PROVINCES = {
@@ -120,6 +124,24 @@ export const AVAILABLE_CITIES = {
     nameCN: "堪培拉",
     latitude: -35.2813043,
     longitude: 149.1204446,
+    formUrl: "https://jinshuju.net/f/RQlAnN",
+  },
+  Dublin: {
+    countryName: "Ireland",
+    countryNameCN: "爱尔兰",
+    name: "Dublin",
+    nameCN: "都柏林",
+    latitude: 53.3244431,
+    longitude: 6.3857887,
+    formUrl: "https://jinshuju.net/f/RQlAnN",
+  },
+  Vancouver: {
+    countryName: "Canada",
+    countryNameCN: "加拿大",
+    name: "Vancouver",
+    nameCN: "温哥华",
+    latitude: 49.2578263,
+    longitude: -123.1939443,
     formUrl: "https://jinshuju.net/f/RQlAnN",
   },
 };
