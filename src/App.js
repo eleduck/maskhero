@@ -76,22 +76,16 @@ const App = () => {
       .catch((error) => console.log(error));
 
     // 获取国外反馈数据
-    const getForeigns = (tmpData = [], next = "") => {
+    const getForeigns = () => {
       request
-        .getForeignData(next)
+        .getForeignData()
         .then((response) => {
-          let { data, next } = response;
-          let newData = tmpData.concat(data);
-          if (next) {
-            getForeigns(newData, next);
-          } else {
-            setForeignData(newData);
-            setFilteredData(newData.filter((r) => !_.isEmpty(r.field_7)));
-          }
+          setForeignData(response);
+          setFilteredData(response.filter((r) => !_.isEmpty(r.field_7)));
         })
         .catch((error) => console.log(error));
     };
-    getForeigns(foreignData);
+    getForeigns();
 
     // 获取捐赠者数据
     const getDonators = (tmpData = [], next = "") => {

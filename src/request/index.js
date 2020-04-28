@@ -31,14 +31,8 @@ export const getDomesticData = () => {
 
 // 获取国外反馈数据
 export const getForeignData = (next) => {
-    return http.get(`${JINSHUJU.FOREIGN_ENDPOINT}?next=${next}`, {
-        auth: {
-            username: JINSHUJU.FOREIGN_KEY,
-            password: JINSHUJU.FOREIGN_SECRET,
-        }
-    })
+  return http.get(`/maskhero/merge_result.json`, {})
 };
-
 
 // 获取自愿者数据
 export const getVolunteerData=()=>{
