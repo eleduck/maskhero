@@ -13,6 +13,7 @@ export default function Volunteer(props) {
     const { updateVolunteerData }=props;
     const [volunteerData, setVolunteerData] = useState([]);
     const [activeIndex, setActiveIndex]= useState(0)
+    const [groupName,setGroupName]=useState('海外志愿组')
 
     useEffect(() => {
         // 获取自愿者数据
@@ -73,7 +74,40 @@ export default function Volunteer(props) {
                     </div>
                 )
             }
-            <div className="members-list">
+            <div className="members-list members-list-pc">
+            {
+                volunteerData.map((data,index) => (
+                    data["field_11"]===groupName?
+                    <div 
+                    className={`avatar ${index===activeIndex?'active':''}`} 
+                    key={index} 
+                    onClick={()=>setActiveIndex(index)}>
+                        <img
+                        src={
+                            data["x_field_weixin_headimgurl"].replace("http://", "https://") ||
+                            images.avatar
+                        }
+                        alt="avatar"
+                        />
+                        <div className="overlay">
+                            <div className="text">{data["field_1"]}</div>
+                        </div>
+                    </div>:''
+                ))
+            }
+            </div>
+            <div className="members-group">
+                <div 
+                    onClick={()=>setGroupName('海外志愿组')}
+                    className={`group ${groupName==="海外志愿组"?'active':''}`}>海外志愿组</div>
+                <div 
+                    onClick={()=>setGroupName('国内开发组')}
+                    className={`group ${groupName==="国内开发组"?'active':''}`}>国内开发组</div>
+                <div 
+                    onClick={()=>setGroupName('物资信息组')}
+                    className={`group ${groupName==="物资信息组"?'active':''}`}>物资信息组</div>
+            </div>
+            <div className="members-list members-list-mb">
             {
                 volunteerData.map((data,index) => (
                     <div 
@@ -93,11 +127,6 @@ export default function Volunteer(props) {
                     </div>
                 ))
             }
-            </div>
-            <div className="members-group">
-                <div className="group active">海外志愿组</div>
-                <div className="group">国内开发组</div>
-                <div className="group">物资信息组</div>
             </div>
         </div>
         <a

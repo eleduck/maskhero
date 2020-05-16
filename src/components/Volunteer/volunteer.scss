@@ -77,19 +77,18 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
-            
+
             .avatar {
+                flex: none;
                 position: relative;
-                display: inline-block;
                 cursor: pointer;
                 width: 4vw;
                 height: 4vw;
-                margin: 1%;
+                margin:1%;
         
                 img {
                   margin-top: 10px;
                   width: 100%;
-                  // height: 100%;
                   border-radius: 50%;
                 }
         
@@ -133,7 +132,7 @@
         } 
 
         .members-group{
-            margin-top:20px;
+            margin-top:26px;
             display: none;
             justify-content: space-around;
 
@@ -200,6 +199,8 @@
                       opacity: 1;
                     }
                 }
+
+                &.members-list-pc{display: none !important;}
             }
         }
     }
@@ -207,7 +208,18 @@
 
 // pc端style
 @media screen and (min-width: 768px) {
-    .members-group{
-        display: flex  !important;
+    .volunteers {
+        .volunteer-members{
+            .members-list{
+                &.members-list-mb{display: none !important;}
+            }
+
+            .members-group{
+                display: flex  !important;
+            }
+        }
     }
+
+    
+   
 }
