@@ -94,6 +94,11 @@ export default function Volunteer(props) {
                 ))
             }
             </div>
+            <div className="members-group">
+                <div className="group active">海外志愿组</div>
+                <div className="group">国内开发组</div>
+                <div className="group">物资信息组</div>
+            </div>
         </div>
         <a
         className="btn-mb"
