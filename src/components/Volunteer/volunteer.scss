@@ -18,11 +18,11 @@
       padding: 12px;
 
       &.left {
-        width: 65%;
+        width: 50%;
       }
 
       &.right {
-        width: 35%;
+        width: 50%;
       }
 
       p {
@@ -38,17 +38,18 @@
             font-size:14px;
             background-color:#f1f1f1;
             padding:15px 10px;
-            border-radius:5px;
-            display: none;
+            border-radius:6px;
+            display: flex;
             text-align: left;
             align-items: center;
 
             .info-avatar{
                 flex: none;
-                width: 16vw;
-                height: 16vw;  
+                width: 5vw;
+                height: 5vw;  
                 border-radius:50%;  
                 margin-right:10px;
+                border: 4px solid #ffffff;
                 img{
                     width:100%;
                     height:100%;
@@ -75,22 +76,23 @@
         .members-list{
             display: flex;
             flex-wrap: wrap;
+            justify-content: space-around;
+
             .avatar {
+                flex: none;
                 position: relative;
-                display: inline-block;
-                // width: 20%;
+                cursor: pointer;
                 width: 4vw;
                 height: 4vw;
-                margin: 1%;
+                margin:1%;
         
                 img {
                   margin-top: 10px;
                   width: 100%;
-                  // height: 100%;
                   border-radius: 50%;
                 }
         
-                &:hover .overlay {
+                &:hover .overlay, &.active .overlay {
                   opacity: 1;
                 }
         
@@ -121,12 +123,40 @@
                   }
                 }
             }
+
+            // 解决最后一行数量不够，排版混乱问题
+            &:after{
+                content: ' ';
+                flex:1 1 auto;
+            }
         } 
+
+        .members-group{
+            margin-top:26px;
+            display: none;
+            justify-content: space-around;
+
+            .group{
+                width: 150px;
+                height: 40px;
+                line-height:40px;
+                background-color:#E0E0E0;
+                color: rgba(0, 0, 0, 0.3);
+                border-radius: 3px;
+                text-align: center;
+                cursor: pointer;
+
+                &.active{
+                    background-color:#F9BA48;
+                    color: #ffffff;
+                }
+            }
+        }
     }
 }
 
 // 移动端style
-@media (min-width: 320px) and (max-width: 767px) {
+@media screen and (min-width: 320px) and (max-width: 767px) {
     .volunteers {
         flex-direction: column;
     
@@ -141,7 +171,7 @@
     
         .column.left,
         .column.right {
-          width: 100%;
+          width: 100% !important;
           padding: 0;
         }
     
@@ -151,7 +181,10 @@
 
         .volunteer-members{
             .members-info{
-                display: flex;
+                .info-avatar{
+                    width: 16vw !important; 
+                    height: 16vw !important;  
+                }
             }
 
             .members-list{
@@ -166,7 +199,27 @@
                       opacity: 1;
                     }
                 }
+
+                &.members-list-pc{display: none !important;}
             }
         }
     }
+}
+
+// pc端style
+@media screen and (min-width: 768px) {
+    .volunteers {
+        .volunteer-members{
+            .members-list{
+                &.members-list-mb{display: none !important;}
+            }
+
+            .members-group{
+                display: flex  !important;
+            }
+        }
+    }
+
+    
+   
 }
