@@ -15,8 +15,8 @@ export default function Header(props) {
   const { money, volunteerCount } = props;
 
   const maskCount = 3700;
-  const familyCount = 200;
-  const foreignCityCount = 6;
+  const familyCount = 280;
+  const foreignCityCount = 7;
 
   return (
     <Fragment>

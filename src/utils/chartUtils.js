@@ -64,7 +64,7 @@ export const buildChart = (chart, domesticData, foreignData, volunteerData) => {
   countrySeries.useGeodata = true;
   countrySeries.hide();
   countrySeries.geodataSource.events.on("done", function (ev) {
-    worldSeries.hide();
+    // worldSeries.hide();
     countrySeries.show();
   });
 

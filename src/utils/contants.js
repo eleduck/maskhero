@@ -14,10 +14,10 @@ export const images = {
   icon4: require("../assets/images/icon4.png"),
   footerImg: require("../assets/images/footer-img.png"),
   title: require("../assets/images/title.png"),
-  helpup_fastentry_github:require('../assets/images/helpup_fastentry_github.png'),
-  helpup_fastentry_seek:require('../assets/images/helpup_fastentry_seek.png'),
-  helpup_fastentry_join:require('../assets/images/helpup_fastentry_join.png'),
-  helpup_fastentry_love:require('../assets/images/helpup_fastentry_love.png'),
+  helpup_fastentry_github: require('../assets/images/helpup_fastentry_github.png'),
+  helpup_fastentry_seek: require('../assets/images/helpup_fastentry_seek.png'),
+  helpup_fastentry_join: require('../assets/images/helpup_fastentry_join.png'),
+  helpup_fastentry_love: require('../assets/images/helpup_fastentry_love.png'),
 };
 
 // 金数据相关
@@ -79,6 +79,10 @@ export const AVAILABLE_COUNTIES = {
   Ireland: {
     name: "Ireland",
     nameCN: "爱尔兰",
+  },
+  "United State": {
+    name: "United State",
+    nameCN: "美国",
   },
 };
 
@@ -144,4 +148,13 @@ export const AVAILABLE_CITIES = {
     longitude: -123.1939443,
     formUrl: "https://jinshuju.net/f/RQlAnN",
   },
+  "San Francisco": {
+    countryName: "United State",
+    countryNameCN: "美国",
+    name: "Vancouver",
+    nameCN: "San Francisco",
+    latitude: 37.7578149,
+    longitude: -121.507812,
+    formUrl: "https://jinshuju.net/f/qJhQO9",
+  }
 };
